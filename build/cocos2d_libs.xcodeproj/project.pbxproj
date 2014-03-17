@@ -1727,6 +1727,10 @@
 		50FCEBCB18C72017004AD434 /* WidgetReaderProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 50FCEB9218C72017004AD434 /* WidgetReaderProtocol.h */; };
 		50FCEBCC18C72017004AD434 /* WidgetReaderProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 50FCEB9218C72017004AD434 /* WidgetReaderProtocol.h */; };
 		A07A4CAF1783777C0073F6A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1551A342158F2AB200E66CFE /* Foundation.framework */; };
+		A5BC6BA819430ABA00AD87B3 /* pvr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5BC6BA619430ABA00AD87B3 /* pvr.cpp */; };
+		A5BC6BA919430ABA00AD87B3 /* pvr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5BC6BA619430ABA00AD87B3 /* pvr.cpp */; };
+		A5BC6BAA19430ABA00AD87B3 /* pvr.h in Headers */ = {isa = PBXBuildFile; fileRef = A5BC6BA719430ABA00AD87B3 /* pvr.h */; };
+		A5BC6BAB19430ABA00AD87B3 /* pvr.h in Headers */ = {isa = PBXBuildFile; fileRef = A5BC6BA719430ABA00AD87B3 /* pvr.h */; };
 		B29594B41926D5EC003EEF37 /* CCMeshCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29594B21926D5EC003EEF37 /* CCMeshCommand.cpp */; };
 		B29594B51926D5EC003EEF37 /* CCMeshCommand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29594B21926D5EC003EEF37 /* CCMeshCommand.cpp */; };
 		B29594B61926D5EC003EEF37 /* CCMeshCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = B29594B31926D5EC003EEF37 /* CCMeshCommand.h */; };
@@ -2784,6 +2788,8 @@
 		A07A4F3B178387670073F6A7 /* libchipmunk iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libchipmunk iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A07A4F9E1783876B0073F6A7 /* libbox2d iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libbox2d iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A07A4FB4178387730073F6A7 /* libCocosDenshion iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCocosDenshion iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5BC6BA619430ABA00AD87B3 /* pvr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pvr.cpp; path = ../base/pvr.cpp; sourceTree = "<group>"; };
+		A5BC6BA719430ABA00AD87B3 /* pvr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pvr.h; path = ../base/pvr.h; sourceTree = "<group>"; };
 		B29594AF1926D5D9003EEF37 /* ccShader_3D_Color.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ccShader_3D_Color.frag; sourceTree = "<group>"; };
 		B29594B01926D5D9003EEF37 /* ccShader_3D_ColorTex.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ccShader_3D_ColorTex.frag; sourceTree = "<group>"; };
 		B29594B11926D5D9003EEF37 /* ccShader_3D_PositionTex.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = ccShader_3D_PositionTex.vert; sourceTree = "<group>"; };
@@ -3134,6 +3140,8 @@
 				50ABBE141925AB6F00A911A9 /* etc1.cpp */,
 				50ABBE151925AB6F00A911A9 /* etc1.h */,
 				50ABBE161925AB6F00A911A9 /* firePngData.h */,
+				A5BC6BA619430ABA00AD87B3 /* pvr.cpp */,
+				A5BC6BA719430ABA00AD87B3 /* pvr.h */,
 				50ABBE171925AB6F00A911A9 /* s3tc.cpp */,
 				50ABBE181925AB6F00A911A9 /* s3tc.h */,
 				50ABBE191925AB6F00A911A9 /* TGAlib.cpp */,
@@ -4916,6 +4924,7 @@
 				50E6D33A18E174130051CA34 /* UIRelativeBox.h in Headers */,
 				50E6D30F18DADB5D0051CA34 /* CCProtectedNode.h in Headers */,
 				50FCEB9918C72017004AD434 /* CheckBoxReader.h in Headers */,
+				A5BC6BAA19430ABA00AD87B3 /* pvr.h in Headers */,
 				50E6D33E18E174130051CA34 /* UIVBox.h in Headers */,
 				1AC0269C1914068200FA920D /* ConvertUTF.h in Headers */,
 				50ABBED11925AB6F00A911A9 /* TGAlib.h in Headers */,
@@ -5508,6 +5517,7 @@
 				1A57034E180BD09B0088DEC7 /* tinyxml2.h in Headers */,
 				1A570357180BD0B00088DEC7 /* ioapi.h in Headers */,
 				50ABBD4B1925AB0000A911A9 /* Mat4.h in Headers */,
+				A5BC6BAB19430ABA00AD87B3 /* pvr.h in Headers */,
 				1A01C69B18F57BE800EFE3A6 /* CCSet.h in Headers */,
 				50ABBED61925AB6F00A911A9 /* utlist.h in Headers */,
 				1A57035B180BD0B00088DEC7 /* unzip.h in Headers */,
@@ -6126,6 +6136,7 @@
 				1A5701E2180BCB8C0088DEC7 /* CCScene.cpp in Sources */,
 				1A12775C18DFCC590005F345 /* CCTweenFunction.cpp in Sources */,
 				1A5701E6180BCB8C0088DEC7 /* CCTransition.cpp in Sources */,
+				A5BC6BA819430ABA00AD87B3 /* pvr.cpp in Sources */,
 				1A5701EA180BCB8C0088DEC7 /* CCTransitionPageTurn.cpp in Sources */,
 				50ABBDAD1925AB4100A911A9 /* CCRenderer.cpp in Sources */,
 				1A5701EE180BCB8C0088DEC7 /* CCTransitionProgress.cpp in Sources */,
@@ -6569,6 +6580,7 @@
 				1A5701E3180BCB8C0088DEC7 /* CCScene.cpp in Sources */,
 				50ABBD611925AB0000A911A9 /* Vec4.cpp in Sources */,
 				50ABBD9C1925AB4100A911A9 /* ccGLStateCache.cpp in Sources */,
+				A5BC6BA919430ABA00AD87B3 /* pvr.cpp in Sources */,
 				1A5701E7180BCB8C0088DEC7 /* CCTransition.cpp in Sources */,
 				50ABC01E1926664800A911A9 /* CCThread.cpp in Sources */,
 				1A5701EB180BCB8C0088DEC7 /* CCTransitionPageTurn.cpp in Sources */,
