@@ -75,6 +75,7 @@ bool Control::init()
 
         auto dispatcher = Director::getInstance()->getEventDispatcher();
         auto touchListener = EventListenerTouchOneByOne::create();
+        touchListener->setSwallowTouches(true);
         touchListener->onTouchBegan = CC_CALLBACK_2(Control::onTouchBegan, this);
         touchListener->onTouchMoved = CC_CALLBACK_2(Control::onTouchMoved, this);
         touchListener->onTouchEnded = CC_CALLBACK_2(Control::onTouchEnded, this);
@@ -102,7 +103,7 @@ Control::~Control()
 
 void Control::sendActionsForControlEvents(EventType controlEvents)
 {
-	retain();
+     retain();
     // For each control events
     for (int i = 0; i < kControlEventTotalNumber; i++)
     {
@@ -127,7 +128,11 @@ void Control::sendActionsForControlEvents(EventType controlEvents)
 #endif
         }
     }
-	release();
+    if( _callback && controlEvents == EventType::TOUCH_UP_INSIDE )
+    {
+        _callback(this);
+    }
+    release();
 }
 void Control::addTargetWithActionForControlEvents(Ref* target, Handler action, EventType controlEvents)
 {
@@ -178,6 +183,11 @@ void Control::removeTargetWithActionForControlEvents(Ref* target, Handler action
             this->removeTargetWithActionForControlEvent(target, action, (EventType)(1 << i));
         }
     }
+}
+
+void Control::setCallback(const ccControlCallback& callback)
+{
+    _callback = callback;
 }
 
 void Control::removeTargetWithActionForControlEvent(Ref* target, Handler action, EventType controlEvent)

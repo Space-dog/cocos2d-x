@@ -19,10 +19,14 @@ namespace cocosbuilder {;
 #define PROPERTY_TITLETTFSIZE_HIGHLIGHTED "titleTTFSize|2"
 #define PROPERTY_TITLETTFSIZE_DISABLED "titleTTFSize|3"
 #define PROPERTY_LABELANCHORPOINT "labelAnchorPoint"
-#define PROPERTY_PREFEREDSIZE "preferedSize" // TODO Should be "preferredSize". This is a typo in cocos2d-iphone, cocos2d-x and CocosBuilder!
+#define PROPERTY_PREFEREDSIZE "preferedSize"
+#define PROPERTY_PREFERREDSIZE "preferredSize"
+#define PROPERTY_MAXSIZE "maxSize"
 #define PROPERTY_BACKGROUNDSPRITEFRAME_NORMAL "backgroundSpriteFrame|1"
 #define PROPERTY_BACKGROUNDSPRITEFRAME_HIGHLIGHTED "backgroundSpriteFrame|2"
 #define PROPERTY_BACKGROUNDSPRITEFRAME_DISABLED "backgroundSpriteFrame|3"
+
+
 
 void ControlButtonLoader::onHandlePropTypeCheck(Node * pNode, Node * pParent, const char * pPropertyName, bool pCheck, CCBReader * ccbReader) {
     if(strcmp(pPropertyName, PROPERTY_ZOOMONTOUCHDOWN) == 0) {
@@ -77,7 +81,9 @@ void ControlButtonLoader::onHandlePropTypePoint(Node * pNode, Node * pParent, co
 }
 
 void ControlButtonLoader::onHandlePropTypeSize(Node * pNode, Node * pParent, const char * pPropertyName, Size pSize, CCBReader * ccbReader) {
-    if(strcmp(pPropertyName, PROPERTY_PREFEREDSIZE) == 0) {
+    if((strcmp(pPropertyName, PROPERTY_PREFEREDSIZE) == 0)||(strcmp(pPropertyName, PROPERTY_PREFERREDSIZE) == 0)) {
+        ((ControlButton *)pNode)->setPreferredSize(pSize);
+    } else if(strcmp(pPropertyName, PROPERTY_MAXSIZE) == 0) {
         ((ControlButton *)pNode)->setPreferredSize(pSize);
     } else {
         ControlLoader::onHandlePropTypeSize(pNode, pParent, pPropertyName, pSize, ccbReader);

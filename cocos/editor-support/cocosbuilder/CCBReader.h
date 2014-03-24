@@ -29,7 +29,8 @@
     return NULL; \
 }
 
-#define CCB_VERSION 5
+#define CCB_MIN_VERSION 5
+#define CCB_MAX_VERSION 7
 
 namespace cocosbuilder {
 
@@ -95,7 +96,8 @@ public:
         STRING,
         BLOCK_CONTROL,
         FLOAT_SCALE,
-        FLOAT_XY
+        FLOAT_XY,
+        COLOR4
     };
     
     enum class FloatType {
@@ -129,6 +131,53 @@ public:
         MULTIPLY_RESOLUTION,
     };
     
+    enum class PositionUnit
+    {
+        /// Position is set in points (this is the default)
+        POINTS,
+        
+        /// Position is UI points, on iOS this corresponds to the native point system
+        UIPOINTS,
+        
+        /// Position is a normalized value multiplied by the content size of the parent's container
+        NORMALIZED,
+        
+    };
+    
+    enum class PositionReferenceCorner
+    {
+        /// Position is relative to the bottom left corner of the parent container (this is the default)
+        BOTTOMLEFT,
+        
+        /// Position is relative to the top left corner of the parent container
+        TOPLEFT,
+        
+        /// Position is relative to the top right corner of the parent container
+        TOPRIGHT,
+        
+        /// Position is relative to the bottom right corner of the parent container
+        BOTTOMRIGHT,
+    };
+    
+    enum class SizeUnit
+    {
+        /// Content size is set in points (this is the default)
+        POINTS,
+        
+        /// Position is UI points, on iOS this corresponds to the native point system
+        UIPOINTS,
+        
+        /// Content size is a normalized value multiplied by the content size of the parent's container
+        NORMALIZED,
+        
+        /// Content size is the size of the parents container inset by the supplied value
+        INSETPOINTS,
+        
+        /// Content size is the size of the parents container inset by the supplied value multiplied by the UIScaleFactor (as defined by CCDirector)
+        INSETUIPOINTS,
+        
+    };
+    
     enum class SizeType
     {
         ABSOLUTE,
@@ -141,8 +190,18 @@ public:
     
     enum class ScaleType
     {
-        ABSOLUTE,
-        MULTIPLY_RESOLUTION
+        ABSOLUTE = 0,
+        MULTIPLY_RESOURCES_SCALE = 1,
+        MULTIPLY_MAIN_SCALE = 2,
+        MULTIPLY_ADDITION_SCALE = 4,
+        INVERT_SCALE = 8,
+    };
+    
+    enum class SceneScaleType
+    {
+        NONE,
+        FITMIN,
+        FITMAX
     };
     /**
      * @js NA
@@ -168,27 +227,27 @@ public:
     void setCCBRootPath(const char* ccbRootPath);
     const std::string& getCCBRootPath() const;
 
-    cocos2d::Node* readNodeGraphFromFile(const char *pCCBFileName);
-    cocos2d::Node* readNodeGraphFromFile(const char *pCCBFileName, cocos2d::Ref *pOwner);
-    cocos2d::Node* readNodeGraphFromFile(const char *pCCBFileName, cocos2d::Ref *pOwner, const cocos2d::Size &parentSize);
+    cocos2d::Node* readNodeGraphFromFile(const char *pCCBFileName, SceneScaleType scaleType = SceneScaleType::NONE);
+    cocos2d::Node* readNodeGraphFromFile(const char *pCCBFileName, cocos2d::Ref *pOwner, SceneScaleType scaleType = SceneScaleType::NONE);
+    cocos2d::Node* readNodeGraphFromFile(const char *pCCBFileName, cocos2d::Ref *pOwner, const cocos2d::Size &parentSize, SceneScaleType scaleType = SceneScaleType::NONE);
     /**
      * @js NA
      * @lua NA
      */
-    cocos2d::Node* readNodeGraphFromData(std::shared_ptr<cocos2d::Data> data, cocos2d::Ref *pOwner, const cocos2d::Size &parentSize);
+    cocos2d::Node* readNodeGraphFromData(std::shared_ptr<cocos2d::Data> data, cocos2d::Ref *pOwner, const cocos2d::Size &parentSize, SceneScaleType scaleType = SceneScaleType::NONE);
    
     /**
      @lua NA
      */
-    cocos2d::Scene* createSceneWithNodeGraphFromFile(const char *pCCBFileName);
+    cocos2d::Scene* createSceneWithNodeGraphFromFile(const char *pCCBFileName, SceneScaleType scaleType = SceneScaleType::NONE);
     /**
      @lua NA
      */
-    cocos2d::Scene* createSceneWithNodeGraphFromFile(const char *pCCBFileName, cocos2d::Ref *pOwner);
+    cocos2d::Scene* createSceneWithNodeGraphFromFile(const char *pCCBFileName, cocos2d::Ref *pOwner, SceneScaleType scaleType = SceneScaleType::NONE);
     /**
      @lua NA
      */
-    cocos2d::Scene* createSceneWithNodeGraphFromFile(const char *pCCBFileName, cocos2d::Ref *pOwner, const cocos2d::Size &parentSize);
+    cocos2d::Scene* createSceneWithNodeGraphFromFile(const char *pCCBFileName, cocos2d::Ref *pOwner, const cocos2d::Size &parentSize, SceneScaleType scaleType = SceneScaleType::NONE);
     
     /**
      * @js NA
@@ -274,7 +333,7 @@ public:
      * @js NA
      * @lua NA
      */
-    std::string readCachedString();
+    const std::string& readCachedString();
     /**
      * @js NA
      * @lua NA
@@ -338,6 +397,24 @@ public:
      * @js NA
      * @lua NA
      */
+    static float getMainScale();
+    static void setMainScale(float scale);
+    /**
+     * @js NA
+     * @lua NA
+     */
+    static float getResolutionScaleX();
+    static void setResolutionScaleX(float scale);
+    /**
+     * @js NA
+     * @lua NA
+     */
+    static float getResolutionScaleY();
+    static void setResolutionScaleY(float scale);
+    /**
+     * @js NA
+     * @lua NA
+     */
     cocos2d::Node* readFileWithCleanUp(bool bCleanUp, CCBAnimationManagerMapPtr am);
     
     void addOwnerOutletName(std::string name);
@@ -346,6 +423,10 @@ public:
 private:
     void cleanUpNodeGraph(cocos2d::Node *pNode);
     bool readSequences();
+#if CC_USE_PHYSICS
+    cocos2d::PhysicsJoint* readJoint();
+    void readJoints();
+#endif
     CCBKeyframe* readKeyframe(PropertyType type);
     
     bool readHeader();
@@ -366,6 +447,7 @@ private:
     unsigned char *_bytes;
     int _currentByte;
     int _currentBit;
+    int _version;
     
     std::vector<std::string> _stringCache;
     std::set<std::string> _loadedSpriteSheets;

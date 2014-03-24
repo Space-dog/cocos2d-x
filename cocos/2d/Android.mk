@@ -60,6 +60,8 @@ ccGLStateCache.cpp \
 CCGrabber.cpp \
 CCGrid.cpp \
 CCNodeGrid.cpp \
+CCLayoutBox.cpp \
+CCLayoutNode.cpp \
 CCIMEDispatcher.cpp \
 CCLabel.cpp \
 CCLabelAtlas.cpp \
@@ -77,6 +79,7 @@ CCParticleBatchNode.cpp \
 CCParticleExamples.cpp \
 CCParticleSystem.cpp \
 CCParticleSystemQuad.cpp \
+CCPhysicsNode.cpp \
 CCProfiling.cpp \
 CCProgressTimer.cpp \
 CCRenderTexture.cpp \

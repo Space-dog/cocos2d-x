@@ -1727,6 +1727,38 @@
 		A07A4CAF1783777C0073F6A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1551A342158F2AB200E66CFE /* Foundation.framework */; };
 		A0E6B28018613EA5009C5D17 /* CCRenderCommandPool.h in Headers */ = {isa = PBXBuildFile; fileRef = A0E6B27F18613EA5009C5D17 /* CCRenderCommandPool.h */; };
 		A0E6B28118613EA5009C5D17 /* CCRenderCommandPool.h in Headers */ = {isa = PBXBuildFile; fileRef = A0E6B27F18613EA5009C5D17 /* CCRenderCommandPool.h */; };
+		A5B536C818DC3CC200DE2A0B /* CCPhysicsNodeLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5B536C618DC3CC200DE2A0B /* CCPhysicsNodeLoader.cpp */; };
+		A5B536C918DC3CC200DE2A0B /* CCPhysicsNodeLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5B536C618DC3CC200DE2A0B /* CCPhysicsNodeLoader.cpp */; };
+		A5B536CA18DC3CC200DE2A0B /* CCPhysicsNodeLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = A5B536C718DC3CC200DE2A0B /* CCPhysicsNodeLoader.h */; };
+		A5B536CB18DC3CC200DE2A0B /* CCPhysicsNodeLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = A5B536C718DC3CC200DE2A0B /* CCPhysicsNodeLoader.h */; };
+		A5B7107E18DB5B65007B1B13 /* CCPhysicsNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5B7107C18DB5B65007B1B13 /* CCPhysicsNode.cpp */; };
+		A5B7107F18DB5B65007B1B13 /* CCPhysicsNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5B7107C18DB5B65007B1B13 /* CCPhysicsNode.cpp */; };
+		A5B7108018DB5B65007B1B13 /* CCPhysicsNode.h in Headers */ = {isa = PBXBuildFile; fileRef = A5B7107D18DB5B65007B1B13 /* CCPhysicsNode.h */; };
+		A5B7108118DB5B65007B1B13 /* CCPhysicsNode.h in Headers */ = {isa = PBXBuildFile; fileRef = A5B7107D18DB5B65007B1B13 /* CCPhysicsNode.h */; };
+		A5EA518518D1795B00DD7119 /* CCLayoutBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5EA518118D1795B00DD7119 /* CCLayoutBox.cpp */; };
+		A5EA518618D1795B00DD7119 /* CCLayoutBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5EA518118D1795B00DD7119 /* CCLayoutBox.cpp */; };
+		A5EA518718D1795B00DD7119 /* CCLayoutBox.h in Headers */ = {isa = PBXBuildFile; fileRef = A5EA518218D1795B00DD7119 /* CCLayoutBox.h */; };
+		A5EA518818D1795B00DD7119 /* CCLayoutBox.h in Headers */ = {isa = PBXBuildFile; fileRef = A5EA518218D1795B00DD7119 /* CCLayoutBox.h */; };
+		A5EA518918D1795B00DD7119 /* CCLayoutNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5EA518318D1795B00DD7119 /* CCLayoutNode.cpp */; };
+		A5EA518A18D1795B00DD7119 /* CCLayoutNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5EA518318D1795B00DD7119 /* CCLayoutNode.cpp */; };
+		A5EA518B18D1795B00DD7119 /* CCLayoutNode.h in Headers */ = {isa = PBXBuildFile; fileRef = A5EA518418D1795B00DD7119 /* CCLayoutNode.h */; };
+		A5EA518C18D1795B00DD7119 /* CCLayoutNode.h in Headers */ = {isa = PBXBuildFile; fileRef = A5EA518418D1795B00DD7119 /* CCLayoutNode.h */; };
+		A5EA519518D1798E00DD7119 /* CCBReaderParams.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5EA518D18D1798E00DD7119 /* CCBReaderParams.cpp */; };
+		A5EA519618D1798E00DD7119 /* CCBReaderParams.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5EA518D18D1798E00DD7119 /* CCBReaderParams.cpp */; };
+		A5EA519718D1798E00DD7119 /* CCBReaderParams.h in Headers */ = {isa = PBXBuildFile; fileRef = A5EA518E18D1798E00DD7119 /* CCBReaderParams.h */; };
+		A5EA519818D1798E00DD7119 /* CCBReaderParams.h in Headers */ = {isa = PBXBuildFile; fileRef = A5EA518E18D1798E00DD7119 /* CCBReaderParams.h */; };
+		A5EA519918D1798E00DD7119 /* CCButtonLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5EA518F18D1798E00DD7119 /* CCButtonLoader.cpp */; };
+		A5EA519A18D1798E00DD7119 /* CCButtonLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5EA518F18D1798E00DD7119 /* CCButtonLoader.cpp */; };
+		A5EA519B18D1798E00DD7119 /* CCButtonLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = A5EA519018D1798E00DD7119 /* CCButtonLoader.h */; };
+		A5EA519C18D1798E00DD7119 /* CCButtonLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = A5EA519018D1798E00DD7119 /* CCButtonLoader.h */; };
+		A5EA519D18D1798E00DD7119 /* CCLayoutBoxLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5EA519118D1798E00DD7119 /* CCLayoutBoxLoader.cpp */; };
+		A5EA519E18D1798E00DD7119 /* CCLayoutBoxLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5EA519118D1798E00DD7119 /* CCLayoutBoxLoader.cpp */; };
+		A5EA519F18D1798E00DD7119 /* CCLayoutBoxLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = A5EA519218D1798E00DD7119 /* CCLayoutBoxLoader.h */; };
+		A5EA51A018D1798E00DD7119 /* CCLayoutBoxLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = A5EA519218D1798E00DD7119 /* CCLayoutBoxLoader.h */; };
+		A5EA51A118D1798E00DD7119 /* CCProgressTimerLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5EA519318D1798E00DD7119 /* CCProgressTimerLoader.cpp */; };
+		A5EA51A218D1798E00DD7119 /* CCProgressTimerLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5EA519318D1798E00DD7119 /* CCProgressTimerLoader.cpp */; };
+		A5EA51A318D1798E00DD7119 /* CCProgressTimerLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = A5EA519418D1798E00DD7119 /* CCProgressTimerLoader.h */; };
+		A5EA51A418D1798E00DD7119 /* CCProgressTimerLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = A5EA519418D1798E00DD7119 /* CCProgressTimerLoader.h */; };
 		B37510711823AC9F00B3BA6A /* CCPhysicsBodyInfo_chipmunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B37510451823AC7B00B3BA6A /* CCPhysicsBodyInfo_chipmunk.cpp */; };
 		B37510721823AC9F00B3BA6A /* CCPhysicsBodyInfo_chipmunk.h in Headers */ = {isa = PBXBuildFile; fileRef = B37510461823AC7B00B3BA6A /* CCPhysicsBodyInfo_chipmunk.h */; };
 		B37510731823AC9F00B3BA6A /* CCPhysicsContactInfo_chipmunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B37510471823AC7B00B3BA6A /* CCPhysicsContactInfo_chipmunk.cpp */; };
@@ -2800,6 +2832,22 @@
 		A07A4F9E1783876B0073F6A7 /* libbox2d iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libbox2d iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A07A4FB4178387730073F6A7 /* libCocosDenshion iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCocosDenshion iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0E6B27F18613EA5009C5D17 /* CCRenderCommandPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCRenderCommandPool.h; sourceTree = "<group>"; };
+		A5B536C618DC3CC200DE2A0B /* CCPhysicsNodeLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCPhysicsNodeLoader.cpp; sourceTree = "<group>"; };
+		A5B536C718DC3CC200DE2A0B /* CCPhysicsNodeLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPhysicsNodeLoader.h; sourceTree = "<group>"; };
+		A5B7107C18DB5B65007B1B13 /* CCPhysicsNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCPhysicsNode.cpp; sourceTree = "<group>"; };
+		A5B7107D18DB5B65007B1B13 /* CCPhysicsNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPhysicsNode.h; sourceTree = "<group>"; };
+		A5EA518118D1795B00DD7119 /* CCLayoutBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCLayoutBox.cpp; sourceTree = "<group>"; };
+		A5EA518218D1795B00DD7119 /* CCLayoutBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCLayoutBox.h; sourceTree = "<group>"; };
+		A5EA518318D1795B00DD7119 /* CCLayoutNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCLayoutNode.cpp; sourceTree = "<group>"; };
+		A5EA518418D1795B00DD7119 /* CCLayoutNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCLayoutNode.h; sourceTree = "<group>"; };
+		A5EA518D18D1798E00DD7119 /* CCBReaderParams.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCBReaderParams.cpp; sourceTree = "<group>"; };
+		A5EA518E18D1798E00DD7119 /* CCBReaderParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCBReaderParams.h; sourceTree = "<group>"; };
+		A5EA518F18D1798E00DD7119 /* CCButtonLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCButtonLoader.cpp; sourceTree = "<group>"; };
+		A5EA519018D1798E00DD7119 /* CCButtonLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCButtonLoader.h; sourceTree = "<group>"; };
+		A5EA519118D1798E00DD7119 /* CCLayoutBoxLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCLayoutBoxLoader.cpp; sourceTree = "<group>"; };
+		A5EA519218D1798E00DD7119 /* CCLayoutBoxLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCLayoutBoxLoader.h; sourceTree = "<group>"; };
+		A5EA519318D1798E00DD7119 /* CCProgressTimerLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCProgressTimerLoader.cpp; sourceTree = "<group>"; };
+		A5EA519418D1798E00DD7119 /* CCProgressTimerLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCProgressTimerLoader.h; sourceTree = "<group>"; };
 		B37510451823AC7B00B3BA6A /* CCPhysicsBodyInfo_chipmunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCPhysicsBodyInfo_chipmunk.cpp; sourceTree = "<group>"; };
 		B37510461823AC7B00B3BA6A /* CCPhysicsBodyInfo_chipmunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPhysicsBodyInfo_chipmunk.h; sourceTree = "<group>"; };
 		B37510471823AC7B00B3BA6A /* CCPhysicsContactInfo_chipmunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCPhysicsContactInfo_chipmunk.cpp; sourceTree = "<group>"; };
@@ -3007,6 +3055,8 @@
 		1A570095180BC5B00088DEC7 /* base-nodes */ = {
 			isa = PBXGroup;
 			children = (
+				A5B7107C18DB5B65007B1B13 /* CCPhysicsNode.cpp */,
+				A5B7107D18DB5B65007B1B13 /* CCPhysicsNode.h */,
 				1A57009C180BC5D20088DEC7 /* CCNode.cpp */,
 				1A57009D180BC5D20088DEC7 /* CCNode.h */,
 				1A570096180BC5C10088DEC7 /* CCAtlasNode.cpp */,
@@ -3180,6 +3230,10 @@
 		1A5701FF180BCBBD0088DEC7 /* misc-nodes */ = {
 			isa = PBXGroup;
 			children = (
+				A5EA518118D1795B00DD7119 /* CCLayoutBox.cpp */,
+				A5EA518218D1795B00DD7119 /* CCLayoutBox.h */,
+				A5EA518318D1795B00DD7119 /* CCLayoutNode.cpp */,
+				A5EA518418D1795B00DD7119 /* CCLayoutNode.h */,
 				ED9C6A9218599AD8000A5232 /* CCNodeGrid.cpp */,
 				ED9C6A9318599AD8000A5232 /* CCNodeGrid.h */,
 				1A57020C180BCBF40088DEC7 /* CCProgressTimer.cpp */,
@@ -3822,6 +3876,16 @@
 		1AD71CF8180E26E600808F54 /* cocosbuilder */ = {
 			isa = PBXGroup;
 			children = (
+				A5B536C618DC3CC200DE2A0B /* CCPhysicsNodeLoader.cpp */,
+				A5B536C718DC3CC200DE2A0B /* CCPhysicsNodeLoader.h */,
+				A5EA518D18D1798E00DD7119 /* CCBReaderParams.cpp */,
+				A5EA518E18D1798E00DD7119 /* CCBReaderParams.h */,
+				A5EA518F18D1798E00DD7119 /* CCButtonLoader.cpp */,
+				A5EA519018D1798E00DD7119 /* CCButtonLoader.h */,
+				A5EA519118D1798E00DD7119 /* CCLayoutBoxLoader.cpp */,
+				A5EA519218D1798E00DD7119 /* CCLayoutBoxLoader.h */,
+				A5EA519318D1798E00DD7119 /* CCProgressTimerLoader.cpp */,
+				A5EA519418D1798E00DD7119 /* CCProgressTimerLoader.h */,
 				1AD71CFA180E26E600808F54 /* CCBAnimationManager.cpp */,
 				1AD71CFB180E26E600808F54 /* CCBAnimationManager.h */,
 				1AD71CFC180E26E600808F54 /* CCBFileLoader.cpp */,
@@ -4952,6 +5016,7 @@
 				A044DEAD18C6A58700B6CCBD /* matrix.h in Headers */,
 				50FCEBB518C72017004AD434 /* SliderReader.h in Headers */,
 				06CAAAD1186AD8010012A414 /* ObjectFactory.h in Headers */,
+				A5EA518B18D1795B00DD7119 /* CCLayoutNode.h in Headers */,
 				A023FA34185198C800E10CD1 /* ccShader_PositionTextureColor_noMVP_frag.h in Headers */,
 				1A570077180BC5A10088DEC7 /* CCActionGrid3D.h in Headers */,
 				1A57007B180BC5A10088DEC7 /* CCActionInstant.h in Headers */,
@@ -4978,7 +5043,9 @@
 				1A5700D5180BC6060088DEC7 /* CCBool.h in Headers */,
 				1A5700D9180BC6060088DEC7 /* CCData.h in Headers */,
 				1A5700DD180BC6060088DEC7 /* CCDataVisitor.h in Headers */,
+				A5EA51A318D1798E00DD7119 /* CCProgressTimerLoader.h in Headers */,
 				1A5700E1180BC6060088DEC7 /* CCDictionary.h in Headers */,
+				A5EA519718D1798E00DD7119 /* CCBReaderParams.h in Headers */,
 				1A5700E3180BC6060088DEC7 /* CCDouble.h in Headers */,
 				1A5700E5180BC6060088DEC7 /* CCFloat.h in Headers */,
 				1A5700E9180BC6060088DEC7 /* CCGeometry.h in Headers */,
@@ -5063,6 +5130,7 @@
 				1A57026D180BCC6F0088DEC7 /* CCShaderCache.h in Headers */,
 				1A57026F180BCC6F0088DEC7 /* ccShaderEx_SwitchMask_frag.h in Headers */,
 				1A570273180BCC6F0088DEC7 /* ccShaders.h in Headers */,
+				A5EA518718D1795B00DD7119 /* CCLayoutBox.h in Headers */,
 				A044DECF18C6A58700B6CCBD /* vec2.h in Headers */,
 				1A570280180BCC900088DEC7 /* CCSprite.h in Headers */,
 				1A570284180BCC900088DEC7 /* CCSpriteBatchNode.h in Headers */,
@@ -5086,8 +5154,10 @@
 				1A12775B18DFCC540005F345 /* CCTweenFunction.h in Headers */,
 				1A5702CA180BCE370088DEC7 /* CCTextFieldTTF.h in Headers */,
 				A044DEB718C6A58700B6CCBD /* mat4.h in Headers */,
+				A5B536CA18DC3CC200DE2A0B /* CCPhysicsNodeLoader.h in Headers */,
 				1A5702D5180BCE570088DEC7 /* CCTexture2D.h in Headers */,
 				1A5702D9180BCE570088DEC7 /* CCTextureAtlas.h in Headers */,
+				A5EA519F18D1798E00DD7119 /* CCLayoutBoxLoader.h in Headers */,
 				1A5702DD180BCE570088DEC7 /* CCTextureCache.h in Headers */,
 				1A5702EC180BCE750088DEC7 /* CCTileMapAtlas.h in Headers */,
 				1A5702F0180BCE750088DEC7 /* CCTMXLayer.h in Headers */,
@@ -5136,6 +5206,7 @@
 				1AD71DE3180E26E600808F54 /* CCLayerLoader.h in Headers */,
 				1AD71DE7180E26E600808F54 /* CCMenuItemImageLoader.h in Headers */,
 				1AD71DEB180E26E600808F54 /* CCMenuItemLoader.h in Headers */,
+				A5EA519B18D1798E00DD7119 /* CCButtonLoader.h in Headers */,
 				1AD71DED180E26E600808F54 /* CCMenuLoader.h in Headers */,
 				1AD71DF1180E26E600808F54 /* CCNode+CCBRelativePositioning.h in Headers */,
 				2905FA5C18CF08D100240AA3 /* UILayoutDefine.h in Headers */,
@@ -5190,6 +5261,7 @@
 				1AAF5851180E40B9000584C8 /* LocalStorage.h in Headers */,
 				1A9DCA13180E6955007A3AD4 /* ccConfig.h in Headers */,
 				1A9DCA17180E6955007A3AD4 /* CCConfiguration.h in Headers */,
+				A5B7108018DB5B65007B1B13 /* CCPhysicsNode.h in Headers */,
 				1A9DCA1F180E6955007A3AD4 /* CCDirector.h in Headers */,
 				1A9DCA21180E6955007A3AD4 /* CCEventType.h in Headers */,
 				1A9DCA25180E6955007A3AD4 /* ccFPSImages.h in Headers */,
@@ -5399,10 +5471,12 @@
 				2AC795E81862875D005EC8E1 /* Event.h in Headers */,
 				2AC795E91862875D005EC8E1 /* EventData.h in Headers */,
 				2AC795EA1862875D005EC8E1 /* BoundingBoxAttachment.h in Headers */,
+				A5B7108118DB5B65007B1B13 /* CCPhysicsNode.h in Headers */,
 				46A1702D1807CBFE005B8026 /* CCCommon.h in Headers */,
 				46A170FF1807CECB005B8026 /* CCPhysicsContact.h in Headers */,
 				593BDCF9184D0A6E00C21E48 /* CCGroupCommand.h in Headers */,
 				46A171041807CECB005B8026 /* CCPhysicsShape.h in Headers */,
+				A5EA518818D1795B00DD7119 /* CCLayoutBox.h in Headers */,
 				50FCEBAE18C72017004AD434 /* PageViewReader.h in Headers */,
 				46A1703F1807CC07005B8026 /* CCDirectorCaller.h in Headers */,
 				46A170381807CBFE005B8026 /* CCSAXParser.h in Headers */,
@@ -5490,7 +5564,9 @@
 				1A570141180BC9460088DEC7 /* CCEventAcceleration.h in Headers */,
 				1A570145180BC9460088DEC7 /* CCEventCustom.h in Headers */,
 				1A570149180BC9460088DEC7 /* CCEventDispatcher.h in Headers */,
+				A5EA51A418D1798E00DD7119 /* CCProgressTimerLoader.h in Headers */,
 				1A57014D180BC9460088DEC7 /* CCEventKeyboard.h in Headers */,
+				A5EA519818D1798E00DD7119 /* CCBReaderParams.h in Headers */,
 				50FCEBBA18C72017004AD434 /* TextAtlasReader.h in Headers */,
 				1A570151180BC9460088DEC7 /* CCEventListener.h in Headers */,
 				1A570155180BC9460088DEC7 /* CCEventListenerAcceleration.h in Headers */,
@@ -5565,6 +5641,7 @@
 				06CAAAD2186AD8030012A414 /* ObjectFactory.h in Headers */,
 				1A5702BB180BCDFC0088DEC7 /* ccUtils.h in Headers */,
 				1A5702C1180BCE2A0088DEC7 /* CCIMEDelegate.h in Headers */,
+				A5EA51A018D1798E00DD7119 /* CCLayoutBoxLoader.h in Headers */,
 				2905FA6918CF08D100240AA3 /* UILoadingBar.h in Headers */,
 				2905FA8F18CF08D100240AA3 /* UIWidget.h in Headers */,
 				1A5702C5180BCE2A0088DEC7 /* CCIMEDispatcher.h in Headers */,
@@ -5644,6 +5721,7 @@
 				1AD71EA8180E26E600808F54 /* AtlasAttachmentLoader.h in Headers */,
 				1ABA68B11888D700007D1BB4 /* CCFontCharMap.h in Headers */,
 				1AD71EAC180E26E600808F54 /* Attachment.h in Headers */,
+				A5B536CB18DC3CC200DE2A0B /* CCPhysicsNodeLoader.h in Headers */,
 				2905FA4918CF08D100240AA3 /* UIButton.h in Headers */,
 				1AD71EB0180E26E600808F54 /* AttachmentLoader.h in Headers */,
 				1AD71EB4180E26E600808F54 /* Bone.h in Headers */,
@@ -5655,9 +5733,11 @@
 				1AD71EC0180E26E600808F54 /* CCSkeletonAnimation.h in Headers */,
 				1AD71EC4180E26E600808F54 /* extension.h in Headers */,
 				1AD71EC8180E26E600808F54 /* Json.h in Headers */,
+				A5EA518C18D1795B00DD7119 /* CCLayoutNode.h in Headers */,
 				1AD71ECC180E26E600808F54 /* RegionAttachment.h in Headers */,
 				A044DEAE18C6A58700B6CCBD /* matrix.h in Headers */,
 				1AD71ED0180E26E600808F54 /* Skeleton.h in Headers */,
+				A5EA519C18D1798E00DD7119 /* CCButtonLoader.h in Headers */,
 				1AD71ED4180E26E600808F54 /* SkeletonData.h in Headers */,
 				1AD71ED8180E26E600808F54 /* SkeletonJson.h in Headers */,
 				1A12775A18DFCC4F0005F345 /* CCTweenFunction.h in Headers */,
@@ -6120,6 +6200,7 @@
 				3E26D40818ACB63900834404 /* CCDevice.mm in Sources */,
 				46A170151807CBFC005B8026 /* CCLock.cpp in Sources */,
 				A04583F2189053B500E32FE8 /* CCGLView.cpp in Sources */,
+				A5EA51A118D1798E00DD7119 /* CCProgressTimerLoader.cpp in Sources */,
 				46A170E81807CECA005B8026 /* CCPhysicsContact.cpp in Sources */,
 				46A170251807CBFC005B8026 /* CCThread.cpp in Sources */,
 				1A570061180BC5A10088DEC7 /* CCAction.cpp in Sources */,
@@ -6130,6 +6211,7 @@
 				2905FA4E18CF08D100240AA3 /* UIHelper.cpp in Sources */,
 				1A570071180BC5A10088DEC7 /* CCActionGrid.cpp in Sources */,
 				593BDCF6184D0A6E00C21E48 /* CCGroupCommand.cpp in Sources */,
+				A5B7107E18DB5B65007B1B13 /* CCPhysicsNode.cpp in Sources */,
 				B37510761823AC9F00B3BA6A /* CCPhysicsJointInfo_chipmunk.cpp in Sources */,
 				1A570075180BC5A10088DEC7 /* CCActionGrid3D.cpp in Sources */,
 				B375107A1823AC9F00B3BA6A /* CCPhysicsWorldInfo_chipmunk.cpp in Sources */,
@@ -6193,6 +6275,7 @@
 				1A5701B9180BCB5A0088DEC7 /* CCLabel.cpp in Sources */,
 				1A5701BD180BCB5A0088DEC7 /* CCLabelAtlas.cpp in Sources */,
 				1A5701C1180BCB5A0088DEC7 /* CCLabelBMFont.cpp in Sources */,
+				A5EA518518D1795B00DD7119 /* CCLayoutBox.cpp in Sources */,
 				1A087AE81860400400196EF5 /* edtaa3func.cpp in Sources */,
 				B37510731823AC9F00B3BA6A /* CCPhysicsContactInfo_chipmunk.cpp in Sources */,
 				1A5701C7180BCB5A0088DEC7 /* CCLabelTextFormatter.cpp in Sources */,
@@ -6262,6 +6345,7 @@
 				1A570335180BCFD50088DEC7 /* CCUserDefaultAndroid.cpp in Sources */,
 				50E6D30E18DADB5D0051CA34 /* CCProtectedNode.cpp in Sources */,
 				1A57033A180BCFFA0088DEC7 /* ZipUtils.cpp in Sources */,
+				A5EA518918D1795B00DD7119 /* CCLayoutNode.cpp in Sources */,
 				1A57034B180BD09B0088DEC7 /* tinyxml2.cpp in Sources */,
 				1A570354180BD0B00088DEC7 /* ioapi.cpp in Sources */,
 				1A570358180BD0B00088DEC7 /* unzip.cpp in Sources */,
@@ -6298,6 +6382,7 @@
 				1AD71E01180E26E600808F54 /* CCScale9SpriteLoader.cpp in Sources */,
 				1AD71E05180E26E600808F54 /* CCScrollViewLoader.cpp in Sources */,
 				1AD71E09180E26E600808F54 /* CCSpriteLoader.cpp in Sources */,
+				A5EA519918D1798E00DD7119 /* CCButtonLoader.cpp in Sources */,
 				1AD71E95180E26E600808F54 /* Animation.cpp in Sources */,
 				1AD71E99180E26E600808F54 /* AnimationState.cpp in Sources */,
 				1AD71E9D180E26E600808F54 /* AnimationStateData.cpp in Sources */,
@@ -6358,6 +6443,7 @@
 				A044DEB518C6A58700B6CCBD /* mat4.c in Sources */,
 				1A8C59C3180E930E00EF57C3 /* CCComController.cpp in Sources */,
 				2905FA5218CF08D100240AA3 /* UIImageView.cpp in Sources */,
+				A5B536C818DC3CC200DE2A0B /* CCPhysicsNodeLoader.cpp in Sources */,
 				2905FA7C18CF08D100240AA3 /* UIText.cpp in Sources */,
 				50FCEB9F18C72017004AD434 /* LayoutReader.cpp in Sources */,
 				1A8C59C7180E930E00EF57C3 /* CCComRender.cpp in Sources */,
@@ -6377,6 +6463,8 @@
 				1A8C59F3180E930E00EF57C3 /* CCSSceneReader.cpp in Sources */,
 				2905FA6E18CF08D100240AA3 /* UIRichText.cpp in Sources */,
 				1A8C59F7180E930E00EF57C3 /* CCTransformHelp.cpp in Sources */,
+				A5EA519D18D1798E00DD7119 /* CCLayoutBoxLoader.cpp in Sources */,
+				A5EA519518D1798E00DD7119 /* CCBReaderParams.cpp in Sources */,
 				1A8C59FB180E930E00EF57C3 /* CCTween.cpp in Sources */,
 				2905FA8818CF08D100240AA3 /* UITextField.cpp in Sources */,
 				1A8C5A03180E930E00EF57C3 /* CCUtilMath.cpp in Sources */,
@@ -6544,6 +6632,7 @@
 				46A170281807CBFE005B8026 /* CCFileUtilsApple.mm in Sources */,
 				46A170311807CBFE005B8026 /* CCFileUtils.cpp in Sources */,
 				46A171051807CECB005B8026 /* CCPhysicsWorld.cpp in Sources */,
+				A5EA519A18D1798E00DD7119 /* CCButtonLoader.cpp in Sources */,
 				46A1703E1807CC07005B8026 /* CCDevice.mm in Sources */,
 				46A171031807CECB005B8026 /* CCPhysicsShape.cpp in Sources */,
 				46A170371807CBFE005B8026 /* CCSAXParser.cpp in Sources */,
@@ -6586,6 +6675,7 @@
 				B37510831823ACA100B3BA6A /* CCPhysicsShapeInfo_chipmunk.cpp in Sources */,
 				1A5700CA180BC6060088DEC7 /* CCAffineTransform.cpp in Sources */,
 				1A5700CE180BC6060088DEC7 /* CCArray.cpp in Sources */,
+				A5EA519618D1798E00DD7119 /* CCBReaderParams.cpp in Sources */,
 				1A5700D2180BC6060088DEC7 /* CCAutoreleasePool.cpp in Sources */,
 				1A5700D8180BC6060088DEC7 /* CCData.cpp in Sources */,
 				1A5700DC180BC6060088DEC7 /* CCDataVisitor.cpp in Sources */,
@@ -6623,6 +6713,7 @@
 				1A5701B6180BCB590088DEC7 /* CCFontFreeType.cpp in Sources */,
 				1A5701BA180BCB5A0088DEC7 /* CCLabel.cpp in Sources */,
 				2905FA4B18CF08D100240AA3 /* UICheckBox.cpp in Sources */,
+				A5EA51A218D1798E00DD7119 /* CCProgressTimerLoader.cpp in Sources */,
 				1A5701BE180BCB5A0088DEC7 /* CCLabelAtlas.cpp in Sources */,
 				1A5701C2180BCB5A0088DEC7 /* CCLabelBMFont.cpp in Sources */,
 				1A087AE91860400400196EF5 /* edtaa3func.cpp in Sources */,
@@ -6644,6 +6735,7 @@
 				50FCEBA818C72017004AD434 /* LoadingBarReader.cpp in Sources */,
 				1A570215180BCBF40088DEC7 /* CCRenderTexture.cpp in Sources */,
 				A044DEB218C6A58700B6CCBD /* mat3.c in Sources */,
+				A5EA518A18D1795B00DD7119 /* CCLayoutNode.cpp in Sources */,
 				1A570222180BCC1A0088DEC7 /* CCParticleBatchNode.cpp in Sources */,
 				1A570226180BCC1A0088DEC7 /* CCParticleExamples.cpp in Sources */,
 				A044DEBA18C6A58700B6CCBD /* plane.c in Sources */,
@@ -6743,13 +6835,16 @@
 				50FCEBBC18C72017004AD434 /* TextBMFontReader.cpp in Sources */,
 				1AD71EC2180E26E600808F54 /* extension.cpp in Sources */,
 				1AD71EC6180E26E600808F54 /* Json.cpp in Sources */,
+				A5EA518618D1795B00DD7119 /* CCLayoutBox.cpp in Sources */,
 				1AD71ECA180E26E600808F54 /* RegionAttachment.cpp in Sources */,
 				1AD71ECE180E26E600808F54 /* Skeleton.cpp in Sources */,
 				1AD71ED2180E26E600808F54 /* SkeletonData.cpp in Sources */,
+				A5B536C918DC3CC200DE2A0B /* CCPhysicsNodeLoader.cpp in Sources */,
 				1AD71ED6180E26E600808F54 /* SkeletonJson.cpp in Sources */,
 				2905FA6718CF08D100240AA3 /* UILoadingBar.cpp in Sources */,
 				2905FA5F18CF08D100240AA3 /* UILayoutParameter.cpp in Sources */,
 				1AD71EDA180E26E600808F54 /* Skin.cpp in Sources */,
+				A5EA519E18D1798E00DD7119 /* CCLayoutBoxLoader.cpp in Sources */,
 				1AD71EDE180E26E600808F54 /* Slot.cpp in Sources */,
 				A044DEDE18C6A61F00B6CCBD /* neon_matrix_impl.c in Sources */,
 				1AD71EE2180E26E600808F54 /* SlotData.cpp in Sources */,
@@ -6813,6 +6908,7 @@
 				1A8C59F0180E930E00EF57C3 /* CCSpriteFrameCacheHelper.cpp in Sources */,
 				1A8C59F4180E930E00EF57C3 /* CCSSceneReader.cpp in Sources */,
 				1A8C59F8180E930E00EF57C3 /* CCTransformHelp.cpp in Sources */,
+				A5B7107F18DB5B65007B1B13 /* CCPhysicsNode.cpp in Sources */,
 				1A8C59FC180E930E00EF57C3 /* CCTween.cpp in Sources */,
 				2905FA5318CF08D100240AA3 /* UIImageView.cpp in Sources */,
 				1A8C5A04180E930E00EF57C3 /* CCUtilMath.cpp in Sources */,

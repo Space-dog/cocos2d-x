@@ -206,9 +206,6 @@ public:
 
     virtual FrameData *getTweenData() const { return _tweenData; }
 
-    virtual void setName(const std::string &name) { _name = name; }
-    virtual const std::string getName() const { return _name; }
-
     virtual BaseData *getWorldInfo() const { return _worldInfo; }
 protected:
     void applyParentTransform(Bone *parent);

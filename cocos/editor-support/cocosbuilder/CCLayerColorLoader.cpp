@@ -23,6 +23,13 @@ void LayerColorLoader::onHandlePropTypeByte(Node * pNode, Node * pParent, const 
         LayerLoader::onHandlePropTypeByte(pNode, pParent, pPropertyName, pByte, ccbReader);
     }
 }
+void LayerColorLoader::onHandlePropTypeFloat(Node * pNode, Node * pParent, const char* pPropertyName, float pFloat, CCBReader * ccbReader){
+    if(strcmp(pPropertyName, PROPERTY_OPACITY) == 0) {
+        ((LayerColor *)pNode)->setOpacity(static_cast<GLubyte>(pFloat*255.0));
+    } else {
+        LayerLoader::onHandlePropTypeFloat(pNode, pParent, pPropertyName, pFloat, ccbReader);
+    }
+}
 
 void LayerColorLoader::onHandlePropTypeBlendFunc(Node * pNode, Node * pParent, const char * pPropertyName, BlendFunc pBlendFunc, CCBReader * ccbReader) {
     if(strcmp(pPropertyName, PROPERTY_BLENDFUNC) == 0) {

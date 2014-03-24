@@ -114,6 +114,7 @@ THE SOFTWARE.
 #include "CCProgressTimer.h"
 #include "CCRenderTexture.h"
 #include "CCNodeGrid.h"
+#include "CCLayoutBox.h"
 
 // particle_nodes
 #include "CCParticleBatchNode.h"

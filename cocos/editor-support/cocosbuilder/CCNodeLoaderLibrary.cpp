@@ -12,8 +12,12 @@
 #include "CCMenuItemLoader.h"
 #include "CCMenuItemImageLoader.h"
 #include "CCControlButtonLoader.h"
+#include "CCButtonLoader.h"
 #include "CCParticleSystemQuadLoader.h"
 #include "CCScrollViewLoader.h"
+#include "CCLayoutBoxLoader.h"
+#include "CCProgressTimerLoader.h"
+#include "CCPhysicsNodeLoader.h"
 
 using namespace cocos2d;
 
@@ -31,7 +35,9 @@ void NodeLoaderLibrary::registerDefaultNodeLoaders() {
     this->registerNodeLoader("CCNode", NodeLoader::loader());
     this->registerNodeLoader("CCLayer", LayerLoader::loader());
     this->registerNodeLoader("CCLayerColor", LayerColorLoader::loader());
+    this->registerNodeLoader("CCNodeColor", LayerColorLoader::loader());
     this->registerNodeLoader("CCLayerGradient", LayerGradientLoader::loader());
+    this->registerNodeLoader("CCNodeGradient", LayerGradientLoader::loader());
     this->registerNodeLoader("CCSprite", SpriteLoader::loader());
     this->registerNodeLoader("CCLabelBMFont", LabelBMFontLoader::loader());
     this->registerNodeLoader("CCLabelTTF", LabelTTFLoader::loader());
@@ -41,7 +47,12 @@ void NodeLoaderLibrary::registerDefaultNodeLoaders() {
     this->registerNodeLoader("CCMenu", MenuLoader::loader());
     this->registerNodeLoader("CCMenuItemImage", MenuItemImageLoader::loader());
     this->registerNodeLoader("CCControlButton", ControlButtonLoader::loader());
+    this->registerNodeLoader("CCButton", ButtonLoader::loader());
     this->registerNodeLoader("CCParticleSystemQuad", ParticleSystemQuadLoader::loader());
+    this->registerNodeLoader("CCParticleSystem", ParticleSystemQuadLoader::loader());
+    this->registerNodeLoader("CCLayoutBox", LayoutBoxLoader::loader());
+    this->registerNodeLoader("CCProgressNode", ProgressTimerLoader::loader());
+    this->registerNodeLoader("CCPhysicsNode", PhysicsNodeLoader::loader());
 }
 
 void NodeLoaderLibrary::registerNodeLoader(const char * pClassName, NodeLoader * pNodeLoader) {

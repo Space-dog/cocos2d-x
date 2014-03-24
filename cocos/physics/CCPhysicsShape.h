@@ -143,6 +143,9 @@ public:
     void setGroup(int group);
     inline int getGroup() { return _group; }
     
+    /** rescale shape */
+    virtual void rescale(const Size &size);
+    
 protected:
     bool init(Type type);
     
@@ -192,6 +195,9 @@ public:
     
     float getRadius() const;
     virtual Point getOffset() override;
+    
+    virtual void rescale(const Size &size) override;
+    
 protected:
     bool init(float radius, const PhysicsMaterial& material = PHYSICSSHAPE_MATERIAL_DEFAULT, const Point& offset = Point::ZERO);
     virtual float calculateArea() override;
@@ -199,6 +205,10 @@ protected:
 protected:
     PhysicsShapeCircle();
     virtual ~PhysicsShapeCircle();
+    
+private:
+    Point _center;
+    float _radius;
 };
 
 /** A box shape */
@@ -216,6 +226,8 @@ public:
     Size getSize() const;
     virtual Point getOffset() override { return _offset; }
     
+    virtual void rescale(const Size &size) override;
+    
 protected:
     bool init(const Size& size, const PhysicsMaterial& material = PHYSICSSHAPE_MATERIAL_DEFAULT, const Point& offset = Point::ZERO);
     virtual float calculateArea() override;
@@ -226,6 +238,7 @@ protected:
     
 protected:
     Point _offset;
+    Point _points[4];
 };
 
 /** A polygon shape */
@@ -242,6 +255,9 @@ public:
     void getPoints(Point* outPoints) const;
     int getPointsCount() const;
     virtual Point getCenter() override;
+    
+    virtual void rescale(const Size &size) override;
+    
 protected:
     bool init(const Point* points, int count, const PhysicsMaterial& material = PHYSICSSHAPE_MATERIAL_DEFAULT, const Point& offset = Point::ZERO);
     float calculateArea() override;
@@ -252,6 +268,9 @@ protected:
     
 protected:
     Point _center;
+    
+private:
+    std::vector<Point> _points;
 };
 
 /** A segment shape */
@@ -264,6 +283,8 @@ public:
     Point getPointB() const;
     virtual Point getCenter() override;
     
+    virtual void rescale(const Size &size) override;
+    
 protected:
     bool init(const Point& a, const Point& b, const PhysicsMaterial& material = PHYSICSSHAPE_MATERIAL_DEFAULT, float border = 1);
     
@@ -273,6 +294,10 @@ protected:
     
 protected:
     Point _center;
+    
+    float _radius;
+    Point _a;
+    Point _b;
     
     friend class PhysicsBody;
 };
@@ -285,6 +310,8 @@ public:
     virtual Point getOffset() override { return _offset; }
     void getPoints(Point* outPoints) const;
     int getPointsCount() const { return 4; }
+    
+    virtual void rescale(const Size &size) override;
     
 protected:
     bool init(const Size& size, const PhysicsMaterial& material = PHYSICSSHAPE_MATERIAL_DEFAULT, float border = 1, const Point& offset = Point::ZERO);
@@ -308,6 +335,8 @@ public:
     void getPoints(Point* outPoints) const;
     int getPointsCount() const;
     
+    virtual void rescale(const Size &size) override;
+    
 protected:
     bool init(const Point* points, int count, const PhysicsMaterial& material = PHYSICSSHAPE_MATERIAL_DEFAULT, float border = 1);
     
@@ -329,6 +358,8 @@ public:
     virtual Point getCenter() override;
     void getPoints(Point* outPoints) const;
     int getPointsCount() const;
+    
+    virtual void rescale(const Size &size) override;
     
 protected:
     bool init(const Point* points, int count, const PhysicsMaterial& material = PHYSICSSHAPE_MATERIAL_DEFAULT, float border = 1);

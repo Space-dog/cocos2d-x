@@ -68,6 +68,8 @@ void Scale9SpriteLoader::onHandlePropTypeFloat(Node * pNode, Node * pParent, con
         ((Scale9Sprite *)pNode)->setInsetRight(pFloat);
     } else if(strcmp(pPropertyName, PROPERTY_INSETBOTTOM) == 0) {
         ((Scale9Sprite *)pNode)->setInsetBottom(pFloat);
+    } else if(strcmp(pPropertyName, PROPERTY_OPACITY) == 0) {
+        ((Scale9Sprite *)pNode)->setOpacity(static_cast<GLubyte>(pFloat*255.0));
     } else {
         NodeLoader::onHandlePropTypeFloat(pNode, pParent, pPropertyName, pFloat, ccbReader);
     }

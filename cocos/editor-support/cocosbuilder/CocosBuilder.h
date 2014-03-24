@@ -27,5 +27,6 @@
 #include "cocosbuilder/CCScale9SpriteLoader.h"
 #include "cocosbuilder/CCScrollViewLoader.h"
 #include "cocosbuilder/CCSpriteLoader.h"
+#include "cocosbuilder/CCBReaderParams.h"
 
 #endif // __EDITOR_SUPPORT_COCOSBUILDER_H__

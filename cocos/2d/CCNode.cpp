@@ -44,6 +44,7 @@ THE SOFTWARE.
 #include "CCEvent.h"
 #include "CCEventTouch.h"
 #include "CCScene.h"
+#include "CCPhysicsNode.h"
 
 #if CC_USE_PHYSICS
 #include "CCPhysicsBody.h"
@@ -261,7 +262,9 @@ void Node::setRotation(float rotation)
 #if CC_USE_PHYSICS
     if (_physicsBody)
     {
-        _physicsBody->setRotation(rotation);
+        Node* parent = getParent();
+        float rot = parent != nullptr ? parent->getNodeToPhysicsRotation() + rotation: rotation;
+        _physicsBody->setRotation(rot);
     }
 #endif
 }
@@ -289,7 +292,9 @@ void Node::setRotation3D(const Vertex3F& rotation)
 #if CC_USE_PHYSICS
     if (_physicsBody)
     {
-        _physicsBody->setRotation(_rotationZ_X);
+        Node* parent = getParent();
+        float rot = parent != nullptr ? parent->getNodeToPhysicsRotation() + _rotationZ_X: _rotationZ_X;
+        _physicsBody->setRotation(rot);
     }
 #endif
 }
@@ -421,7 +426,7 @@ void Node::setPosition(const Point& position)
     if (_physicsBody)
     {
         Node* parent = getParent();
-        Point pos = parent != nullptr ? parent->convertToWorldSpace(getPosition()) : getPosition();
+        Point pos = parent != nullptr ? parent->convertToPhysicSpace(getPosition()) : getPosition();
         _physicsBody->setPosition(pos);
     }
 #endif
@@ -569,6 +574,7 @@ bool Node::isRunning() const
 void Node::setParent(Node * var)
 {
     _parent = var;
+    _transformUpdated = _transformDirty = _inverseDirty = true;
 }
 
 /// isRelativeAnchorPoint getter
@@ -596,6 +602,17 @@ int Node::getTag() const
 void Node::setTag(int var)
 {
     _tag = var;
+}
+
+/// name getter
+const std::string& Node::getName() const
+{
+    return _name;
+}
+/// name setter
+void Node::setName(const std::string& name)
+{
+    _name = name;
 }
 
 /// userData setter
@@ -702,6 +719,17 @@ Node* Node::getChildByTag(int tag)
     return nullptr;
 }
 
+Node * Node::getChildByName(const std::string &name)
+{
+    CCASSERT( !name.empty(), "Invalid name");
+    for (auto& child : _children)
+    {
+        if(child && child->_name == name)
+            return child;
+    }
+    return nullptr;
+}
+
 /* "add" logic MUST only be on this method
 * If a class want's to extend the 'addChild' behavior it only needs
 * to override this method
@@ -718,26 +746,21 @@ void Node::addChild(Node *child, int zOrder, int tag)
 
     this->insertChild(child, zOrder);
     
-#if CC_USE_PHYSICS
-    if (child->getPhysicsBody() != nullptr)
-    {
-        child->getPhysicsBody()->setPosition(this->convertToWorldSpace(child->getPosition()));
-    }
-    
-    for (Node* node = this->getParent(); node != nullptr; node = node->getParent())
-    {
-        if (dynamic_cast<Scene*>(node) != nullptr)
-        {
-            (dynamic_cast<Scene*>(node))->addChildToPhysicsWorld(child);
-            break;
-        }
-    }
-#endif
-
     child->_tag = tag;
 
     child->setParent(this);
     child->setOrderOfArrival(s_globalOrderOfArrival++);
+    
+#if CC_USE_PHYSICS
+    for (Node* node = this->getParent(); node != nullptr; node = node->getParent())
+    {
+        if (dynamic_cast<PhysicsNode*>(node) != nullptr)
+        {
+            (dynamic_cast<PhysicsNode*>(node))->addChildToPhysicsWorld(child);
+            break;
+        }
+    }
+#endif
 
     if( _running )
     {
@@ -1610,9 +1633,10 @@ void Node::setPhysicsBody(PhysicsBody* body)
     if (body != nullptr)
     {
         Node* parent = getParent();
-        Point pos = parent != nullptr ? parent->convertToWorldSpace(getPosition()) : getPosition();
+        Point pos = parent != nullptr ? parent->convertToPhysicSpace(getPosition()) : getPosition();
+        float rotation = parent != nullptr ? parent->getNodeToPhysicsRotation() + getRotation(): getRotation();
         _physicsBody->setPosition(pos);
-        _physicsBody->setRotation(getRotation());
+        _physicsBody->setRotation(rotation);
     }
 }
 
@@ -1620,6 +1644,72 @@ PhysicsBody* Node::getPhysicsBody() const
 {
     return _physicsBody;
 }
+
+kmMat4 Node::getNodeToPhysicsTransform() const
+{
+    kmMat4 t;
+    kmMat4Identity(&t);
+    
+    const Node *node = this;
+    for(const Node *n = node; n && dynamic_cast<const PhysicsNode*>(n) == nullptr; n = n->getParent()){
+        kmMat4Multiply(&t, &n->getNodeToParentTransform(), &t);
+    }
+    
+    return t;
+}
+
+AffineTransform Node::getNodeToPhysicsAffineTransform() const
+{
+    AffineTransform ret;
+    kmMat4 ret4 = getNodeToPhysicsTransform();
+    GLToCGAffine(ret4.mat, &ret);
+    
+    return ret;
+}
+
+AffineTransform Node::getPhysicsToNodeAffineTransform() const
+{
+    return AffineTransformInvert(getNodeToPhysicsAffineTransform());
+}
+
+kmMat4 Node::getPhysicsToNodeTransform() const
+{
+    kmMat4 tmp, tmp2;
+    
+    tmp2 = this->getNodeToPhysicsTransform();
+    kmMat4Inverse(&tmp, &tmp2);
+    return tmp;
+}
+
+Point Node::convertToPhysicSpace(const Point& nodePoint) const
+{
+    kmMat4 tmp = getNodeToPhysicsTransform();
+    kmVec3 vec3 = {nodePoint.x, nodePoint.y, 0};
+    kmVec3 ret;
+    kmVec3Transform(&ret, &vec3, &tmp);
+    return Point(ret.x, ret.y);
+}
+
+Point Node::convertFromPhysicSpace(const Point& nodePoint) const
+{
+    kmMat4 tmp = getPhysicsToNodeTransform();
+    kmVec3 vec3 = {nodePoint.x, nodePoint.y, 0};
+    kmVec3 ret;
+    kmVec3Transform(&ret, &vec3, &tmp);
+    return Point(ret.x, ret.y);
+}
+
+float Node::getNodeToPhysicsRotation() const
+{
+	float rotation = 0.0;
+	for(const Node *n = this; n && dynamic_cast<const PhysicsNode*>(n) == nullptr; n = n->getParent()){
+		rotation += n->getRotation();
+	}
+	
+	return rotation;
+}
+
+
 #endif //CC_USE_PHYSICS
 
 GLubyte Node::getOpacity(void) const

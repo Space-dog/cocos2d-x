@@ -61,7 +61,7 @@ Widget* Helper::seekWidgetByName(Widget* root, const char *name)
     {
         return nullptr;
     }
-    if (strcmp(root->getName(), name) == 0)
+    if (strcmp(root->getName().c_str(), name) == 0)
     {
         return root;
     }

@@ -158,7 +158,7 @@ Widget* Widget::getChildByName(const char *name)
             Widget* widgetChild = dynamic_cast<Widget*>(child);
             if (widgetChild)
             {
-                if (strcmp(widgetChild->getName(), name) == 0)
+                if (strcmp(widgetChild->getName().c_str(), name) == 0)
                 {
                     return widgetChild;
                 }
@@ -775,16 +775,6 @@ const Point& Widget::getTouchMovePos()
 const Point& Widget::getTouchEndPos()
 {
     return _touchEndPos;
-}
-
-void Widget::setName(const char* name)
-{
-    _name = name;
-}
-
-const char* Widget::getName() const
-{
-    return _name.c_str();
 }
 
 WidgetType Widget::getWidgetType() const

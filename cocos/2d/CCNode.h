@@ -646,6 +646,14 @@ public:
      */
     virtual Node * getChildByTag(int tag);
     /**
+     * Gets a child from the container with its name
+     *
+     * @param name   An identifier to find the child node.
+     *
+     * @return a Node object whose tag equals to the input parameter
+     */
+    virtual Node * getChildByName(const std::string& name);
+    /**
      * Returns the array of the node's children
      *
      * @return the array the node's children
@@ -758,6 +766,21 @@ public:
      * @param tag   A integer that identifies the node.
      */
     virtual void setTag(int tag);
+    
+    /**
+     * Returns a name that is used to identify the node easily.
+     *
+     * @return A string that identifies the node.
+     */
+    virtual const std::string& getName() const;
+    /**
+     * Changes the name that is used to identify the node easily.
+     *
+     * Please refer to getName for the sample code.
+     *
+     * @param name   A string that identifies the node.
+     */
+    virtual void setName(const std::string& name);
 
     
     /**
@@ -1317,6 +1340,25 @@ public:
      *   get the PhysicsBody the sprite have
      */
     PhysicsBody* getPhysicsBody() const;
+
+    /**
+     * Returns the matrix that transform the node's (local) space coordinates into the physics space coordinates.
+     * The matrix is in Pixels.
+     */
+    virtual kmMat4 getNodeToPhysicsTransform() const;
+    virtual AffineTransform getNodeToPhysicsAffineTransform() const;
+    
+    /**
+     * Returns the matrix that transform the physics space coordinates into the node's (local) space coordinates.
+     * The matrix is in Pixels. 
+     */
+    virtual kmMat4 getPhysicsToNodeTransform() const;
+    virtual AffineTransform getPhysicsToNodeAffineTransform() const;
+    
+    Point convertToPhysicSpace(const Point& nodePoint) const;
+    Point convertFromPhysicSpace(const Point& nodePoint) const;
+    
+    float getNodeToPhysicsRotation() const;
 
 #endif
     

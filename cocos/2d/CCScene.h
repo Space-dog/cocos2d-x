@@ -29,6 +29,7 @@ THE SOFTWARE.
 #define __CCSCENE_H__
 
 #include "CCNode.h"
+#include "CCPhysicsNode.h"
 #include "CCPhysicsWorld.h"
 
 NS_CC_BEGIN
@@ -48,7 +49,7 @@ additional logic.
 
 It is a good practice to use a Scene as the parent of all your nodes.
 */
-class CC_DLL Scene : public Node
+class CC_DLL Scene : public PhysicsNode
 {
 public:
     /** creates a new Scene object */
@@ -76,18 +77,7 @@ private:
     
 #if CC_USE_PHYSICS
 public:
-    virtual void addChild(Node* child, int zOrder, int tag) override;
-    virtual void update(float delta) override;
-    inline PhysicsWorld* getPhysicsWorld() { return _physicsWorld; }
     static Scene *createWithPhysics();
-    
-CC_CONSTRUCTOR_ACCESS:
-    bool initWithPhysics();
-    
-protected:
-    void addChildToPhysicsWorld(Node* child);
-
-    PhysicsWorld* _physicsWorld;
 #endif // CC_USE_PHYSICS
 };
 

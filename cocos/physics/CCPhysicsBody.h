@@ -36,6 +36,7 @@
 NS_CC_BEGIN
 
 class Node;
+class PhysicsNode;
 class Sprite;
 class PhysicsWorld;
 class PhysicsJoint;
@@ -297,6 +298,9 @@ public:
     /** convert the local point to world */
     Point local2World(const Point& point);
     
+    /** rescale all shapes */
+    void rescale(const Size &size);
+    
 protected:
     
     bool init();
@@ -350,6 +354,7 @@ protected:
     friend class PhysicsJoint;
     friend class Node;
     friend class ProtectedNode;
+    friend class PhysicsNode;
 };
 
 NS_CC_END

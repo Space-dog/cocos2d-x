@@ -189,6 +189,9 @@ public:
 
     const std::string& getCurrentTitle() const { return _currentTitle; };
     std::string getCurrentTitle() { return _currentTitle; };
+        
+    void setTogglesSelectedState(bool value) { _togglesSelectedState = value; }
+    bool getTogglesSelectedState() const { return _togglesSelectedState; }
     
 CC_CONSTRUCTOR_ACCESS:
     /**
@@ -210,6 +213,7 @@ protected:
     bool _isPushed;
     bool _parentInited;
     bool _doesAdjustBackgroundImage;
+    bool _togglesSelectedState;
 
     /** The current title that is displayed on the button. */
     std::string _currentTitle;
@@ -243,6 +247,11 @@ protected:
     CC_SYNTHESIZE_READONLY(int, _marginV, VerticalMargin);
     /* Define the button margin for Left/Right edge */
     CC_SYNTHESIZE_READONLY(int, _marginH, HorizontalOrigin);
+
+    CC_PROPERTY(int, _horizontalPadding, HorizontalPadding);
+    CC_PROPERTY(int, _verticalPadding, VerticalPadding);
+    
+    CC_PROPERTY(Size, _maxSize, MaxSize);
 
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(ControlButton);

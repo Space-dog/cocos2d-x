@@ -26,6 +26,14 @@ void LabelBMFontLoader::onHandlePropTypeByte(Node * pNode, Node * pParent, const
     }
 }
 
+void LabelBMFontLoader::onHandlePropTypeFloat(Node * pNode, Node * pParent, const char* pPropertyName, float pFloat, CCBReader * ccbReader){
+    if(strcmp(pPropertyName, PROPERTY_OPACITY) == 0) {
+        ((LayerColor *)pNode)->setOpacity(static_cast<GLubyte>(pFloat*255.0));
+    } else {
+        NodeLoader::onHandlePropTypeFloat(pNode, pParent, pPropertyName, pFloat, ccbReader);
+    }
+}
+
 void LabelBMFontLoader::onHandlePropTypeBlendFunc(Node * pNode, Node * pParent, const char * pPropertyName, BlendFunc pBlendFunc, CCBReader * ccbReader) {
     if(strcmp(pPropertyName, PROPERTY_BLENDFUNC) == 0) {
         ((LabelBMFont *)pNode)->setBlendFunc(pBlendFunc);

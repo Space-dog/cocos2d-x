@@ -771,11 +771,12 @@ void PhysicsBody::update(float delta)
     {
         Node* parent = _node->getParent();
         
-        Point position = parent != nullptr ? parent->convertToNodeSpace(getPosition()) : getPosition();
+        Point position = parent != nullptr ? parent->convertFromPhysicSpace(getPosition()) : getPosition();
+        float rotation = parent != nullptr ? getRotation() - parent->getNodeToPhysicsRotation() : getRotation();
         _positionResetTag = true;
         _rotationResetTag = true;
         _node->setPosition(position);
-        _node->setRotation(getRotation());
+        _node->setRotation(rotation);
         _positionResetTag = false;
         _rotationResetTag = false;
         
@@ -879,6 +880,14 @@ void PhysicsBody::updateMass(float oldMass, float newMass)
     if (_dynamic && !_gravityEnabled && _world != nullptr && newMass != PHYSICS_INFINITY)
     {
         applyForce(-_world->getGravity() * newMass);
+    }
+}
+
+void PhysicsBody::rescale(const Size &size)
+{
+    for(auto &shape : _shapes)
+    {
+        shape->rescale(size);
     }
 }
 

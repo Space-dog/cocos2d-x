@@ -16,6 +16,16 @@ namespace cocosbuilder {
         return true; \
     }
 
+#define CCB_MEMBERVARIABLEASSIGNER_GLUE_VECTOR(TARGET, MEMBERVARIABLENAME, MEMBERVARIABLETYPE, MEMBERVARIABLE) \
+    if (pTarget == TARGET && 0 == strcmp(pMemberVariableName, (MEMBERVARIABLENAME))) { \
+        MEMBERVARIABLETYPE tempVar = dynamic_cast<MEMBERVARIABLETYPE>(pNode); \
+        CC_ASSERT(tempVar); \
+        if (tempVar) { \
+            MEMBERVARIABLE.pushBack(tempVar); \
+        } \
+        return true; \
+}
+
 #define CCB_MEMBERVARIABLEASSIGNER_GLUE_WEAK(TARGET, MEMBERVARIABLENAME, MEMBERVARIABLETYPE, MEMBERVARIABLE) \
     if (pTarget == TARGET && 0 == strcmp(pMemberVariableName, MEMBERVARIABLENAME)) { \
         MEMBERVARIABLE = dynamic_cast<MEMBERVARIABLETYPE>(pNode); \

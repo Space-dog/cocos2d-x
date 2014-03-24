@@ -25,80 +25,65 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "CCScene.h"
-#include "CCDirector.h"
-#include "CCLayer.h"
-#include "CCSprite.h"
-#include "CCSpriteBatchNode.h"
+#ifndef __CCPHYSICSNODE_H__
+#define __CCPHYSICSNODE_H__
+
+#include "CCNode.h"
 #include "CCPhysicsWorld.h"
 
 NS_CC_BEGIN
 
-Scene::Scene()
-{
-    _ignoreAnchorPointForPosition = true;
-    setAnchorPoint(Point(0.5f, 0.5f));
-}
+/**
+ * @addtogroup scene
+ * @{
+ */
 
-Scene::~Scene()
-{
-}
+/** @brief Scene is a subclass of Node that is used only as an abstract concept.
 
-bool Scene::init()
-{
-    bool ret = false;
-     do 
-     {
-         Director * director;
-         CC_BREAK_IF( ! (director = Director::getInstance()) );
-         this->setContentSize(director->getWinSize());
-         // success
-         ret = true;
-     } while (0);
-     return ret;
-}
+Scene and Node are almost identical with the difference that Scene has its
+anchor point (by default) at the center of the screen.
 
-Scene *Scene::create()
-{
-    Scene *ret = new Scene();
-    if (ret && ret->init())
-    {
-        ret->autorelease();
-        return ret;
-    }
-    else
-    {
-        CC_SAFE_DELETE(ret);
-        return nullptr;
-    }
-}
+For the moment Scene has no other logic than that, but in future releases it might have
+additional logic.
 
-std::string Scene::getDescription() const
+It is a good practice to use a Scene as the parent of all your nodes.
+*/
+class CC_DLL PhysicsNode : public Node
 {
-    return StringUtils::format("<Scene | tag = %d>", _tag);
-}
+public:
+    /** creates a new Scene object */
+    static PhysicsNode *create();
 
-Scene* Scene::getScene()
-{
-    return this;
-}
+    using Node::addChild;
+    virtual std::string getDescription() const override;
 
+protected:
+    PhysicsNode();
+    virtual ~PhysicsNode();
+    virtual bool init() override;
+    
+    friend class Node;
+    friend class SpriteBatchNode;
+    
+private:
+    CC_DISALLOW_COPY_AND_ASSIGN(PhysicsNode);
+    
 #if CC_USE_PHYSICS
+public:
+    virtual void addChild(Node* child, int zOrder, int tag) override;
+    virtual void update(float delta) override;
+    inline PhysicsWorld* getPhysicsWorld() { return _physicsWorld; }
+protected:
+    bool initWithPhysics();
+    void addChildToPhysicsWorld(Node* child);
 
-Scene *Scene::createWithPhysics()
-{
-    Scene *ret = new Scene();
-    if (ret && ret->initWithPhysics())
-    {
-        ret->autorelease();
-        return ret;
-    }
-    else
-    {
-        CC_SAFE_DELETE(ret);
-        return nullptr;
-    }
-}
-#endif
+    PhysicsWorld* _physicsWorld;
+#endif // CC_USE_PHYSICS
+};
+
+// end of scene group
+/// @}
 
 NS_CC_END
+
+#endif // __CCPHYSICSNODE_H__

@@ -360,7 +360,7 @@ ActionInterval* CCBAnimationManager::getAction(CCBKeyframe *pKeyframe0, CCBKeyfr
             return Sequence::createWithTwoActions(DelayTime::create(duration), Hide::create());
         }
     }
-    else if (propName == "displayFrame")
+    else if ((propName == "displayFrame")||((propName == "spriteFrame")))
     {
         return Sequence::createWithTwoActions(DelayTime::create(duration),
                     CCBSetSpriteFrame::create(static_cast<SpriteFrame*>(pKeyframe1->getObject())));
@@ -386,21 +386,14 @@ ActionInterval* CCBAnimationManager::getAction(CCBKeyframe *pKeyframe0, CCBKeyfr
     {
         // Get position type
         auto& array = getBaseValue(pNode, propName).asValueVector();
-        CCBReader::ScaleType type = (CCBReader::ScaleType)array[2].asInt();
+        int type = array[2].asInt();
         
         // Get relative scale
         auto value = pKeyframe1->getValue().asValueVector();
-        float x = value[0].asFloat();
-        float y = value[1].asFloat();
         
-        if (type == CCBReader::ScaleType::MULTIPLY_RESOLUTION)
-        {
-            float resolutionScale = CCBReader::getResolutionScale();
-            x *= resolutionScale;
-            y *= resolutionScale;
-        }
+        Size newScale = getRelativeScale(value[0].asFloat(), value[1].asFloat(), type, propName);
         
-        return ScaleTo::create(duration, x, y);
+        return ScaleTo::create(duration, newScale.width, newScale.height);
     }
     else if (propName == "skew")
     {
@@ -456,14 +449,15 @@ void CCBAnimationManager::setAnimatedProperty(const std::string& propName, Node 
         {
             // Get scale type
             auto& array = getBaseValue(pNode, propName).asValueVector();
-            CCBReader::ScaleType type = (CCBReader::ScaleType)array[2].asInt();
+            int type = array[2].asInt();
             
             // Get relative scale
             auto& valueVector = value.asValueVector();
             float x = valueVector[0].asFloat();
             float y = valueVector[1].asFloat();
             
-            setRelativeScale(pNode, x, y, type, propName);
+            Size realScale = getRelativeScale(x, y, type, propName);
+            pNode->setScale(realScale.width,realScale.height);
         }
         else if(propName == "skew")
         {
@@ -498,7 +492,7 @@ void CCBAnimationManager::setAnimatedProperty(const std::string& propName, Node 
                 unsigned char opacity = value.asByte();
                 pNode->setOpacity(opacity);
             }
-            else if (propName == "displayFrame")
+            else if ((propName == "displayFrame")||(propName == "spriteFrame"))
             {
                 static_cast<Sprite*>(pNode)->setSpriteFrame(static_cast<SpriteFrame*>(obj));
             }

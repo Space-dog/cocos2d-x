@@ -12,21 +12,56 @@ using namespace cocos2d;
 #define PROPERTY_STRING "string"
 #define PROPERTY_DIMENSIONS "dimensions"
 
+#define PROPERTY_FONTCOLOR "fontColor"
+#define PROPERTY_OUTLINECOLOR "outlineColor"
+#define PROPERTY_OUTLINEWIDTH "outlineWidth"
+
+#define PROPERTY_SHADOWCOLOR "shadowColor"
+
+#define PROPERTY_SHADOWBLURRADIUS "shadowBlurRadius"
+#define PROPERTY_SHADOWWIDTH "shadowWidth"
+
+#define PROPERTY_SHADOWOFFSET "shadowOffset"
+
 namespace cocosbuilder {
 
 void LabelTTFLoader::onHandlePropTypeColor3(Node * pNode, Node * pParent, const char * pPropertyName, Color3B pColor3B, CCBReader * ccbReader) {
     if(strcmp(pPropertyName, PROPERTY_COLOR) == 0) {
         ((Label *)pNode)->setColor(pColor3B);
+    } else if(strcmp(pPropertyName, PROPERTY_FONTCOLOR) == 0){
+        
+    } else if(strcmp(pPropertyName, PROPERTY_OUTLINECOLOR) == 0){
+        
+    } else if(strcmp(pPropertyName, PROPERTY_FONTCOLOR) == 0){
+        
+    } else if(strcmp(pPropertyName, PROPERTY_SHADOWCOLOR) == 0){
+    
     } else {
         NodeLoader::onHandlePropTypeColor3(pNode, pParent, pPropertyName, pColor3B, ccbReader);
     }
 }
+
+void LabelTTFLoader::onHandlePropTypePosition(Node * pNode, Node * pParent, const char* pPropertyName, Point pPosition, CCBReader * pCCBReader) {
+    if(strcmp(pPropertyName, PROPERTY_SHADOWOFFSET) == 0) {
+    } else {
+        NodeLoader::onHandlePropTypePosition(pNode, pParent, pPropertyName, pPosition, pCCBReader);
+    }
+}
+
 
 void LabelTTFLoader::onHandlePropTypeByte(Node * pNode, Node * pParent, const char * pPropertyName, unsigned char pByte, CCBReader * ccbReader) {
     if(strcmp(pPropertyName, PROPERTY_OPACITY) == 0) {
         ((Label *)pNode)->setOpacity(pByte);
     } else {
         NodeLoader::onHandlePropTypeByte(pNode, pParent, pPropertyName, pByte, ccbReader);
+    }
+}
+
+void LabelTTFLoader::onHandlePropTypeFloat(Node * pNode, Node * pParent, const char* pPropertyName, float pFloat, CCBReader * ccbReader){
+    if(strcmp(pPropertyName, PROPERTY_OPACITY) == 0) {
+        ((LayerColor *)pNode)->setOpacity(static_cast<GLubyte>(pFloat*255.0));
+    } else {
+        NodeLoader::onHandlePropTypeFloat(pNode, pParent, pPropertyName, pFloat, ccbReader);
     }
 }
 
@@ -57,6 +92,10 @@ void LabelTTFLoader::onHandlePropTypeText(Node * pNode, Node * pParent, const ch
 void LabelTTFLoader::onHandlePropTypeFloatScale(Node * pNode, Node * pParent, const char * pPropertyName, float pFloatScale, CCBReader * ccbReader) {
     if(strcmp(pPropertyName, PROPERTY_FONTSIZE) == 0) {
         ((Label *)pNode)->setFontSize(pFloatScale);
+    } else if(strcmp(pPropertyName, PROPERTY_OUTLINEWIDTH) == 0) {
+        //((CCLabelTTF *)pNode)->setFontSize(pFloatScale);
+    } else if(strcmp(pPropertyName, PROPERTY_SHADOWBLURRADIUS) == 0) {
+        //((CCLabelTTF *)pNode)->setFontSize(pFloatScale);
     } else {
         NodeLoader::onHandlePropTypeFloatScale(pNode, pParent, pPropertyName, pFloatScale, ccbReader);
     }

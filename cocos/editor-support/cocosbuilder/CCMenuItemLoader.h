@@ -29,12 +29,12 @@ protected:
      * @js NA
      * @lua NA
      */
-    virtual void onHandlePropTypeBlock(cocos2d::Node * pNode, cocos2d::Node * pParent, const char * pPropertyName, BlockData * pBlockData, CCBReader * ccbReader);
+    virtual void onHandlePropTypeBlock(cocos2d::Node * pNode, cocos2d::Node * pParent, const char * pPropertyName, BlockData * pBlockData, CCBReader * ccbReader) override;
     /**
      * @js NA
      * @lua NA
      */
-    virtual void onHandlePropTypeCheck(cocos2d::Node * pNode,cocos2d:: Node * pParent, const char * pPropertyName, bool pCheck, CCBReader * ccbReader);
+    virtual void onHandlePropTypeCheck(cocos2d::Node * pNode,cocos2d:: Node * pParent, const char * pPropertyName, bool pCheck, CCBReader * ccbReader) override;
 };
 
 }

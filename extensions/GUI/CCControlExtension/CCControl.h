@@ -61,6 +61,9 @@ class Invocation;
  *
  * To use the Control you have to subclass it.
  */
+
+typedef std::function<void(Ref*)> ccControlCallback;
+
 class Control : public Layer
 {
 public:
@@ -83,7 +86,7 @@ public:
     /** The possible state for a control.  */
     enum class State
     {
-        NORMAL         = 1 << 0, // The normal, or default state of a control¡ªthat is, enabled but neither selected nor highlighted.
+        NORMAL         = 1 << 0, // The normal, or default state of a controlï¾¡ï¾ªthat is, enabled but neither selected nor highlighted.
         HIGH_LIGHTED   = 1 << 1, // Highlighted state of a control. A control enters this state when a touch down, drag inside or drag enter is performed. You can retrieve and set this value through the highlighted property.
         DISABLED       = 1 << 2, // Disabled state of a control. This state indicates that the control is currently disabled. You can retrieve and set this value through the enabled property.
         SELECTED       = 1 << 3  // Selected state of a control. This state indicates that the control is currently selected. You can retrieve and set this value through the selected property.
@@ -137,7 +140,7 @@ public:
      * Removes a target and action for a particular event (or events) from an
      * internal dispatch table.
      *
-     * @param target The target object—that is, the object to which the action
+     * @param target The target objectï¾—that is, the object to which the action
      * message is sent. Pass nil to remove all targets paired with action and the
      * specified control events.
      * @param action A selector identifying an action message. Pass NULL to remove
@@ -146,6 +149,8 @@ public:
      * target and action. See "CCControlEvent" for bitmask constants.
      */
     virtual void removeTargetWithActionForControlEvents(Ref* target, Handler action, EventType controlEvents);
+
+    void setCallback(const ccControlCallback& callback);
 
     /**
      * Returns a point corresponding to the touh location converted into the
@@ -220,7 +225,7 @@ protected:
      * parameters, in that order.
      * When you call this method, target is not retained.
      *
-     * @param target The target object¡ªthat is, the object to which the action 
+     * @param target The target objectï¾¡ï¾ªthat is, the object to which the action 
      * message is sent. It cannot be nil. The target is not retained.
      * @param action A selector identifying an action message. It cannot be NULL.
      * @param controlEvent A control event for which the action message is sent.
@@ -232,7 +237,7 @@ protected:
      * Removes a target and action for a particular event from an internal dispatch
      * table.
      *
-     * @param target The target object¡ªthat is, the object to which the action 
+     * @param target The target objectï¾¡ï¾ªthat is, the object to which the action 
      * message is sent. Pass nil to remove all targets paired with action and the
      * specified control events.
      * @param action A selector identifying an action message. Pass NULL to remove
@@ -248,6 +253,8 @@ protected:
 
     /** True if all of the controls parents are visible */
     bool _hasVisibleParents;
+
+    ccControlCallback _callback;
 
     /**
      * Table of connection between the ControlEvents and their associated

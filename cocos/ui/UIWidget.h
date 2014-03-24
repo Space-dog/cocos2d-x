@@ -361,22 +361,6 @@ public:
     const Point& getTouchEndPos();
 
     /**
-     * Changes the name that is used to identify the widget easily.
-     *
-     * @param A const char* that indentifies the widget.
-     */
-    void setName(const char* name);
-
-    /**
-     * Returns a name that is used to identify the widget easily.
-     *
-     * You can set tags to widget then identify them easily.
-     *
-     * @return A const char* that identifies the widget.
-     */
-    const char* getName() const;
-
-    /**
      * Returns a type that is widget's type
      *
      * @see WidgetType

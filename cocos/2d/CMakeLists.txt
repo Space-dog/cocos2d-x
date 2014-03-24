@@ -131,6 +131,9 @@ set(COCOS2D_SRC
   ccTypes.cpp
   cocos2d.cpp
   CCDeprecated.cpp
+  CCLayoutBox.cpp
+  CCLayoutNode.cpp
+  CCPhysicsNode.cpp
   platform/CCSAXParser.cpp
   platform/CCThread.cpp
   platform/CCGLViewProtocol.cpp
