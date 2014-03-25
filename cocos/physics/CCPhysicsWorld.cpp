@@ -470,11 +470,6 @@ void PhysicsWorld::addBody(PhysicsBody* body)
     addBodyOrDelay(body);
     _bodies.pushBack(body);
     body->_world = this;
-    if(!body->isGravityEnabled())
-    {
-        body->_gravityEnabled = true;
-        body->setGravityEnable(false);
-    }
 }
 
 void PhysicsWorld::doAddBody(PhysicsBody* body)
