@@ -214,6 +214,7 @@ protected:
     bool _parentInited;
     bool _doesAdjustBackgroundImage;
     bool _togglesSelectedState;
+    Node *_zoomNode;
 
     /** The current title that is displayed on the button. */
     std::string _currentTitle;
