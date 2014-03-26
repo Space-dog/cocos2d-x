@@ -339,7 +339,10 @@ ActionInterval* CCBAnimationManager::getAction(CCBKeyframe *pKeyframe0, CCBKeyfr
     } 
     else if (propName == "opacity")
     {
-        return FadeTo::create(duration, pKeyframe1->getValue().asByte());
+        if(pKeyframe1->getValue().getType() == Value::Type::FLOAT)
+            return FadeTo::create(duration, pKeyframe1->getValue().asFloat()*255.0);
+        else
+            return FadeTo::create(duration, pKeyframe1->getValue().asByte());
     }
     else if (propName == "color")
     {

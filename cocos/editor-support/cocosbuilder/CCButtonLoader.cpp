@@ -100,6 +100,17 @@ void ButtonLoader::onHandlePropTypeString(Node * pNode, Node * pParent, const ch
     }
 }
 
+void ButtonLoader::onHandlePropTypeText(Node * pNode, Node * pParent, const char * pPropertyName, const char * pString, CCBReader * ccbReader) {
+    if(strcmp(pPropertyName, PROPERTY_TITLE) == 0) {
+        ((ControlButton *)pNode)->setTitleForState(pString, Control::State::NORMAL);
+        ((ControlButton *)pNode)->setTitleForState(pString, Control::State::HIGH_LIGHTED);
+        ((ControlButton *)pNode)->setTitleForState(pString, Control::State::DISABLED);
+        ((ControlButton *)pNode)->setTitleForState(pString, Control::State::SELECTED);
+    } else {
+        ControlLoader::onHandlePropTypeString(pNode, pParent, pPropertyName, pString, ccbReader);
+    }
+}
+
 void ButtonLoader::onHandlePropTypeFontTTF(Node * pNode, Node * pParent, const char * pPropertyName, const char * pFontTTF, CCBReader * ccbReader) {
     if(strcmp(pPropertyName, PROPERTY_FONTNAME) == 0) {
         ((ControlButton *)pNode)->setTitleTTFForState(pFontTTF, Control::State::NORMAL);

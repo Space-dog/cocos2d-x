@@ -1094,6 +1094,10 @@ CCBKeyframe* CCBReader::readKeyframe(PropertyType type)
     {
         value = readBool();
     }
+    else if (type == PropertyType::FLOAT)
+    {
+        value = readFloat();
+    }
     else if (type == PropertyType::BYTE)
     {
         value = readByte();
