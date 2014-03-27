@@ -35,6 +35,7 @@ NS_CC_EXT_BEGIN
 
 Button::Button():_background(Scale9Sprite::create()),_label(Label::create()),_zoomWhenHighlighted(false),_horizontalPadding(0),_verticalPadding(0),_togglesSelectedState(false),_preferredSize(0,0),_maxSize(0,0),_needLaout(true)
 {
+    _ignoreAnchorPointForPosition = false;
     addChild(_background);
     addChild(_label);
     _label->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
