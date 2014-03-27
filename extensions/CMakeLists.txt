@@ -1,5 +1,6 @@
 set(EXTENSIONS_SRC
   assets-manager/AssetsManager.cpp
+  GUI/CCControlExtension/CCButton.cpp
   GUI/CCControlExtension/CCControl.cpp
   GUI/CCControlExtension/CCControlButton.cpp
   GUI/CCControlExtension/CCControlColourPicker.cpp

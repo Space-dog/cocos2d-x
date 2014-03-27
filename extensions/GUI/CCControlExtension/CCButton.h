@@ -30,7 +30,6 @@
 
 #include "CCControl.h"
 #include "CCMap.h"
-#include "ui/UILayoutDefine.h"
 
 NS_CC_BEGIN
 
@@ -118,8 +117,8 @@ public:
     void setFontSize(float value);
     const float getFontSize() const;
     
-    void setMargine(const ui::Margin& value);
-    const ui::Margin& getMargine() const;
+    void setCapInsets(const Rect &margins);
+    const Rect& getCapInsets() const;
     
     virtual void visit(Renderer *renderer, const kmMat4 &parentTransform, bool parentTransformUpdated) override;
     
@@ -236,7 +235,7 @@ protected:
     Size _preferredSize;
     Size _maxSize;
     bool _needLaout;
-    ui::Margin _margin;
+    Rect _margin;
     
     void layout();
     virtual void needsLayout();

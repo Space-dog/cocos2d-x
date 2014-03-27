@@ -70,10 +70,7 @@ void ButtonLoader::onStarPropertiesParsing(cocos2d::Node * pNode, CCBReader * cc
 
 void ButtonLoader::onEndPropertiesParsing(cocos2d::Node * pNode, CCBReader * ccbReader)
 {
-    ((Button *)pNode)->setMargine(ui::Margin(_margins.origin.x,_margins.origin.y,_margins.size.width,_margins.size.height));
-    /*Scale9Sprite *sprite = ((Button *)pNode)->getBackground();
-    Size size = sprite->getOriginalSize();
-    sprite->setCapInsets(Rect(_margins.origin.x*size.width,_margins.origin.y*size.height,(1.0f-_margins.size.width)*size.width,(1.0f-_margins.size.height)*size.height));*/
+    ((Button *)pNode)->setCapInsets(Rect(_margins.origin.x,_margins.origin.y,1.0-_margins.size.width-_margins.origin.x,1.0-_margins.size.height-_margins.origin.y));
 }
 
 void ButtonLoader::onHandlePropTypeCheck(Node * pNode, Node * pParent, const char * pPropertyName, bool pCheck, CCBReader * ccbReader) {
