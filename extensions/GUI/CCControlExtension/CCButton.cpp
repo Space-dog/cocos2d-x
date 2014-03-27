@@ -199,7 +199,7 @@ void Button::updatePropertiesForState(Control::State state)
     {
         _background->setSpriteFrame(spriteFrame);
         Size size = _background->getOriginalSize();
-        _background->setCapInsets(Rect(_margin.left*size.width,_margin.top*size.height,(1.0f-_margin.right-_margin.left)*size.width,(1.0f-_margin.bottom-_margin.top)*size.height));
+        _background->setCapInsets(Rect(_margin.origin.x*size.width,_margin.origin.y*size.height,_margin.size.width*size.width,_margin.size.height*size.height));
     }
     
     // Update label
@@ -410,13 +410,13 @@ const float Button::getFontSize() const
     return _label->getFontSize();
 }
 
-void Button::setMargine(const ui::Margin& value)
+void Button::setCapInsets(const Rect& value)
 {
     _margin = value;
     stateChanged();
 }
 
-const ui::Margin& Button::getMargine() const
+const Rect& Button::getCapInsets() const
 {
     return _margin;
 }
