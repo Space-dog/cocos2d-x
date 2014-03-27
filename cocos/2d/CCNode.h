@@ -1359,6 +1359,8 @@ public:
     Point convertFromPhysicSpace(const Point& nodePoint) const;
     
     float getNodeToPhysicsRotation() const;
+    
+    void updatePhysicsPosition();
 
 #endif
     
