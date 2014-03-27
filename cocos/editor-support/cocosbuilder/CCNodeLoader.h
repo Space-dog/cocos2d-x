@@ -79,8 +79,8 @@ class NodeLoader : public cocos2d::Ref {
     protected:
         CCB_VIRTUAL_NEW_AUTORELEASE_CREATECCNODE_METHOD(cocos2d::Node);
 
-        virtual void onStarPropertiesParsing() {}
-        virtual void onEndPropertiesParsing() {}
+        virtual void onStarPropertiesParsing(cocos2d::Node * pNode, CCBReader * ccbReader) {}
+        virtual void onEndPropertiesParsing(cocos2d::Node * pNode, CCBReader * ccbReader) {}
 
         virtual cocos2d::Point parsePropTypePosition(cocos2d::Node * pNode, cocos2d::Node * pParent, CCBReader * ccbReader, const char *pPropertyName);
         virtual cocos2d::Point parsePropTypePoint(cocos2d::Node * pNode, cocos2d::Node * pParent, CCBReader * ccbReader);
@@ -145,7 +145,6 @@ class NodeLoader : public cocos2d::Ref {
 
 protected:
         cocos2d::ValueMap _customProperties;
-        cocos2d::Node * _currentNode;
 };
 
 }

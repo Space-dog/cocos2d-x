@@ -1735,6 +1735,10 @@
 		A5B7107F18DB5B65007B1B13 /* CCPhysicsNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5B7107C18DB5B65007B1B13 /* CCPhysicsNode.cpp */; };
 		A5B7108018DB5B65007B1B13 /* CCPhysicsNode.h in Headers */ = {isa = PBXBuildFile; fileRef = A5B7107D18DB5B65007B1B13 /* CCPhysicsNode.h */; };
 		A5B7108118DB5B65007B1B13 /* CCPhysicsNode.h in Headers */ = {isa = PBXBuildFile; fileRef = A5B7107D18DB5B65007B1B13 /* CCPhysicsNode.h */; };
+		A5D4067C18E36F710099188A /* CCButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5D4067A18E36F710099188A /* CCButton.cpp */; };
+		A5D4067D18E36F710099188A /* CCButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5D4067A18E36F710099188A /* CCButton.cpp */; };
+		A5D4067E18E36F710099188A /* CCButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D4067B18E36F710099188A /* CCButton.h */; };
+		A5D4067F18E36F710099188A /* CCButton.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D4067B18E36F710099188A /* CCButton.h */; };
 		A5EA518518D1795B00DD7119 /* CCLayoutBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5EA518118D1795B00DD7119 /* CCLayoutBox.cpp */; };
 		A5EA518618D1795B00DD7119 /* CCLayoutBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5EA518118D1795B00DD7119 /* CCLayoutBox.cpp */; };
 		A5EA518718D1795B00DD7119 /* CCLayoutBox.h in Headers */ = {isa = PBXBuildFile; fileRef = A5EA518218D1795B00DD7119 /* CCLayoutBox.h */; };
@@ -2836,6 +2840,8 @@
 		A5B536C718DC3CC200DE2A0B /* CCPhysicsNodeLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPhysicsNodeLoader.h; sourceTree = "<group>"; };
 		A5B7107C18DB5B65007B1B13 /* CCPhysicsNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCPhysicsNode.cpp; sourceTree = "<group>"; };
 		A5B7107D18DB5B65007B1B13 /* CCPhysicsNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPhysicsNode.h; sourceTree = "<group>"; };
+		A5D4067A18E36F710099188A /* CCButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCButton.cpp; sourceTree = "<group>"; };
+		A5D4067B18E36F710099188A /* CCButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCButton.h; sourceTree = "<group>"; };
 		A5EA518118D1795B00DD7119 /* CCLayoutBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCLayoutBox.cpp; sourceTree = "<group>"; };
 		A5EA518218D1795B00DD7119 /* CCLayoutBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCLayoutBox.h; sourceTree = "<group>"; };
 		A5EA518318D1795B00DD7119 /* CCLayoutNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCLayoutNode.cpp; sourceTree = "<group>"; };
@@ -4166,6 +4172,8 @@
 		46A168341807AF4E005B8026 /* CCControlExtension */ = {
 			isa = PBXGroup;
 			children = (
+				A5D4067A18E36F710099188A /* CCButton.cpp */,
+				A5D4067B18E36F710099188A /* CCButton.h */,
 				46A168351807AF4E005B8026 /* CCControl.cpp */,
 				46A168361807AF4E005B8026 /* CCControl.h */,
 				46A168371807AF4E005B8026 /* CCControlButton.cpp */,
@@ -5235,6 +5243,7 @@
 				1AD71EB7180E26E600808F54 /* BoneData.h in Headers */,
 				1AD71EBB180E26E600808F54 /* CCSkeleton.h in Headers */,
 				50FCEBA118C72017004AD434 /* LayoutReader.h in Headers */,
+				A5D4067E18E36F710099188A /* CCButton.h in Headers */,
 				1AD71EBF180E26E600808F54 /* CCSkeletonAnimation.h in Headers */,
 				2905FA7018CF08D100240AA3 /* UIRichText.h in Headers */,
 				1AD71EC3180E26E600808F54 /* extension.h in Headers */,
@@ -5605,6 +5614,7 @@
 				373B912A187891FB00198F86 /* CCComBase.h in Headers */,
 				1A570228180BCC1A0088DEC7 /* CCParticleExamples.h in Headers */,
 				1A57022C180BCC1A0088DEC7 /* CCParticleSystem.h in Headers */,
+				A5D4067F18E36F710099188A /* CCButton.h in Headers */,
 				1A570230180BCC1A0088DEC7 /* CCParticleSystemQuad.h in Headers */,
 				1A570237180BCC4D0088DEC7 /* CCScriptSupport.h in Headers */,
 				1A57024E180BCC6F0088DEC7 /* ccShader_Position_uColor_frag.h in Headers */,
@@ -6430,6 +6440,7 @@
 				1A8C5997180E930E00EF57C3 /* CCActionNode.cpp in Sources */,
 				50FCEBC318C72017004AD434 /* TextReader.cpp in Sources */,
 				1A8C599B180E930E00EF57C3 /* CCActionObject.cpp in Sources */,
+				A5D4067C18E36F710099188A /* CCButton.cpp in Sources */,
 				1A8C599F180E930E00EF57C3 /* CCArmature.cpp in Sources */,
 				1A8C59A3180E930E00EF57C3 /* CCArmatureAnimation.cpp in Sources */,
 				1A8C59A7180E930E00EF57C3 /* CCArmatureDataManager.cpp in Sources */,
@@ -6670,6 +6681,7 @@
 				1A57008E180BC5A10088DEC7 /* CCActionTiledGrid.cpp in Sources */,
 				1A570092180BC5A10088DEC7 /* CCActionTween.cpp in Sources */,
 				1A570099180BC5C10088DEC7 /* CCAtlasNode.cpp in Sources */,
+				A5D4067D18E36F710099188A /* CCButton.cpp in Sources */,
 				1A57009F180BC5D20088DEC7 /* CCNode.cpp in Sources */,
 				1A5700C6180BC6060088DEC7 /* atitc.cpp in Sources */,
 				B37510831823ACA100B3BA6A /* CCPhysicsShapeInfo_chipmunk.cpp in Sources */,

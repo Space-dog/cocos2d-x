@@ -45,16 +45,12 @@ ControlButton::ControlButton()
 : _isPushed(false)
 , _parentInited(false)
 , _doesAdjustBackgroundImage(false)
-, _togglesSelectedState(false)
 , _currentTitleColor(Color3B::WHITE)
 , _titleLabel(nullptr)
 , _backgroundSprite(nullptr)
 , _zoomOnTouchDown(false)
 , _marginV(ControlButtonMarginTB)
 , _marginH(ControlButtonMarginLR)
-, _horizontalPadding(0)
-, _verticalPadding(0)
-, _maxSize(Size(0,0))
 {
 
 }
@@ -481,38 +477,6 @@ void ControlButton::setBackgroundSpriteFrameForState(SpriteFrame * spriteFrame, 
     this->setBackgroundSpriteForState(sprite, state);
 }
 
-void ControlButton::setHorizontalPadding(int value)
-{
-    _horizontalPadding = value;
-    needsLayout();
-}
-
-int ControlButton::getHorizontalPadding()
-{
-    return _horizontalPadding;
-}
-
-void ControlButton::setVerticalPadding(int value)
-{
-    _verticalPadding = value;
-    needsLayout();
-}
-
-int ControlButton::getVerticalPadding()
-{
-    return _verticalPadding;
-}
-
-void ControlButton::setMaxSize(Size value)
-{
-    _maxSize = value;
-    needsLayout();
-}
-
-Size ControlButton::getMaxSize()
-{
-    return _maxSize;
-}
 
 void ControlButton::needsLayout()
 {
@@ -540,41 +504,6 @@ void ControlButton::needsLayout()
     if (label && !_currentTitle.empty())
     {
         label->setString(_currentTitle);
-    }
-
-    Size originalLabelSize = Size(0,0);
-    
-    if (_titleLabel != nullptr)
-    {
-        originalLabelSize = _titleLabel->getContentSize();
-    }
-    
-    Size paddedLabelSize  = originalLabelSize;
-    
-    paddedLabelSize.width += _horizontalPadding * 2;
-    paddedLabelSize.height += _verticalPadding * 2;
-    
-    bool shrunkSize = false;
-    
-    Size size = this->getContentSize();
-    
-    if (_maxSize.width > 0 && _maxSize.width < size.width)
-    {
-        size.width = _maxSize.width;
-        shrunkSize = true;
-    }
-    if (_maxSize.height > 0 && _maxSize.height < size.height)
-    {
-        size.height = _maxSize.height;
-        shrunkSize = true;
-    }
-    
-    if (shrunkSize && _titleLabel)
-    {
-        
-        Label *ttfLabel = dynamic_cast<Label*>(_titleLabel);
-        if(ttfLabel)
-            ttfLabel->setDimensions(clampf(size.width - _horizontalPadding * 2, 0, originalLabelSize.width),clampf(size.height - _verticalPadding * 2, 0, originalLabelSize.height));
     }
 
     if (_titleLabel)
@@ -717,10 +646,6 @@ void ControlButton::onTouchEnded(Touch *pTouch, Event *pEvent)
     _isPushed = false;
     setHighlighted(false);
     
-    if (_togglesSelectedState)
-    {
-        _selected = !_selected;
-    }
     
     if (isTouchInside(pTouch))
     {

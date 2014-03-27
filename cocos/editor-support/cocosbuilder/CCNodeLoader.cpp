@@ -43,8 +43,7 @@ void NodeLoader::parseProperties(Node * pNode, Node * pParent, CCBReader * ccbRe
     int numExturaProps = ccbReader->readInt(false);
     int propertyCount = numRegularProps + numExturaProps;
 
-    _currentNode = pNode;
-    onStarPropertiesParsing();
+    onStarPropertiesParsing(pNode, ccbReader);
 
     for(int i = 0; i < propertyCount; i++) {
         bool isExtraProp = (i >= numRegularProps);
@@ -379,8 +378,7 @@ void NodeLoader::parseProperties(Node * pNode, Node * pParent, CCBReader * ccbRe
                 break;
         }
     }
-    onEndPropertiesParsing();
-    _currentNode = NULL;
+    onEndPropertiesParsing(pNode, ccbReader);
 }
 
 Point NodeLoader::parsePropTypePosition(Node * pNode, Node * pParent, CCBReader * ccbReader, const char *pPropertyName)
