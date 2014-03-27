@@ -106,6 +106,10 @@ public:
     /** A Boolean value that determines whether the control is highlighted. */
     virtual void setHighlighted(bool bHighlighted);
     virtual bool isHighlighted() const;
+    
+    /** Enables user interaction on a button. */
+    virtual void setUserInteractionEnabled(bool enabled);
+    virtual bool isUserInteractionEnabled() const;
 
     bool hasVisibleParents() const;
     /**
@@ -250,6 +254,7 @@ protected:
     bool _enabled;
     bool _selected;
     bool _highlighted;
+    bool _userInteractionEnabled;
 
     /** True if all of the controls parents are visible */
     bool _hasVisibleParents;

@@ -492,8 +492,10 @@ void CCBAnimationManager::setAnimatedProperty(const std::string& propName, Node 
             }
             else if (propName == "opacity")
             {
-                unsigned char opacity = value.asByte();
-                pNode->setOpacity(opacity);
+                if(value.getType() == Value::Type::FLOAT)
+                    pNode->setOpacity(value.asFloat()*255.0);
+                else
+                    pNode->setOpacity(value.asByte());
             }
             else if ((propName == "displayFrame")||(propName == "spriteFrame"))
             {

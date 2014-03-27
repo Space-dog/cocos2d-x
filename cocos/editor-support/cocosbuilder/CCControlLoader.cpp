@@ -6,6 +6,7 @@ using namespace cocos2d::extension;
 namespace cocosbuilder {
 
 #define PROPERTY_ENABLED "enabled"
+#define PROPERTY_USERINTERACTIONENABLED "userInteractionEnabled"
 #define PROPERTY_SELECTED "selected"
 #define PROPERTY_CCCONTROL "ccControl"
 #define PROPERTY_BLOCK "block"
@@ -13,6 +14,8 @@ namespace cocosbuilder {
 void ControlLoader::onHandlePropTypeCheck(Node * pNode, Node * pParent, const char * pPropertyName, bool pCheck, CCBReader * ccbReader) {
     if(strcmp(pPropertyName, PROPERTY_ENABLED) == 0) {
         ((Control *)pNode)->setEnabled(pCheck);
+    } else if(strcmp(pPropertyName, PROPERTY_USERINTERACTIONENABLED) == 0) {
+        ((Control *)pNode)->setUserInteractionEnabled(pCheck);
     } else if(strcmp(pPropertyName, PROPERTY_SELECTED) == 0) {
         ((Control *)pNode)->setSelected(pCheck);
     } else {

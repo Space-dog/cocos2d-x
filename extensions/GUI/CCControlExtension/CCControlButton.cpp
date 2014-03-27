@@ -45,20 +45,14 @@ ControlButton::ControlButton()
 : _isPushed(false)
 , _parentInited(false)
 , _doesAdjustBackgroundImage(false)
-, _togglesSelectedState(false)
 , _currentTitleColor(Color3B::WHITE)
 , _titleLabel(nullptr)
 , _backgroundSprite(nullptr)
 , _zoomOnTouchDown(false)
 , _marginV(ControlButtonMarginTB)
 , _marginH(ControlButtonMarginLR)
-, _horizontalPadding(0)
-, _verticalPadding(0)
-, _maxSize(Size(0,0))
-, _zoomNode(Node::create())
 {
-    _zoomNode->setAnchorPoint(Point(0.5,0.5));
-    addChild(_zoomNode);
+
 }
 
 ControlButton::~ControlButton()
@@ -197,10 +191,10 @@ void ControlButton::setHighlighted(bool enabled)
     
     Control::setHighlighted(enabled);
 
-    Action *action = _zoomNode->getActionByTag(kZoomActionTag);
+    Action *action = getActionByTag(kZoomActionTag);
     if (action)
     {
-        _zoomNode->stopAction(action);
+        stopAction(action);        
     }
     needsLayout();
     if( _zoomOnTouchDown )
@@ -208,7 +202,7 @@ void ControlButton::setHighlighted(bool enabled)
         float scaleValue = (isHighlighted() && isEnabled() && !isSelected()) ? _scaleRatio : 1.0f;
         Action *zoomAction = ScaleTo::create(0.05f, scaleValue);
         zoomAction->setTag(kZoomActionTag);
-        _zoomNode->runAction(zoomAction);
+        runAction(zoomAction);
     }
 }
 
@@ -350,14 +344,14 @@ void ControlButton::setTitleLabelForState(Node* titleLabel, State state)
     Node* previousLabel = _titleLabelDispatchTable.at((int)state);
     if (previousLabel)
     {
-        _zoomNode->removeChild(previousLabel, true);
+        removeChild(previousLabel, true);
         _titleLabelDispatchTable.erase((int)state);
     }
 
     _titleLabelDispatchTable.insert((int)state, titleLabel);
     titleLabel->setVisible(false);
     titleLabel->setAnchorPoint(Point(0.5f, 0.5f));
-    _zoomNode->addChild(titleLabel, 1);
+    addChild(titleLabel, 1);
 
     // If the current state if equal to the given state we update the layout
     if (getState() == state)
@@ -450,14 +444,14 @@ void ControlButton::setBackgroundSpriteForState(Scale9Sprite* sprite, State stat
     auto previousBackgroundSprite = _backgroundSpriteDispatchTable.at((int)state);
     if (previousBackgroundSprite)
     {
-        _zoomNode->removeChild(previousBackgroundSprite, true);
+        removeChild(previousBackgroundSprite, true);
         _backgroundSpriteDispatchTable.erase((int)state);
     }
 
     _backgroundSpriteDispatchTable.insert((int)state, sprite);
     sprite->setVisible(false);
     sprite->setAnchorPoint(Point(0.5f, 0.5f));
-    _zoomNode->addChild(sprite);
+    addChild(sprite);
 
     if (this->_preferredSize.width != 0 || this->_preferredSize.height != 0)
     {
@@ -483,38 +477,6 @@ void ControlButton::setBackgroundSpriteFrameForState(SpriteFrame * spriteFrame, 
     this->setBackgroundSpriteForState(sprite, state);
 }
 
-void ControlButton::setHorizontalPadding(int value)
-{
-    _horizontalPadding = value;
-    needsLayout();
-}
-
-int ControlButton::getHorizontalPadding()
-{
-    return _horizontalPadding;
-}
-
-void ControlButton::setVerticalPadding(int value)
-{
-    _verticalPadding = value;
-    needsLayout();
-}
-
-int ControlButton::getVerticalPadding()
-{
-    return _verticalPadding;
-}
-
-void ControlButton::setMaxSize(Size value)
-{
-    _maxSize = value;
-    needsLayout();
-}
-
-Size ControlButton::getMaxSize()
-{
-    return _maxSize;
-}
 
 void ControlButton::needsLayout()
 {
@@ -542,41 +504,6 @@ void ControlButton::needsLayout()
     if (label && !_currentTitle.empty())
     {
         label->setString(_currentTitle);
-    }
-
-    Size originalLabelSize = Size(0,0);
-    
-    if (_titleLabel != nullptr)
-    {
-        originalLabelSize = _titleLabel->getContentSize();
-    }
-    
-    Size paddedLabelSize  = originalLabelSize;
-    
-    paddedLabelSize.width += _horizontalPadding * 2;
-    paddedLabelSize.height += _verticalPadding * 2;
-    
-    bool shrunkSize = false;
-    
-    Size size = this->getContentSize();
-    
-    if (_maxSize.width > 0 && _maxSize.width < size.width)
-    {
-        size.width = _maxSize.width;
-        shrunkSize = true;
-    }
-    if (_maxSize.height > 0 && _maxSize.height < size.height)
-    {
-        size.height = _maxSize.height;
-        shrunkSize = true;
-    }
-    
-    if (shrunkSize && _titleLabel)
-    {
-        
-        Label *ttfLabel = dynamic_cast<Label*>(_titleLabel);
-        if(ttfLabel)
-            ttfLabel->setDimensions(clampf(size.width - _horizontalPadding * 2, 0, originalLabelSize.width),clampf(size.height - _verticalPadding * 2, 0, originalLabelSize.height));
     }
 
     if (_titleLabel)
@@ -643,9 +570,7 @@ void ControlButton::needsLayout()
     }
 
     Rect maxRect = ControlUtils::RectUnion(rectTitle, rectBackground);
-    setContentSize(Size(maxRect.size.width, maxRect.size.height));
-    _zoomNode->setContentSize(Size(maxRect.size.width, maxRect.size.height));
-    _zoomNode->setPosition(Point(maxRect.size.width/2,maxRect.size.height/2));
+    setContentSize(Size(maxRect.size.width, maxRect.size.height));        
     
     if (_titleLabel != nullptr)
     {
@@ -721,10 +646,6 @@ void ControlButton::onTouchEnded(Touch *pTouch, Event *pEvent)
     _isPushed = false;
     setHighlighted(false);
     
-    if (_togglesSelectedState)
-    {
-        _selected = !_selected;
-    }
     
     if (isTouchInside(pTouch))
     {

@@ -44,6 +44,7 @@ Control::Control()
 , _hasVisibleParents(false)
 , _isOpacityModifyRGB(false)
 , _state(State::NORMAL)
+, _userInteractionEnabled(false)
 {
 
 }
@@ -72,16 +73,7 @@ bool Control::init()
         setEnabled(true);
         setSelected(false);
         setHighlighted(false);
-
-        auto dispatcher = Director::getInstance()->getEventDispatcher();
-        auto touchListener = EventListenerTouchOneByOne::create();
-        touchListener->setSwallowTouches(true);
-        touchListener->onTouchBegan = CC_CALLBACK_2(Control::onTouchBegan, this);
-        touchListener->onTouchMoved = CC_CALLBACK_2(Control::onTouchMoved, this);
-        touchListener->onTouchEnded = CC_CALLBACK_2(Control::onTouchEnded, this);
-        touchListener->onTouchCancelled = CC_CALLBACK_2(Control::onTouchCancelled, this);
-        
-        dispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
+        setUserInteractionEnabled(true);
         
         return true;
     }
@@ -324,6 +316,31 @@ void Control::setHighlighted(bool bHighlighted)
 bool Control::isHighlighted() const
 {
     return _highlighted;
+}
+
+void Control::setUserInteractionEnabled(bool enabled)
+{
+    if(enabled && enabled!=_userInteractionEnabled)
+    {
+        auto dispatcher = Director::getInstance()->getEventDispatcher();
+        auto touchListener = EventListenerTouchOneByOne::create();
+        touchListener->setSwallowTouches(true);
+        touchListener->onTouchBegan = CC_CALLBACK_2(Control::onTouchBegan, this);
+        touchListener->onTouchMoved = CC_CALLBACK_2(Control::onTouchMoved, this);
+        touchListener->onTouchEnded = CC_CALLBACK_2(Control::onTouchEnded, this);
+        touchListener->onTouchCancelled = CC_CALLBACK_2(Control::onTouchCancelled, this);
+        
+        dispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
+    }
+    else if(!enabled && enabled!=_userInteractionEnabled)
+    {
+        Director::getInstance()->getEventDispatcher()->removeEventListenersForTarget(this);
+    }
+    _userInteractionEnabled = enabled;
+}
+bool Control::isUserInteractionEnabled() const
+{
+    return _userInteractionEnabled;
 }
 
 bool Control::hasVisibleParents() const

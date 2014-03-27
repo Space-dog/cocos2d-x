@@ -2,7 +2,7 @@
 #define _CCB_CCBUTTONLOADER_H_
 
 #include "CCControlLoader.h"
-#include "extensions//GUI/CCControlExtension/CCControlButton.h"
+#include "extensions/GUI/CCControlExtension/CCButton.h"
 
 namespace cocosbuilder {
 
@@ -23,10 +23,10 @@ class ButtonLoader : public ControlLoader {
         CCB_STATIC_NEW_AUTORELEASE_OBJECT_METHOD(ButtonLoader, loader);
 
     protected:
-        CCB_VIRTUAL_NEW_AUTORELEASE_CREATECCNODE_METHOD(cocos2d::extension::ControlButton);
+        CCB_VIRTUAL_NEW_AUTORELEASE_CREATECCNODE_METHOD(cocos2d::extension::Button);
     
-        virtual void onStarPropertiesParsing() override;
-        virtual void onEndPropertiesParsing() override;
+        virtual void onStarPropertiesParsing(cocos2d::Node * pNode, CCBReader * ccbReader) override;
+        virtual void onEndPropertiesParsing(cocos2d::Node * pNode, CCBReader * ccbReader) override;
 
         virtual void onHandlePropTypeCheck(cocos2d::Node * pNode, cocos2d::Node * pParent, const char * pPropertyName, bool pCheck, CCBReader * ccbReader) override;
         virtual void onHandlePropTypeString(cocos2d::Node * pNode, cocos2d::Node * pParent, const char * pPropertyName, const char * pString, CCBReader * ccbReader) override;
