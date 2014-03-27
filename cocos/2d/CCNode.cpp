@@ -421,13 +421,23 @@ void Node::setPosition(const Point& position)
     
     _position = position;
     _transformUpdated = _transformDirty = _inverseDirty = true;
+#if CC_USE_PHYSICS
+    updatePhysicsPosition();
+#endif
+}
 
+void Node::updatePhysicsPosition()
+{
 #if CC_USE_PHYSICS
     if (_physicsBody)
     {
         Node* parent = getParent();
         Point pos = parent != nullptr ? parent->convertToPhysicSpace(getPosition()) : getPosition();
         _physicsBody->setPosition(pos);
+    }
+    for(auto &child : _children)
+    {
+        child->updatePhysicsPosition();
     }
 #endif
 }
