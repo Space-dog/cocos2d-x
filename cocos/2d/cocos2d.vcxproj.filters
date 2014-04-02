@@ -106,6 +106,9 @@
     <Filter Include="xxhash">
       <UniqueIdentifier>{b4e2b1e5-2d79-44a3-af45-728d47b7bdb2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="layout">
+      <UniqueIdentifier>{7e22fd65-cf2a-41d5-a15b-d015b478bf9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\physics\CCPhysicsBody.cpp">
@@ -595,6 +598,15 @@
     </ClCompile>
     <ClCompile Include="..\..\external\xxhash\xxhash.c">
       <Filter>xxhash</Filter>
+    </ClCompile>
+    <ClCompile Include="CCPhysicsNode.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="CCLayoutBox.cpp">
+      <Filter>layout</Filter>
+    </ClCompile>
+    <ClCompile Include="CCLayoutNode.cpp">
+      <Filter>layout</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1202,6 +1214,15 @@
     </ClInclude>
     <ClInclude Include="..\..\external\xxhash\xxhash.h">
       <Filter>xxhash</Filter>
+    </ClInclude>
+    <ClInclude Include="CCPhysicsNode.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="CCLayoutBox.h">
+      <Filter>layout</Filter>
+    </ClInclude>
+    <ClInclude Include="CCLayoutNode.h">
+      <Filter>layout</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -23,6 +23,7 @@
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '10.0'">v100</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '11.0'">v110</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '11.0' and exists('$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A')">v110_xp</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '12.0'">v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -30,6 +31,7 @@
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '10.0'">v100</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '11.0'">v110</PlatformToolset>
     <PlatformToolset Condition="'$(VisualStudioVersion)' == '11.0' and exists('$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A')">v110_xp</PlatformToolset>
+    <PlatformToolset Condition="'$(VisualStudioVersion)' == '12.0'">v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -259,6 +261,8 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\win32-specific\gles\prebuilt\*.*" "$(Ou
     <ClCompile Include="ccGLStateCache.cpp" />
     <ClCompile Include="CCGrabber.cpp" />
     <ClCompile Include="CCGrid.cpp" />
+    <ClCompile Include="CCLayoutBox.cpp" />
+    <ClCompile Include="CCLayoutNode.cpp" />
     <ClCompile Include="CCNodeGrid.cpp" />
     <ClCompile Include="CCIMEDispatcher.cpp" />
     <ClCompile Include="CCLabel.cpp" />
@@ -277,6 +281,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\win32-specific\gles\prebuilt\*.*" "$(Ou
     <ClCompile Include="CCParticleExamples.cpp" />
     <ClCompile Include="CCParticleSystem.cpp" />
     <ClCompile Include="CCParticleSystemQuad.cpp" />
+    <ClCompile Include="CCPhysicsNode.cpp" />
     <ClCompile Include="CCProfiling.cpp" />
     <ClCompile Include="CCProgressTimer.cpp" />
     <ClCompile Include="CCRenderTexture.cpp" />
@@ -441,6 +446,8 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\win32-specific\gles\prebuilt\*.*" "$(Ou
     <ClInclude Include="ccGLStateCache.h" />
     <ClInclude Include="CCGrabber.h" />
     <ClInclude Include="CCGrid.h" />
+    <ClInclude Include="CCLayoutBox.h" />
+    <ClInclude Include="CCLayoutNode.h" />
     <ClInclude Include="CCNodeGrid.h" />
     <ClInclude Include="CCIMEDelegate.h" />
     <ClInclude Include="CCIMEDispatcher.h" />
@@ -461,6 +468,7 @@ xcopy /Y /Q "$(ProjectDir)..\..\external\win32-specific\gles\prebuilt\*.*" "$(Ou
     <ClInclude Include="CCParticleExamples.h" />
     <ClInclude Include="CCParticleSystem.h" />
     <ClInclude Include="CCParticleSystemQuad.h" />
+    <ClInclude Include="CCPhysicsNode.h" />
     <ClInclude Include="CCProfiling.h" />
     <ClInclude Include="CCProgressTimer.h" />
     <ClInclude Include="CCProtocols.h" />

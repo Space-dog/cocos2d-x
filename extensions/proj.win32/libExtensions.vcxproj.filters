@@ -63,9 +63,6 @@
     <ClCompile Include="..\GUI\CCControlExtension\CCControl.cpp">
       <Filter>GUI\CCControlExtension</Filter>
     </ClCompile>
-    <ClCompile Include="..\GUI\CCControlExtension\CCControlButton.cpp">
-      <Filter>GUI\CCControlExtension</Filter>
-    </ClCompile>
     <ClCompile Include="..\GUI\CCEditBox\CCEditBoxImplWin.cpp">
       <Filter>GUI\CCEditBox</Filter>
     </ClCompile>
@@ -84,6 +81,9 @@
     <ClCompile Include="..\physics-nodes\CCPhysicsSprite.cpp">
       <Filter>physics_nodes</Filter>
     </ClCompile>
+    <ClCompile Include="..\GUI\CCControlExtension\CCButton.cpp">
+      <Filter>GUI\CCControlExtension</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\GUI\CCScrollView\CCScrollView.h">
@@ -96,9 +96,6 @@
     </ClInclude>
     <ClInclude Include="..\GUI\CCScrollView\CCTableViewCell.h">
       <Filter>GUI\CCScrollView</Filter>
-    </ClInclude>
-    <ClInclude Include="..\GUI\CCControlExtension\CCControlButton.h">
-      <Filter>GUI\CCControlExtension</Filter>
     </ClInclude>
     <ClInclude Include="..\GUI\CCControlExtension\CCControlColourPicker.h">
       <Filter>GUI\CCControlExtension</Filter>
@@ -156,6 +153,9 @@
     </ClInclude>
     <ClInclude Include="..\physics-nodes\CCPhysicsSprite.h">
       <Filter>physics_nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GUI\CCControlExtension\CCButton.h">
+      <Filter>GUI\CCControlExtension</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
