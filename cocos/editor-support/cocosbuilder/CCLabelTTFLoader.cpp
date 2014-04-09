@@ -26,8 +26,10 @@ using namespace cocos2d;
 namespace cocosbuilder {
 
 void LabelTTFLoader::onHandlePropTypeColor3(Node * pNode, Node * pParent, const char * pPropertyName, Color3B pColor3B, CCBReader * ccbReader) {
-    if((strcmp(pPropertyName, PROPERTY_COLOR) == 0)||(strcmp(pPropertyName, PROPERTY_FONTCOLOR) == 0)) {
-        ((Label *)pNode)->setColor(pColor3B);
+    if(strcmp(pPropertyName, PROPERTY_COLOR) == 0) {
+        ((Label *)pNode)->setTextColor(Color4B(pColor3B));
+    } else if(strcmp(pPropertyName, PROPERTY_FONTCOLOR) == 0){
+        
     } else if(strcmp(pPropertyName, PROPERTY_OUTLINECOLOR) == 0){
         
     } else if(strcmp(pPropertyName, PROPERTY_FONTCOLOR) == 0){
