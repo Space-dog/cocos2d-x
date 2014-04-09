@@ -24,7 +24,6 @@ THE SOFTWARE.
  ****************************************************************************/
 package org.cocos2dx.lib;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 import java.util.LinkedHashSet;
@@ -79,18 +78,8 @@ public class Cocos2dxHelper {
 	// Constructors
 	// ===========================================================
 
-	public static void dispatchPendingRunnables() {
-		for (int i = RUNNABLES_PER_FRAME; i > 0; i--) {
-			Runnable job = jobs.poll();
-			if (job == null) {
-				return;
-			}
-			job.run();
-		}
-	}
-
 	public static void runOnGLThread(final Runnable r) {
-		jobs.add(r);
+		((Cocos2dxActivity)sActivity).runOnGLThread(r);
 	}
 
 	private static boolean sInited = false;
