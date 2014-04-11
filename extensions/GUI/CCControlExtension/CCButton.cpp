@@ -391,23 +391,23 @@ const std::string& Button::getTitle() const
 
 void Button::setFontName(const std::string& value)
 {
-    _label->setFontName(value);
+    _label->setSystemFontName(value);
     needsLayout();
 }
 
 const std::string& Button::getFontName() const
 {
-    return _label->getFontName();
+    return _label->getSystemFontName();
 }
 
 void Button::setFontSize(float value)
 {
-    _label->setFontSize(value);
+    _label->setSystemFontSize(value);
     needsLayout();
 }
 const float Button::getFontSize() const
 {
-    return _label->getFontSize();
+    return _label->getSystemFontSize();
 }
 
 void Button::setCapInsets(const Rect& value)
