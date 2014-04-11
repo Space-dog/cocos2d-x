@@ -103,7 +103,6 @@ set(COCOS2D_SRC
   base64.cpp
   ccUtils.cpp
   CCVertex.cpp
-  CCNotificationCenter.cpp
   TGAlib.cpp
   ZipUtils.cpp
   ccCArray.cpp
@@ -130,7 +129,6 @@ set(COCOS2D_SRC
   ccFPSImages.c
   ccTypes.cpp
   cocos2d.cpp
-  CCDeprecated.cpp
   CCLayoutBox.cpp
   CCLayoutNode.cpp
   CCPhysicsNode.cpp
@@ -139,7 +137,6 @@ set(COCOS2D_SRC
   platform/CCGLViewProtocol.cpp
   platform/CCFileUtils.cpp
   platform/CCImage.cpp
-  ../../external/edtaa3func/edtaa3func.cpp
   renderer/CCCustomCommand.cpp
   renderer/CCFrustum.cpp
   renderer/CCGroupCommand.cpp
@@ -149,6 +146,9 @@ set(COCOS2D_SRC
   renderer/CCRenderCommand.cpp
   renderer/CCRenderer.cpp
   renderer/CCRenderMaterial.cpp
+  ../deprecated/CCDeprecated.cpp
+  ../deprecated/CCNotificationCenter.cpp
+  ../../external/edtaa3func/edtaa3func.cpp
 )
 
 include(../physics/CMakeLists.txt)

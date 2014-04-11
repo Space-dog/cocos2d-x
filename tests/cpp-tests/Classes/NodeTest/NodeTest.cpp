@@ -729,7 +729,7 @@ void CameraCenterTest::onEnter()
 
 void CameraCenterTest::onExit()
 {
-    TestCocosNodeDemo::onEnter();
+    TestCocosNodeDemo::onExit();
     Director::getInstance()->setProjection(_preProjection);
 }
 
@@ -1053,6 +1053,7 @@ void CameraTest1::onEnter()
 void CameraTest1::onExit()
 {
     Director::getInstance()->setProjection(_preProjection);
+    Director::getInstance()->setDepthTest(false);
     TestCocosNodeDemo::onExit();
 }
 
@@ -1100,6 +1101,7 @@ void CameraTest2::onEnter()
 void CameraTest2::onExit()
 {
     Director::getInstance()->setProjection(_preProjection);
+    Director::getInstance()->setDepthTest(false);
     TestCocosNodeDemo::onExit();
 }
 
