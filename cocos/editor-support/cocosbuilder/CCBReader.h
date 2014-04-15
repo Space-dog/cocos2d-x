@@ -30,7 +30,7 @@
 }
 
 #define CCB_MIN_VERSION 5
-#define CCB_MAX_VERSION 7
+#define CCB_MAX_VERSION 8
 
 namespace cocosbuilder {
 
@@ -423,6 +423,8 @@ public:
      * @lua NA
      */
     cocos2d::Node* readFileWithCleanUp(bool bCleanUp, CCBAnimationManagerMapPtr am);
+    
+    int getVersion() const { return _version; }
     
     void addOwnerOutletName(std::string name);
     void addOwnerOutletNode(cocos2d::Node *node);

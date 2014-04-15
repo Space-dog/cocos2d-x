@@ -4,6 +4,7 @@ using namespace cocos2d;
 using namespace cocos2d::extension;
 
 #define PROPERTY_CONTENTSIZE "contentSize"
+#define PROPERTY_DISPLAYFRAME "displayFrame"
 #define PROPERTY_SPRITEFRAME "spriteFrame"
 #define PROPERTY_COLOR "color"
 #define PROPERTY_OPACITY "opacity"
@@ -14,10 +15,26 @@ using namespace cocos2d::extension;
 #define PROPERTY_INSETRIGHT "insetRight"
 #define PROPERTY_INSETBOTTOM "insetBottom"
 
+#define PROPERTY_MARGIN_LEFT "marginLeft"
+#define PROPERTY_MARGIN_TOP "marginTop"
+#define PROPERTY_MARGIN_RIGHT "marginRight"
+#define PROPERTY_MARGIN_BOTTOM "marginBottom"
+
 namespace cocosbuilder {
+    
+void Scale9SpriteLoader::onStarPropertiesParsing(cocos2d::Node * pNode, CCBReader * ccbReader)
+{
+    _margins=Rect::ZERO;
+}
+
+void Scale9SpriteLoader::onEndPropertiesParsing(cocos2d::Node * pNode, CCBReader * ccbReader)
+{
+    if(ccbReader->getVersion()>5)
+        ((Scale9Sprite *)pNode)->setCapInsets(Rect(_margins.origin.x,_margins.origin.y,1.0-_margins.size.width-_margins.origin.x,1.0-_margins.size.height-_margins.origin.y));
+}
 
 void Scale9SpriteLoader::onHandlePropTypeSpriteFrame(Node * pNode, Node * pParent, const char * pPropertyName, SpriteFrame * pSpriteFrame, CCBReader * ccbReader) {
-    if(strcmp(pPropertyName, PROPERTY_SPRITEFRAME) == 0) {
+    if((strcmp(pPropertyName, PROPERTY_SPRITEFRAME) == 0)||(strcmp(pPropertyName, PROPERTY_DISPLAYFRAME) == 0)) {
         ((Scale9Sprite *)pNode)->setSpriteFrame(pSpriteFrame);
     } else {
         NodeLoader::onHandlePropTypeSpriteFrame(pNode, pParent, pPropertyName, pSpriteFrame, ccbReader);
@@ -70,6 +87,16 @@ void Scale9SpriteLoader::onHandlePropTypeFloat(Node * pNode, Node * pParent, con
         ((Scale9Sprite *)pNode)->setInsetBottom(pFloat);
     } else if(strcmp(pPropertyName, PROPERTY_OPACITY) == 0) {
         ((Scale9Sprite *)pNode)->setOpacity(static_cast<GLubyte>(pFloat*255.0));
+    } else if(strcmp(pPropertyName, PROPERTY_MARGIN_LEFT) == 0) {
+        _margins.origin.x = pFloat;
+    } else if(strcmp(pPropertyName, PROPERTY_MARGIN_TOP) == 0) {
+        _margins.origin.y = pFloat;
+    } else if(strcmp(pPropertyName, PROPERTY_MARGIN_RIGHT) == 0) {
+        _margins.size.width = pFloat;
+    } else if(strcmp(pPropertyName, PROPERTY_MARGIN_BOTTOM) == 0) {
+        _margins.size.height = pFloat;
+    } else if(strcmp(pPropertyName, PROPERTY_OPACITY) == 0) {
+        ((LayerColor *)pNode)->setOpacity(static_cast<GLubyte>(pFloat*255.0));
     } else {
         NodeLoader::onHandlePropTypeFloat(pNode, pParent, pPropertyName, pFloat, ccbReader);
     }

@@ -24,6 +24,10 @@ public:
     CCB_STATIC_NEW_AUTORELEASE_OBJECT_METHOD(Scale9SpriteLoader, loader);
 
 protected:
+    
+    virtual void onStarPropertiesParsing(cocos2d::Node * pNode, CCBReader * ccbReader) override;
+    virtual void onEndPropertiesParsing(cocos2d::Node * pNode, CCBReader * ccbReader) override;
+    
     /**
      * @js NA
      * @lua NA
@@ -65,6 +69,8 @@ protected:
      * @lua NA
      */
     virtual void onHandlePropTypeFloat(cocos2d::Node * pNode, cocos2d::Node * pParent, const char * pPropertyName, float pFloat, CCBReader * ccbReader);
+private:
+    cocos2d::Rect _margins;
 };
 
 }

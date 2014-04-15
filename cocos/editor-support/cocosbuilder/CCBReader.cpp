@@ -1281,6 +1281,12 @@ bool CCBReader::readSequences()
     
     int numSeqs = readInt(false);
     
+    if(_version>7)
+    {
+        /*bool hasPhysicsBodies = */readBool();
+        /*bool hasPhysicsNode = */readBool();
+    }
+    
     for (int i = 0; i < numSeqs; i++)
     {
         CCBSequence *seq = new CCBSequence();

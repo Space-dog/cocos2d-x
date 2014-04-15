@@ -42,6 +42,7 @@ void NodeLoaderLibrary::registerDefaultNodeLoaders() {
     this->registerNodeLoader("CCLabelBMFont", LabelBMFontLoader::loader());
     this->registerNodeLoader("CCLabelTTF", LabelTTFLoader::loader());
     this->registerNodeLoader("CCScale9Sprite", Scale9SpriteLoader::loader());
+    this->registerNodeLoader("CCSprite9Slice", Scale9SpriteLoader::loader());
     this->registerNodeLoader("CCScrollView", ScrollViewLoader::loader());
     this->registerNodeLoader("CCBFile", CCBFileLoader::loader());
     this->registerNodeLoader("CCMenu", MenuLoader::loader());
