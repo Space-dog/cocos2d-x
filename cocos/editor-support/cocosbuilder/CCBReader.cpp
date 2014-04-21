@@ -255,7 +255,22 @@ Node* CCBReader::readNodeGraphFromData(std::shared_ptr<cocos2d::Data> data, Ref 
         float designAspectX = CCBReaderParams::getInstance()->getDesignResolution().width / CCBReaderParams::getInstance()->getDesignResolutionScale();
         float designAspectY = CCBReaderParams::getInstance()->getDesignResolution().height / CCBReaderParams::getInstance()->getDesignResolutionScale();
         
-        if((CCBReaderParams::getInstance()->getDesignResolution().width>CCBReaderParams::getInstance()->getDesignResolution().height)==(scaleType == SceneScaleType::FITMIN))
+        if(scaleType == SceneScaleType::MINSCALE)
+        {
+            float mainScale = std::min(resolutionAspectX / designAspectX, resolutionAspectY / designAspectY);
+            CCBReader::setMainScale(mainScale);
+            CCBReader::setResolutionScaleX((resolutionAspectX/mainScale)/designAspectX);
+            CCBReader::setResolutionScaleY((resolutionAspectY/mainScale)/designAspectY);
+        }
+        else if(scaleType == SceneScaleType::MAXSCALE)
+        {
+            float mainScale = std::max(resolutionAspectX / designAspectX, resolutionAspectY / designAspectY);
+            CCBReader::setMainScale(mainScale);
+            CCBReader::setResolutionScaleX((resolutionAspectX/mainScale)/designAspectX);
+            CCBReader::setResolutionScaleY((resolutionAspectY/mainScale)/designAspectY);
+        }
+
+        else if((CCBReaderParams::getInstance()->getDesignResolution().width>CCBReaderParams::getInstance()->getDesignResolution().height)==(scaleType == SceneScaleType::MINSIZE))
         {
             float mainScale = resolutionAspectY / designAspectY;
             CCBReader::setMainScale(mainScale);

@@ -207,8 +207,10 @@ public:
     enum class SceneScaleType
     {
         NONE,
-        FITMIN,
-        FITMAX
+        MINSIZE,
+        MAXSIZE,
+        MINSCALE,
+        MAXSCALE
     };
     /**
      * @js NA
