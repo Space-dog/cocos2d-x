@@ -114,7 +114,10 @@ void ProgressTimer::setSprite(Sprite *sprite)
         CC_SAFE_RETAIN(sprite);
         CC_SAFE_RELEASE(_sprite);
         _sprite = sprite;
-        setContentSize(_sprite->getContentSize());
+        if(_sprite)
+            setContentSize(_sprite->getContentSize());
+        else
+            setContentSize(Size(0,0));
 
         //    Every time we set a new sprite, we free the current vertex data
         if (_vertexData)
