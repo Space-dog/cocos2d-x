@@ -68,6 +68,7 @@ CCBReader::CCBReader(NodeLoaderLibrary * pNodeLoaderLibrary, CCBMemberVariableAs
 , _owner(nullptr)
 , _animationManager(nullptr)
 , _animatedProps(nullptr)
+, _ccbx(false)
 {
     this->_nodeLoaderLibrary = pNodeLoaderLibrary;
     this->_nodeLoaderLibrary->retain();
@@ -95,6 +96,7 @@ CCBReader::CCBReader(CCBReader * ccbReader)
     this->_nodeLoaderListener = ccbReader->_nodeLoaderListener;
     
     this->_CCBRootPath = ccbReader->getCCBRootPath();
+    this->_ccbx = ccbReader->_ccbx;
     
     init();
 }
@@ -110,6 +112,7 @@ CCBReader::CCBReader()
 , _nodeLoaderListener(nullptr)
 , _CCBMemberVariableAssigner(nullptr)
 , _CCBSelectorResolver(nullptr)
+, _ccbx(false)
 {
     init();
 }
@@ -349,97 +352,6 @@ void CCBReader::cleanUpNodeGraph(Node *node)
         cleanUpNodeGraph(obj);
     }
 }
-    
-#if CC_USE_PHYSICS
-PhysicsJoint* CCBReader::readJoint()
-{
-    
-    PhysicsJoint * joint = nullptr;
-    const std::string &className = readCachedString();
-    
-    int propertyCount = readInt(false);
-/*
-    NSMutableDictionary * properties = [NSMutableDictionary dictionary];
-    for (int i =0; i < propertyCount; i++)
-    {
-        //Hack to extract the properties serialized. the dictionary is Not a node.
-        [self readPropertyForNode:(CCNode*)properties parent:nil isExtraProp:NO];
-    }
-    
-    CCNode * nodeBodyA = properties[@"bodyA"];
-    CCNode * nodeBodyB = properties[@"bodyB"];
-    
-    float breakingForce = [properties[@"breakingForceEnabled"] boolValue] ? [properties[@"breakingForce"] floatValue] : INFINITY;
-    
-    float maxForce = [properties[@"maxForceEnabled"] boolValue] ? [properties[@"maxForce"] floatValue] : INFINITY;
-    
-    
-    if([className isEqualToString:@"CCPhysicsPivotJoint"])
-    {
-        CGPoint anchorA = [properties[@"anchorA"] CGPointValue];
-        
-        joint = [CCPhysicsJoint connectedPivotJointWithBodyA:nodeBodyA.physicsBody bodyB:nodeBodyB.physicsBody anchorA:anchorA];
-    }
-    else if([className isEqualToString:@"CCPhysicsSpringJoint"])
-    {
-        CGPoint anchorA = [properties[@"anchorA"] CGPointValue];
-        CGPoint anchorB = [properties[@"anchorB"] CGPointValue];
-        
-        float   restLength = [properties[@"restLength"] floatValue];
-        float   stiffness = [properties[@"stiffness"] floatValue];
-        float   damping = [properties[@"damping"] floatValue];
-        
-        return [CCPhysicsJoint connectedSpringJointWithBodyA:nodeBodyA.physicsBody bodyB:nodeBodyB.physicsBody anchorA:anchorA anchorB:anchorB restLength:restLength stiffness:stiffness damping:damping];
-        
-    }
-    else if([className isEqualToString:@"CCPhysicsPinJoint"])
-    {
-        CGPoint anchorA = [properties[@"anchorA"] CGPointValue];
-        CGPoint anchorB = [properties[@"anchorB"] CGPointValue];
-        
-        BOOL minEnabled = [properties[@"minDistanceEnabled"] boolValue];
-        BOOL maxEnabled = [properties[@"maxDistanceEnabled"] boolValue];
-        
-        CGPoint anchoAWorldPos = [nodeBodyA convertToWorldSpace:anchorA];
-        CGPoint anchoBWorldPos = [nodeBodyB convertToWorldSpace:anchorB];
-        
-        float distance =  ccpDistance(anchoAWorldPos, anchoBWorldPos);
-        
-        float minDistance = minEnabled ? [properties[@"minDistance"] floatValue] : distance;
-        float maxDistance = maxEnabled ? [properties[@"maxDistance"] floatValue] : distance;
-        
-        if(maxEnabled || minEnabled)
-        {
-            joint =  [CCPhysicsJoint connectedDistanceJointWithBodyA:nodeBodyA.physicsBody bodyB:nodeBodyB.physicsBody anchorA:anchorA anchorB:anchorB minDistance:minDistance maxDistance:maxDistance];
-        }
-        else
-        {
-            joint =  [CCPhysicsJoint connectedDistanceJointWithBodyA:nodeBodyA.physicsBody bodyB:nodeBodyB.physicsBody anchorA:anchorA anchorB:anchorB];
-        }
-    }
-    else
-    {
-        return nil;
-    }
-    joint.maxForce = maxForce;
-    joint.breakingForce = breakingForce;*/
-    
-    return joint;
-    
-}
-    
-void CCBReader::readJoints()
-{
-    int numJoints = readInt(false);
-    
-    std::vector<PhysicsJoint*> joints;
-    
-    for (int i =0; i < numJoints; i++)
-    {
-        joints.push_back(readJoint());
-    }
-}
-#endif
 
 Node* CCBReader::readFileWithCleanUp(bool bCleanUp, CCBAnimationManagerMapPtr am)
 {
@@ -461,11 +373,6 @@ Node* CCBReader::readFileWithCleanUp(bool bCleanUp, CCBAnimationManagerMapPtr am
     setAnimationManagers(am);
 
     Node *pNode = readNodeGraph(nullptr);
-    
-#if CC_USE_PHYSICS
-    if(_version>5)
-        readJoints();
-#endif
 
     _animationManagers->insert(pNode, _animationManager);
 
@@ -497,14 +404,28 @@ bool CCBReader::readHeader()
     /* Read magic bytes */
     int magicBytes = *((int*)(this->_bytes + this->_currentByte));
     this->_currentByte += 4;
+    
+    _ccbx = false;
 
     if(CC_SWAP_INT32_BIG_TO_HOST(magicBytes) != (*reinterpret_cast<const int*>("ccbi"))) {
-        return false; 
+        if(CC_SWAP_INT32_BIG_TO_HOST(magicBytes) != (*reinterpret_cast<const int*>("ccbx")))
+            return false;
+        else
+            _ccbx = true;
+            
     }
 
     /* Read version. */
     this->_version = this->readInt(false);
-    if((this->_version > CCB_MAX_VERSION)||(this->_version < CCB_MIN_VERSION)) {
+    if(_ccbx)
+    {
+        if((this->_version > CCBX_MAX_VERSION)||(this->_version < CCBX_MIN_VERSION)) {
+            log("WARNING! Incompatible ccbx file version (file: %d reader min: %d reader max: %d)", this->_version, CCB_MIN_VERSION, CCB_MAX_VERSION);
+            return false;
+        }
+
+    }
+    else if((this->_version > CCB_MAX_VERSION)||(this->_version < CCB_MIN_VERSION)) {
         log("WARNING! Incompatible ccbi file version (file: %d reader min: %d reader max: %d)", this->_version, CCB_MIN_VERSION, CCB_MAX_VERSION);
         return false;
     }
@@ -809,14 +730,14 @@ Node * CCBReader::readNodeGraph(Node * pParent)
         _animationManager->addNode(node, seqs);
     }
     
-    if(this->_version>6)
+    /*if(this->_version>6)
     {
-        /*unsigned int uuid = */this->readInt(false);
-        /*if(uuid != 0x0)
+        unsigned int uuid = this->readInt(false);
+        if(uuid != 0x0)
         {
             nodeMapping[@(uuid)] = node;
-        }*/
-    }
+        }
+    }*/
     
     // Read properties
     ccNodeLoader->parseProperties(node, pParent, this);
@@ -975,8 +896,11 @@ Node * CCBReader::readNodeGraph(Node * pParent)
         }
         else
         {
+            bool scaleByResourceScale = this->readBool();
+            
             if (bodyShape == 0)
             {
+                
                 int numPolygons = this->readInt(false);
                 
                 std::vector<std::vector<Point>> polygons(numPolygons);
@@ -991,6 +915,12 @@ Node * CCBReader::readNodeGraph(Node * pParent)
                     {
                         float x = this->readFloat() + physicsOffset.x;
                         float y = this->readFloat() + physicsOffset.y;
+                        
+                        if(scaleByResourceScale)
+                        {
+                            x *= CCBReader::getResolutionScale();
+                            y *= CCBReader::getResolutionScale();
+                        }
                         
                         polygons[j].push_back(Point(x, y));
                     }
@@ -1007,6 +937,12 @@ Node * CCBReader::readNodeGraph(Node * pParent)
             {
                 float x = this->readFloat() + physicsOffset.x;
                 float y = this->readFloat() + physicsOffset.y;
+                
+                if(scaleByResourceScale)
+                {
+                    x *= CCBReader::getResolutionScale();
+                    y *= CCBReader::getResolutionScale();
+                }
                 
                 Point point = Point(x, y);
                 
@@ -1026,31 +962,50 @@ Node * CCBReader::readNodeGraph(Node * pParent)
         float friction = this->readFloat();
         float elasticity = this->readFloat();
         
+        if(_version>6)
+        {
+            bool setMass = this->readBool();
+            if(setMass)
+                body->setMass(this->readFloat());
+            bool setMoment = this->readBool();
+            if(setMoment)
+                body->setMoment(this->readFloat());
+            
+            body->setCategoryBitmask(this->readInt(false));
+            body->setContactTestBitmask(this->readInt(false));
+            body->setCollisionBitmask(this->readInt(false));
+            
+            Vect velocuty(this->readFloat(),this->readFloat());
+            float velocityLimit(this->readFloat());
+            float angularVelocity(this->readFloat());
+            float angularVelocityLimit(this->readFloat());
+            float linearDamping(this->readFloat());
+            float angularDamping(this->readFloat());
+            
+            if(dynamic)
+            {
+                body->setVelocity(velocuty);
+                body->setVelocityLimit(velocityLimit);
+                body->setAngularVelocity(angularVelocity);
+                body->setAngularVelocityLimit(angularVelocityLimit);
+                body->setLinearDamping(linearDamping);
+                body->setAngularDamping(angularDamping);
+            }
+        }
+        
         if (dynamic)
         {
             body->setGravityEnable(affectedByGravity);
             body->setRotationEnable(allowsRotation);
         }
         
-        if(_version>6)
+        for(auto it : body->getShapes())
         {
-            /*const std::string &collisionType = */this->readCachedString();
-            /*const std::string &collisionCategories = */this->readCachedString();
-            /*const std::string &collisionMask = */this->readCachedString();
-            
-            for(auto it:body->getShapes())
-            {
-                it->setDensity(density);
-                it->setFriction(friction);
-                it->setRestitution(elasticity);
-            }
-            
-            /*if(!collisionCategories.empty())
-                body->setCategoryBitmask(std::stoi(collisionCategories, nullptr, 16));
-            if(!collisionMask.empty())
-                body->setCollisionBitmask(std::stoi(collisionMask, nullptr, 16));
-            body.collisionType = collisionType;*/
+            it->setDensity(density);
+            it->setFriction(friction);
+            it->setRestitution(elasticity);
         }
+        
         node->setPhysicsBody(body);
     }
 #endif

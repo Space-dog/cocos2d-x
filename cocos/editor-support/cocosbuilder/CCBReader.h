@@ -30,7 +30,10 @@
 }
 
 #define CCB_MIN_VERSION 5
-#define CCB_MAX_VERSION 8
+#define CCB_MAX_VERSION 6
+
+#define CCBX_MIN_VERSION 7
+#define CCBX_MAX_VERSION 7
 
 namespace cocosbuilder {
 
@@ -427,6 +430,7 @@ public:
     cocos2d::Node* readFileWithCleanUp(bool bCleanUp, CCBAnimationManagerMapPtr am);
     
     int getVersion() const { return _version; }
+    bool isCCBX() const { return _ccbx; }
     
     void addOwnerOutletName(std::string name);
     void addOwnerOutletNode(cocos2d::Node *node);
@@ -434,10 +438,6 @@ public:
 private:
     void cleanUpNodeGraph(cocos2d::Node *pNode);
     bool readSequences();
-#if CC_USE_PHYSICS
-    cocos2d::PhysicsJoint* readJoint();
-    void readJoints();
-#endif
     CCBKeyframe* readKeyframe(PropertyType type);
     
     bool readHeader();
@@ -486,6 +486,7 @@ private:
     std::string _CCBRootPath;
     
     bool _jsControlled;
+    bool _ccbx;
 };
 
 // end of effects group
