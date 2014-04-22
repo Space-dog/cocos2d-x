@@ -18,6 +18,8 @@ using namespace cocos2d::extension;
 namespace cocosbuilder {
 
 // Implementation of CCBAinmationManager
+    
+static int animationTag = 'ccbi';
 
 CCBAnimationManager::CCBAnimationManager()
 : _jsControlled(false)
@@ -55,7 +57,7 @@ CCBAnimationManager::~CCBAnimationManager()
 //     }
     if (_rootNode)
     {
-        _rootNode->stopAllActions();
+        _rootNode->stopActionByTag(animationTag);
     }
     
     setRootNode(nullptr);
@@ -432,6 +434,7 @@ void CCBAnimationManager::setAnimatedProperty(const std::string& propName, Node 
         
         // Animate
         ActionInterval *tweenAction = getAction(nullptr, kf1, propName, pNode);
+        tweenAction->setTag(animationTag);
         pNode->runAction(tweenAction);
     }
     else 
@@ -776,12 +779,12 @@ void CCBAnimationManager::runAction(Node *pNode, CCBSequenceProperty *pSeqProp, 
             {
                 // Apply easing
                 action = getEaseAction(action, kf0->getEasingType(), kf0->getEasingOpt());
-                
                 actions.pushBack(action);
             }
         }
         
         auto seq = Sequence::create(actions);
+        seq->setTag(animationTag);
         pNode->runAction(seq);
     }
 }
@@ -805,12 +808,12 @@ void CCBAnimationManager::runAnimationsForSequenceIdTweenDuration(int nSeqId, fl
 {
     CCASSERT(nSeqId != -1, "Sequence id couldn't be found");
     
-    _rootNode->stopAllActions();
+    _rootNode->stopActionByTag(animationTag);
     
     for (auto nodeSeqIter = _nodeSequences.begin(); nodeSeqIter != _nodeSequences.end(); ++nodeSeqIter)
     {
         Node *node = nodeSeqIter->first;
-        node->stopAllActions();
+        node->stopActionByTag(animationTag);
         
         // Refer to CCBReader::readKeyframe() for the real type of value
         auto seqs = nodeSeqIter->second;
@@ -864,6 +867,7 @@ void CCBAnimationManager::runAnimationsForSequenceIdTweenDuration(int nSeqId, fl
     CCBSequence *seq = getSequence(nSeqId);
     Action *completeAction = Sequence::createWithTwoActions(DelayTime::create(seq->getDuration() + fTweenDuration),
                                                                 CallFunc::create( CC_CALLBACK_0(CCBAnimationManager::sequenceCompleted,this)));
+    completeAction->setTag(animationTag);
     _rootNode->runAction(completeAction);
     
     // Set the running scene
@@ -871,6 +875,7 @@ void CCBAnimationManager::runAnimationsForSequenceIdTweenDuration(int nSeqId, fl
     if(seq->getCallbackChannel() != nullptr) {
         Action* action = (Action *)actionForCallbackChannel(seq->getCallbackChannel());
         if(action != nullptr) {
+            _rootNode->setTag(animationTag);
             _rootNode->runAction(action);
         }
     } 
@@ -878,6 +883,7 @@ void CCBAnimationManager::runAnimationsForSequenceIdTweenDuration(int nSeqId, fl
     if(seq->getSoundChannel() != nullptr) {
         Action* action = (Action *)actionForSoundChannel(seq->getSoundChannel());
         if(action != nullptr) {
+            _rootNode->setTag(animationTag);
             _rootNode->runAction(action);
         }
     }
