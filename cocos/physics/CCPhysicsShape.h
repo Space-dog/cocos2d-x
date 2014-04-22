@@ -322,6 +322,8 @@ protected:
     
 protected:
     Point _offset;
+    float _border;
+    Size _size;
     
     friend class PhysicsBody;
 };
@@ -348,6 +350,8 @@ protected:
     
 protected:
     Point _center;
+    float _border;
+    std::vector<Point> _points;
 };
 
 /** a chain shape */
@@ -370,6 +374,8 @@ protected:
     
 protected:
     Point _center;
+    float _border;
+    std::vector<Point> _points;
     
     friend class PhysicsBody;
 };

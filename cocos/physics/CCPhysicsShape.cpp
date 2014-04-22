@@ -674,8 +674,8 @@ void PhysicsShapePolygon::rescale(const Size &size)
     for(int i=0; i<_points.size(); i++)
         hullVerts[i] =  PhysicsHelper::point2cpv(TransformPoint(size, _points[i]));
 	
-	unsigned int hullCount = cpConvexHull(4, &hullVerts.front(), &hullVerts.front(), NULL, 0.0);
-    cpPolyShapeSetVerts(shape, hullCount, &hullVerts.front(), PhysicsHelper::point2cpv(_center));
+	unsigned int hullCount = cpConvexHull(_points.size(), &hullVerts.front(), &hullVerts.front(), NULL, 0.0);
+    cpPolyShapeSetVerts(shape, hullCount, &hullVerts.front(), PhysicsHelper::point2cpv(Point(0,0)));
 }
 
 // PhysicsShapeEdgeBox
@@ -717,6 +717,8 @@ bool PhysicsShapeEdgeBox::init(const Size& size, const PhysicsMaterial& material
         _offset = offset;
         _mass = PHYSICS_INFINITY;
         _moment = PHYSICS_INFINITY;
+        _border = border;
+        _size = size;
         
         setMaterial(material);
         
@@ -737,14 +739,31 @@ void PhysicsShapeEdgeBox::getPoints(cocos2d::Point *outPoints) const
 
 void PhysicsShapeEdgeBox::rescale(const Size &size)
 {
-    cpShape *shape = _info->getShapes().front();
-    
-    /*std::vector<cpVect> hullVerts(_points.size());
-    for(int i=0; i<_points.size(); i++)
-        hullVerts[i] =  PhysicsHelper::point2cpv(TransformPoint(transform, _points[i]));
-	
-	unsigned int hullCount = cpConvexHull(4, &hullVerts.front(), &hullVerts.front(), NULL, 0.0);
-    cpPolyShapeSetVerts(shape, hullCount, &hullVerts.front(), PhysicsHelper::point2cpv(_center));*/
+    do
+    {
+        cpVect vec[4] = {};
+        vec[0] = PhysicsHelper::point2cpv(Point((-_size.width/2+_offset.x) * size.width, (-_size.height/2+_offset.y) * size.height));
+        vec[1] = PhysicsHelper::point2cpv(Point((+_size.width/2+_offset.x) * size.width, (-_size.height/2+_offset.y) * size.height));
+        vec[2] = PhysicsHelper::point2cpv(Point((+_size.width/2+_offset.x) * size.width, (+_size.height/2+_offset.y) * size.height));
+        vec[3] = PhysicsHelper::point2cpv(Point((-_size.width/2+_offset.x) * size.width, (+_size.height/2+_offset.y) * size.height));
+        
+        float border[4];
+        border[0] = _border * size.width;
+        border[1] = _border * size.height;
+        border[2] = _border * size.width;
+        border[3] = _border * size.height;
+        
+        _info->removeAll();
+        int i = 0;
+        for (; i < 4; ++i)
+        {
+            cpShape* shape = cpSegmentShapeNew(_info->getSharedBody(), vec[i], vec[(i+1)%4],
+                                               PhysicsHelper::float2cpfloat(border[i]));
+            CC_BREAK_IF(shape == nullptr);
+            _info->add(shape);
+        }
+        CC_BREAK_IF(i < 4);
+    } while (false);
 }
 
 // PhysicsShapeEdgeBox
@@ -788,6 +807,8 @@ bool PhysicsShapeEdgePolygon::init(const Point* points, int count, const Physics
         
         _mass = PHYSICS_INFINITY;
         _moment = PHYSICS_INFINITY;
+        _border = border;
+        _points.assign(points, points+count);
         
         setMaterial(material);
         
@@ -820,14 +841,31 @@ int PhysicsShapeEdgePolygon::getPointsCount() const
 
 void PhysicsShapeEdgePolygon::rescale(const Size &size)
 {
-    cpShape *shape = _info->getShapes().front();
-    
-    /*std::vector<cpVect> hullVerts(_points.size());
-     for(int i=0; i<_points.size(); i++)
-     hullVerts[i] =  PhysicsHelper::point2cpv(TransformPoint(transform, _points[i]));
-     
-     unsigned int hullCount = cpConvexHull(4, &hullVerts.front(), &hullVerts.front(), NULL, 0.0);
-     cpPolyShapeSetVerts(shape, hullCount, &hullVerts.front(), PhysicsHelper::point2cpv(_center));*/
+    cpVect* vec = nullptr;
+    do
+    {
+        int count = _points.size();
+        vec = new cpVect[_points.size()];
+        for (int i = 0; i < count; ++i)
+        {
+            vec[i] = PhysicsHelper::point2cpv(Point(_points[i].x * size.width,_points[i].y * size.height));
+        }
+        
+        _info->removeAll();
+        int i = 0;
+        for (; i < count; ++i)
+        {
+            cpShape* shape = cpSegmentShapeNew(_info->getSharedBody(), vec[i], vec[(i+1)%count],
+                                               PhysicsHelper::float2cpfloat(_border*((size.width+size.height)/2.0)));
+            CC_BREAK_IF(shape == nullptr);
+            cpShapeSetElasticity(shape, 1.0f);
+            cpShapeSetFriction(shape, 1.0f);
+            _info->add(shape);
+        }
+        CC_SAFE_DELETE_ARRAY(vec);
+        
+        CC_BREAK_IF(i < count);
+    } while (false);
 }
 
 // PhysicsShapeEdgeChain
@@ -870,6 +908,8 @@ bool PhysicsShapeEdgeChain::init(const Point* points, int count, const PhysicsMa
         
         _mass = PHYSICS_INFINITY;
         _moment = PHYSICS_INFINITY;
+        _border = border;
+        _points.assign(points, points+count);
         
         setMaterial(material);
         
@@ -904,14 +944,31 @@ int PhysicsShapeEdgeChain::getPointsCount() const
 
 void PhysicsShapeEdgeChain::rescale(const Size &size)
 {
-    cpShape *shape = _info->getShapes().front();
-    
-    /*std::vector<cpVect> hullVerts(_points.size());
-     for(int i=0; i<_points.size(); i++)
-     hullVerts[i] =  PhysicsHelper::point2cpv(TransformPoint(transform, _points[i]));
-     
-     unsigned int hullCount = cpConvexHull(4, &hullVerts.front(), &hullVerts.front(), NULL, 0.0);
-     cpPolyShapeSetVerts(shape, hullCount, &hullVerts.front(), PhysicsHelper::point2cpv(_center));*/
+    cpVect* vec = nullptr;
+    int count = _points.size();
+    do
+    {
+        CC_BREAK_IF(!PhysicsShape::init(Type::EDGECHAIN));
+        
+        vec = new cpVect[count];
+        for (int i = 0; i < count; ++i)
+        {
+            vec[i] = PhysicsHelper::point2cpv(Point(_points[i].x * size.width,_points[i].y * size.height));
+        }
+        
+        int i = 0;
+        for (; i < count - 1; ++i)
+        {
+            cpShape* shape = cpSegmentShapeNew(_info->getSharedBody(), vec[i], vec[i+1],
+                                               PhysicsHelper::float2cpfloat(_border*((size.width+size.height)/2.0)));
+            CC_BREAK_IF(shape == nullptr);
+			cpShapeSetElasticity(shape, 1.0f);
+			cpShapeSetFriction(shape, 1.0f);
+            _info->add(shape);
+        }
+        CC_SAFE_DELETE_ARRAY(vec);
+        CC_BREAK_IF(i < count - 1);
+    } while (false);
 }
 
 void PhysicsShape::setGroup(int group)
