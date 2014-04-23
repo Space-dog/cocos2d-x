@@ -497,12 +497,32 @@ void CCBReader::alignBits() {
         this->_currentByte++;
     }
 }
+
+inline unsigned int readVariableLengthIntFromArray(const uint8_t* buffer, uint32_t &value) {
+    const uint8_t* ptr = buffer;
+    uint32_t b;
+    uint32_t result;
+    
+    b = *(ptr++); result  = (b & 0x7F)      ; if (!(b & 0x80)) goto done;
+    b = *(ptr++); result |= (b & 0x7F) <<  7; if (!(b & 0x80)) goto done;
+    b = *(ptr++); result |= (b & 0x7F) << 14; if (!(b & 0x80)) goto done;
+    b = *(ptr++); result |= (b & 0x7F) << 21; if (!(b & 0x80)) goto done;
+    b = *(ptr++); result |=  b         << 28; if (!(b & 0x80)) goto done;
+    
+done:
+    value = result;
+    return ptr - buffer;
+}
     
 #define REVERSE_BYTE(b) (unsigned char)(((b * 0x0802LU & 0x22110LU) | (b * 0x8020LU & 0x88440LU)) * 0x10101LU >> 16)
     
-int CCBReader::readInt(bool pSigned)
+inline unsigned int readEliasGammaIntFromArray(const uint8_t* buffer, uint32_t &value)
 {
-    unsigned int v = *(unsigned int *)(this->_bytes + this->_currentByte);
+    int currentBit = 0;
+    int currentByte = 0;
+    unsigned int v = 0;
+    memcpy(&v, buffer, 4);
+    
     int numBits = 32;
     int extraByte = 0;
     v &= -((int)v);
@@ -516,13 +536,13 @@ int CCBReader::readInt(bool pSigned)
     if ((numBits & 0x00000007) == 0)
     {
         extraByte = 1;
-        this->_currentBit = 0;
-        this->_currentByte += (numBits >> 3);
+        currentBit = 0;
+        currentByte += (numBits >> 3);
     }
     else
     {
-        this->_currentBit = numBits - (numBits >> 3) * 8;
-        this->_currentByte += (numBits >> 3);
+        currentBit = numBits - (numBits >> 3) * 8;
+        currentByte += (numBits >> 3);
     }
     
     static unsigned char prefixMask[] = {
@@ -546,56 +566,70 @@ int CCBReader::readInt(bool pSigned)
         0xFE,
         0xFF,
     };
-    unsigned char prefix = REVERSE_BYTE(*(this->_bytes + this->_currentByte)) & prefixMask[this->_currentBit];
+    unsigned char prefix = REVERSE_BYTE(*(buffer + currentByte)) & prefixMask[currentBit];
     long long current = prefix;
     int numBytes = 0;
-    int suffixBits = (numBits - (8 - this->_currentBit) + 1);
+    int suffixBits = (numBits - (8 - currentBit) + 1);
     if (numBits >= 8)
     {
         suffixBits %= 8;
-        numBytes = (numBits - (8 - (int)(this->_currentBit)) - suffixBits + 1) / 8;
+        numBytes = (numBits - (8 - (int)(currentBit)) - suffixBits + 1) / 8;
     }
     if (suffixBits >= 0)
     {
-        this->_currentByte++;
+        currentByte++;
         for (int i = 0; i < numBytes; i++)
         {
             current <<= 8;
-            unsigned char byte = REVERSE_BYTE(*(this->_bytes + this->_currentByte));
+            unsigned char byte = REVERSE_BYTE(*(buffer + currentByte));
             current += byte;
-            this->_currentByte++;
+            currentByte++;
         }
         current <<= suffixBits;
-        unsigned char suffix = (REVERSE_BYTE(*(this->_bytes + this->_currentByte)) & suffixMask[suffixBits]) >> (8 - suffixBits);
+        unsigned char suffix = (REVERSE_BYTE(*(buffer + currentByte)) & suffixMask[suffixBits]) >> (8 - suffixBits);
         current += suffix;
     }
     else
     {
         current >>= -suffixBits;
     }
-    this->_currentByte += extraByte;
-    int num;
+    currentByte += extraByte;
     
-    if (pSigned)
+    if(currentBit)
+        currentByte++;
+    
+    value = (unsigned int)current -1;
+    
+    return currentByte;
+}
+    
+int CCBReader::readInt(bool pSigned)
+{
+    unsigned int value = 0;
+    if(this->_ccbx)
     {
-        int s = current % 2;
-        if (s)
-        {
-            num = (int)(current / 2);
-        }
-        else
-        {
-            num = (int)(-current / 2);
-        }
+        this->_currentByte += readVariableLengthIntFromArray(this->_bytes + this->_currentByte, value);
     }
     else
     {
-        num = (int)current - 1;
+        this->_currentByte += readEliasGammaIntFromArray(this->_bytes + this->_currentByte, value);
     }
     
-    alignBits();
+    int num = 0;
     
-    return num;;
+    if (pSigned)
+    {
+        if (value & 0x1)
+            num = -(int)((value+1) >> 1);
+        else
+            num = (int)(value >> 1);
+    }
+    else
+    {
+        num = (int)value;
+    }
+    
+    return num;
 }
 
 
