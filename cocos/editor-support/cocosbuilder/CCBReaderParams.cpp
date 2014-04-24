@@ -9,7 +9,7 @@ using namespace cocos2d;
 
 namespace cocosbuilder {
 
-CCBReaderParams::CCBReaderParams():_loaded(false) {
+CCBReaderParams::CCBReaderParams():_loaded(false),_curentLanguage(Application::getInstance()->getCurrentLanguageCode()) {
 }
 
 CCBReaderParams::~CCBReaderParams() {
@@ -72,23 +72,22 @@ bool CCBReaderParams::loadLocalization(const std::string &path)
     auto activeLanguages = translationDict.find("activeLanguages");
     if (activeLanguages != translationDict.end()) {
         std::unordered_set<std::string> languages;
-        for(auto language : activeLanguages->second.asValueVector())
+        for(const auto &language : activeLanguages->second.asValueVector())
             languages.insert(language.asString());
-        _curentLanguage = Application::getInstance()->getCurrentLanguageCode();
         if(languages.find(_curentLanguage) == languages.end())
             _curentLanguage = *languages.begin();
     }
     auto translations = translationDict.find("translations");
     if (translations != translationDict.end()) {
         const ValueVector &valueVector = translations->second.asValueVector();
-        for(auto value: valueVector)
+        for(const auto &value: valueVector)
         {
             const ValueMap &valueMap = value.asValueMap();
             auto key = valueMap.find("key");
             if(key!= valueMap.end())
             {
                 auto strings = valueMap.find("translations");
-                for(auto localizedString : strings->second.asValueMap())
+                for(const auto &localizedString : strings->second.asValueMap())
                 {
                     _languages[localizedString.first][key->second.asString()] = localizedString.second.asString();
                 }
@@ -96,6 +95,15 @@ bool CCBReaderParams::loadLocalization(const std::string &path)
         }
     }
     return true;
+}
+    
+void CCBReaderParams::setLanguage(const std::string &language)
+{
+    _curentLanguage = language;
+}
+const std::string &CCBReaderParams::getLanguage() const
+{
+    return _curentLanguage;
 }
     
 const std::string &CCBReaderParams::getLocalizedString(const std::string &key) const

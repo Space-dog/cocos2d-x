@@ -1015,6 +1015,13 @@ void CCBSetSpriteFrame::update(float time)
 /************************************************************
  CCBSoundEffect
  ************************************************************/
+    
+bool CCBSoundEffect::_enabled = true;
+    
+void CCBSoundEffect::setSoundEnabled(bool enabled)
+{
+    _enabled = enabled;
+}
 
 CCBSoundEffect* CCBSoundEffect::actionWithSoundFile(const std::string &filename, float pitch, float pan, float gain) {
   CCBSoundEffect* pRet = new CCBSoundEffect();
@@ -1059,7 +1066,8 @@ CCBSoundEffect* CCBSoundEffect::reverse() const
 
 void CCBSoundEffect::update(float time)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(_soundFile.c_str());
+    if(_enabled)
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(_soundFile.c_str());
 }
 
 

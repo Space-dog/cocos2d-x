@@ -279,7 +279,7 @@ void ActionNode::deleteFrame(ActionFrame* frame)
 
 void ActionNode::clearAllFrame()
 {
-    for(auto array : _frameArray)
+    for(auto &array : _frameArray)
     {
         array->clear();
     }

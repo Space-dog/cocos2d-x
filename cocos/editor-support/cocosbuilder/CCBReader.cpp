@@ -1005,9 +1005,9 @@ Node * CCBReader::readNodeGraph(Node * pParent)
             if(setMoment)
                 body->setMoment(this->readFloat());
             
-            body->setCategoryBitmask(this->readInt(false));
-            body->setContactTestBitmask(this->readInt(false));
-            body->setCollisionBitmask(this->readInt(false));
+            body->setCategoryBitmask(this->readInt(true));
+            body->setContactTestBitmask(this->readInt(true));
+            body->setCollisionBitmask(this->readInt(true));
             
             Vect velocuty(this->readFloat(),this->readFloat());
             float velocityLimit(this->readFloat());
@@ -1033,7 +1033,7 @@ Node * CCBReader::readNodeGraph(Node * pParent)
             body->setRotationEnable(allowsRotation);
         }
         
-        for(auto it : body->getShapes())
+        for(const auto &it : body->getShapes())
         {
             it->setDensity(density);
             it->setFriction(friction);

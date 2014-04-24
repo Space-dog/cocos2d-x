@@ -51,7 +51,8 @@ public:
     const cocos2d::Size &getDesignResolution() const { return _designResolution; }
     const float &getDesignResolutionScale() const { return _designResolutionscale; }
     
-    
+    void setLanguage(const std::string &language);
+    const std::string &getLanguage() const;
     const std::string &getLocalizedString(const std::string &key) const;
     
     bool isLoaded() const;
