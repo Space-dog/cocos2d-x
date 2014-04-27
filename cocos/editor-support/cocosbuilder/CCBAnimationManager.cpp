@@ -376,7 +376,9 @@ ActionInterval* CCBAnimationManager::getAction(CCBKeyframe *pKeyframe0, CCBKeyfr
     {
         // Get position type
         auto& array = getBaseValue(pNode, propName).asValueVector();
-        CCBReader::PositionType type = (CCBReader::PositionType)array[2].asInt();
+        CCBReader::PositionReferenceCorner corner = (CCBReader::PositionReferenceCorner)array[2].asInt();
+        CCBReader::PositionUnit xUnit = (CCBReader::PositionUnit)array[3].asInt();
+        CCBReader::PositionUnit yUnit = (CCBReader::PositionUnit)array[4].asInt();
         
         // Get relative position
         auto value = pKeyframe1->getValue().asValueVector();
@@ -385,7 +387,7 @@ ActionInterval* CCBAnimationManager::getAction(CCBKeyframe *pKeyframe0, CCBKeyfr
         
         Size containerSize = getContainerSize(pNode->getParent());
         
-        Point absPos = getAbsolutePosition(Point(x,y), type, containerSize, propName);
+        Point absPos = getAbsolutePosition(Point(x,y), corner, xUnit, yUnit, containerSize, propName.c_str());
         
         return MoveTo::create(duration, absPos);
     }
@@ -445,13 +447,16 @@ void CCBAnimationManager::setAnimatedProperty(const std::string& propName, Node 
         {
             // Get position type
             auto& array = getBaseValue(pNode, propName).asValueVector();
-            CCBReader::PositionType type = (CCBReader::PositionType)array[2].asInt();
+            CCBReader::PositionReferenceCorner corner = (CCBReader::PositionReferenceCorner)array[2].asInt();
+            CCBReader::PositionUnit xUnit = (CCBReader::PositionUnit)array[3].asInt();
+            CCBReader::PositionUnit yUnit = (CCBReader::PositionUnit)array[4].asInt();
+            
             // Get relative position
             auto& valueVector = value.asValueVector();
             float x = valueVector[0].asFloat();
             float y = valueVector[1].asFloat();
             
-            pNode->setPosition(getAbsolutePosition(Point(x,y), type, getContainerSize(pNode->getParent()), propName));
+            pNode->setPosition(getAbsolutePosition(Point(x,y), corner, xUnit, yUnit, getContainerSize(pNode->getParent()), propName.c_str()));
         }
         else if (propName == "scale")
         {

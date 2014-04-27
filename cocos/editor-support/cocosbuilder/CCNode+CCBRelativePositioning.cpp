@@ -5,42 +5,46 @@ using namespace cocos2d;
 
 namespace cocosbuilder {
 
-Point getAbsolutePosition(const Point &pt, CCBReader::PositionType type, const Size &containerSize, const std::string& propName)
+void convertPosition(CCBReader::PositionType type, Point &pt, CCBReader::PositionReferenceCorner &corner, CCBReader::PositionUnit &xUnit, CCBReader::PositionUnit &yUnit)
 {
-    Point absPt = Point(0,0);
     if (type == CCBReader::PositionType::RELATIVE_BOTTOM_LEFT)
     {
-        absPt = pt;
+        corner = CCBReader::PositionReferenceCorner::BOTTOMLEFT;
+        xUnit = CCBReader::PositionUnit::POINTS;
+        yUnit = CCBReader::PositionUnit::POINTS;
     }
     else if (type == CCBReader::PositionType::RELATIVE_TOP_LEFT)
     {
-        absPt.x = pt.x;
-        absPt.y = containerSize.height - pt.y;
+        corner = CCBReader::PositionReferenceCorner::TOPLEFT;
+        xUnit = CCBReader::PositionUnit::POINTS;
+        yUnit = CCBReader::PositionUnit::POINTS;
     }
     else if (type == CCBReader::PositionType::RELATIVE_TOP_RIGHT)
     {
-        absPt.x = containerSize.width - pt.x;
-        absPt.y = containerSize.height - pt.y;
+        corner = CCBReader::PositionReferenceCorner::TOPRIGHT;
+        xUnit = CCBReader::PositionUnit::POINTS;
+        yUnit = CCBReader::PositionUnit::POINTS;
     }
     else if (type == CCBReader::PositionType::RELATIVE_BOTTOM_RIGHT)
     {
-        absPt.x = containerSize.width - pt.x;
-        absPt.y = pt.y;
+        corner = CCBReader::PositionReferenceCorner::BOTTOMRIGHT;
+        xUnit = CCBReader::PositionUnit::POINTS;
+        yUnit = CCBReader::PositionUnit::POINTS;
     }
     else if (type == CCBReader::PositionType::PERCENT)
     {
-        absPt.x = (int)(containerSize.width * pt.x / 100.0f);
-        absPt.y = (int)(containerSize.height * pt.y / 100.0f);
+        corner = CCBReader::PositionReferenceCorner::BOTTOMLEFT;
+        xUnit = CCBReader::PositionUnit::NORMALIZED;
+        yUnit = CCBReader::PositionUnit::NORMALIZED;
+        pt.x /= 100.0f;
+        pt.y /= 100.0f;
     }
     else if (type == CCBReader::PositionType::MULTIPLY_RESOLUTION)
     {
-        float resolutionScale = CCBReader::getResolutionScale();
-        
-        absPt.x = pt.x * resolutionScale;
-        absPt.y = pt.y * resolutionScale;
+        corner = CCBReader::PositionReferenceCorner::BOTTOMLEFT;
+        xUnit = CCBReader::PositionUnit::UIPOINTS;
+        yUnit = CCBReader::PositionUnit::UIPOINTS;
     }
-    
-    return absPt;
 }
 
 cocos2d::Size getRelativeScale(float scaleX, float scaleY, unsigned int type, const std::string& propName)

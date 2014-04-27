@@ -383,55 +383,44 @@ void NodeLoader::parseProperties(Node * pNode, Node * pParent, CCBReader * ccbRe
 
 Point NodeLoader::parsePropTypePosition(Node * pNode, Node * pParent, CCBReader * ccbReader, const char *pPropertyName)
 {
-    float x = ccbReader->readFloat();
-    float y = ccbReader->readFloat();
+    Point pt(ccbReader->readFloat(),ccbReader->readFloat());
     
     Size containerSize = ccbReader->getAnimationManager()->getContainerSize(pParent);
     
+    CCBReader::PositionReferenceCorner corner = CCBReader::PositionReferenceCorner::BOTTOMLEFT;
+    CCBReader::PositionUnit xUnit = CCBReader::PositionUnit::POINTS;
+    CCBReader::PositionUnit yUnit = CCBReader::PositionUnit::POINTS;
+
+    
     if(ccbReader->_version < 6)
     {
-        
         CCBReader::PositionType type = static_cast<CCBReader::PositionType>(ccbReader->readInt(false));
-        
-        Point pt = getAbsolutePosition(Point(x,y), type, containerSize, pPropertyName);
-        pNode->setPosition(pt);
-        
-        if (ccbReader->getAnimatedProperties()->find(pPropertyName) != ccbReader->getAnimatedProperties()->end())
-        {
-            ValueVector vec;
-            vec.push_back(Value(x));
-            vec.push_back(Value(y));
-            vec.push_back(Value((int)type));
-            
-            ccbReader->getAnimationManager()->setBaseValue(Value(vec), pNode, pPropertyName);
-        }
-        
-        return pt;
+        convertPosition(type, pt, corner, xUnit, yUnit);
     }
     else
     {
-            CCBReader::PositionReferenceCorner corner = static_cast<CCBReader::PositionReferenceCorner>(ccbReader->readByte());
-            CCBReader::PositionUnit xUnit = static_cast<CCBReader::PositionUnit>(ccbReader->readByte());
-            CCBReader::PositionUnit yUnit = static_cast<CCBReader::PositionUnit>(ccbReader->readByte());
-            
-            Point pt = getAbsolutePosition(Point(x,y), corner, xUnit, yUnit, containerSize, pPropertyName);
-            
-            if (ccbReader->getAnimatedProperties()->find(pPropertyName) != ccbReader->getAnimatedProperties()->end())
-            {
-                ValueVector vec;
-                vec.push_back(Value(x));
-                vec.push_back(Value(y));
-                vec.push_back(Value((int)corner));
-                vec.push_back(Value((int)xUnit));
-                vec.push_back(Value((int)yUnit));
-                
-                ccbReader->getAnimationManager()->setBaseValue(Value(vec), pNode, pPropertyName);
-            }
-            return pt;
+        corner = static_cast<CCBReader::PositionReferenceCorner>(ccbReader->readByte());
+        xUnit = static_cast<CCBReader::PositionUnit>(ccbReader->readByte());
+        yUnit = static_cast<CCBReader::PositionUnit>(ccbReader->readByte());
     }
+    
+    Point pos = getAbsolutePosition(pt, corner, xUnit, yUnit, containerSize, pPropertyName);
+    
+    if (ccbReader->getAnimatedProperties()->find(pPropertyName) != ccbReader->getAnimatedProperties()->end())
+    {
+        ValueVector vec;
+        vec.push_back(Value(pt.x));
+        vec.push_back(Value(pt.y));
+        vec.push_back(Value((int)corner));
+        vec.push_back(Value((int)xUnit));
+        vec.push_back(Value((int)yUnit));
+        
+        ccbReader->getAnimationManager()->setBaseValue(Value(vec), pNode, pPropertyName);
+    }
+    return pos;
 }
 
-Point NodeLoader::parsePropTypePoint(Node * pNode, Node * pParent, CCBReader * ccbReader) 
+Point NodeLoader::parsePropTypePoint(Node * pNode, Node * pParent, CCBReader * ccbReader)
 {
     float x = ccbReader->readFloat();
     float y = ccbReader->readFloat();
