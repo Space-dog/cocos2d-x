@@ -498,7 +498,7 @@ void CCBReader::alignBits() {
     }
 }
 
-inline unsigned int readVariableLengthIntFromArray(const uint8_t* buffer, uint32_t &value) {
+inline long readVariableLengthIntFromArray(const uint8_t* buffer, uint32_t &value) {
     const uint8_t* ptr = buffer;
     uint32_t b;
     uint32_t result;

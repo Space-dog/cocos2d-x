@@ -674,7 +674,7 @@ void PhysicsShapePolygon::rescale(const Size &size)
     for(int i=0; i<_points.size(); i++)
         hullVerts[i] =  PhysicsHelper::point2cpv(TransformPoint(size, _points[i]));
 	
-	unsigned int hullCount = cpConvexHull(_points.size(), &hullVerts.front(), &hullVerts.front(), NULL, 0.0);
+	unsigned int hullCount = cpConvexHull(static_cast<int>(_points.size()), &hullVerts.front(), &hullVerts.front(), NULL, 0.0);
     cpPolyShapeSetVerts(shape, hullCount, &hullVerts.front(), PhysicsHelper::point2cpv(Point(0,0)));
 }
 
@@ -844,7 +844,7 @@ void PhysicsShapeEdgePolygon::rescale(const Size &size)
     cpVect* vec = nullptr;
     do
     {
-        int count = _points.size();
+        int count = static_cast<int>(_points.size());
         vec = new cpVect[_points.size()];
         for (int i = 0; i < count; ++i)
         {
@@ -945,7 +945,7 @@ int PhysicsShapeEdgeChain::getPointsCount() const
 void PhysicsShapeEdgeChain::rescale(const Size &size)
 {
     cpVect* vec = nullptr;
-    int count = _points.size();
+    int count = static_cast<int>(_points.size());
     do
     {
         CC_BREAK_IF(!PhysicsShape::init(Type::EDGECHAIN));
