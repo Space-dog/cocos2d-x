@@ -167,7 +167,7 @@ static BitmapDC& sharedBitmapDC()
     return s_BmpDC;
 }
 
-Data Device::getTextureDataForText(const char * text,const FontDefinition& textDefinition,TextAlign align,int &width,int &height)
+Data Device::getTextureDataForText(const char * text,const FontDefinition& textDefinition,TextAlign align,int &width,int &height, bool &hasPremultipliedAlpha)
 {
     Data ret;
     do 
@@ -195,6 +195,7 @@ Data Device::getTextureDataForText(const char * text,const FontDefinition& textD
 
         width = dc._width;
         height = dc._height;
+        hasPremultipliedAlpha = true;
         ret.fastSet(dc._data,width * height * 4);
     } while (0);
 

@@ -377,7 +377,7 @@ static BitmapDC& sharedBitmapDC()
     return s_BmpDC;
 }
 
-Data Device::getTextureDataForText(const char * text,const FontDefinition& textDefinition,TextAlign align,int &width,int &height)
+Data Device::getTextureDataForText(const char * text,const FontDefinition& textDefinition,TextAlign align,int &width,int &height, bool &hasPremultipliedAlpha)
 {
     Data ret;
     do 
@@ -408,6 +408,7 @@ Data Device::getTextureDataForText(const char * text,const FontDefinition& textD
 
         width    = (short)size.cx;
         height   = (short)size.cy;
+        hasPremultipliedAlpha = false;
 
         // copy pixed data
         bi.bmiHeader.biHeight = (bi.bmiHeader.biHeight > 0)
