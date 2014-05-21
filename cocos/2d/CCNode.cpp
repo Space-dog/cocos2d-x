@@ -1729,6 +1729,25 @@ float Node::getNodeToPhysicsRotation() const
 	return rotation;
 }
 
+float Node::getNodeToPhysicsScaleX() const
+{
+	float scale = 1.0;
+	for(const Node *n = this; n && dynamic_cast<const PhysicsNode*>(n) == nullptr; n = n->getParent()){
+		scale *= n->getScaleX();
+	}
+	
+	return scale;
+}
+
+float Node::getNodeToPhysicsScaleY() const
+{
+	float scale = 1.0;
+	for(const Node *n = this; n && dynamic_cast<const PhysicsNode*>(n) == nullptr; n = n->getParent()){
+		scale *= n->getScaleY();
+	}
+	
+	return scale;
+}
 
 #endif //CC_USE_PHYSICS
 
