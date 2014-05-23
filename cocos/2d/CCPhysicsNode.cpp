@@ -129,7 +129,7 @@ void PhysicsNode::addChildToPhysicsWorld(Node* child)
                 }
                 if(transform.mat[1] != -transform.mat[4])
                     CCLOGWARN("PhysicsNode::addChildToPhysicsWorld skew not supported for physics nodes");
-                node->getPhysicsBody()->rescale(Size(node->getNodeToPhysicsScaleX(), node->getNodeToPhysicsScaleX()));
+                node->getPhysicsBody()->rescale(Size(node->getNodeToPhysicsScaleX(), node->getNodeToPhysicsScaleY()));
                 _physicsWorld->addBody(node->getPhysicsBody());
             }
             
