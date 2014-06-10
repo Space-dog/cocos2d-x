@@ -276,7 +276,7 @@ namespace
 
 //////////////////////////////////////////////////////////////////////////
 
-//struct and data for s3tc(dds) struct
+//struct and data for dds struct
 namespace
 {
     struct DDColorKey
@@ -358,7 +358,7 @@ namespace
     
 #pragma pack(push,1)
     
-    struct S3TCTexHeader
+    struct DDSHeader
     {
         char fileCode[4];
         DDSURFACEDESC2 ddsd;
@@ -367,14 +367,61 @@ namespace
 #pragma pack(pop)
 
 }
-//s3tc struct end
+//dds struct end
 
 //////////////////////////////////////////////////////////////////////////
 
-//struct and data for atitc(ktx) struct
+//struct and data for PKM struct
+
 namespace
 {
-    struct ATITCTexHeader
+    const uint8_t PKM_MAGIC[] = { 'P', 'K', 'M', ' '};
+    
+    struct PKMHeader {
+        uint8_t  name[4];
+        uint8_t  version[2];
+        uint16_t  format;
+        uint16_t  encodedWidth;
+        uint16_t  encodedHeight;
+        uint16_t  width;
+        uint16_t  height;
+    };
+}
+
+enum class PKM2TexturePixelFormat : uint32_t
+{
+    ETC1_RGB_NO_MIPMAPS = 0,
+    ETC2PACKAGE_RGB_NO_MIPMAPS = 1,
+    ETC2PACKAGE_RGBA_NO_MIPMAPS = 3,
+    ETC2PACKAGE_RGBA1_NO_MIPMAPS = 4,
+    ETC2PACKAGE_R_NO_MIPMAPS = 5,
+    ETC2PACKAGE_RG_NO_MIPMAPS = 6,
+    ETC2PACKAGE_R_SIGNED_NO_MIPMAPS = 7,
+    ETC2PACKAGE_RG_SIGNED_NO_MIPMAPS = 8,
+};
+
+typedef const std::map<PKM2TexturePixelFormat, Texture2D::PixelFormat> _pkm2_formathash;
+static _pkm2_formathash::value_type pkm_formathash_value[] =
+{
+    _pkm2_formathash::value_type(PKM2TexturePixelFormat::ETC1_RGB_NO_MIPMAPS,	Texture2D::PixelFormat::ETC),
+    _pkm2_formathash::value_type(PKM2TexturePixelFormat::ETC2PACKAGE_RGB_NO_MIPMAPS,	Texture2D::PixelFormat::ETC2_RGB8),
+    _pkm2_formathash::value_type(PKM2TexturePixelFormat::ETC2PACKAGE_RGBA_NO_MIPMAPS,	Texture2D::PixelFormat::ETC2_RGBA8),
+    _pkm2_formathash::value_type(PKM2TexturePixelFormat::ETC2PACKAGE_RGBA1_NO_MIPMAPS,	Texture2D::PixelFormat::ETC2_RGB8_ALPHA1),
+};
+
+static const int PKM2_MAX_TABLE_ELEMENTS = sizeof(pkm_formathash_value) / sizeof(pkm_formathash_value[0]);
+
+static const _pkm2_formathash pkm_formathash(pkm_formathash_value, pkm_formathash_value + PKM2_MAX_TABLE_ELEMENTS);
+
+//PKM struct end
+
+//////////////////////////////////////////////////////////////////////////
+
+//struct and data for KTC struct
+namespace
+{
+    
+    struct KTXHeader
     {
         //HEADER
         char identifier[12];
@@ -569,14 +616,14 @@ bool Image::initWithImageData(const unsigned char * data, ssize_t dataLen)
         case Format::PVR:
             ret = initWithPVRData(unpackedData, unpackedLen);
             break;
-        case Format::ETC:
-            ret = initWithETCData(unpackedData, unpackedLen);
+        case Format::PKM:
+            ret = initWithPKMData(unpackedData, unpackedLen);
             break;
-        case Format::S3TC:
-            ret = initWithS3TCData(unpackedData, unpackedLen);
+        case Format::DDS:
+            ret = initWithDDSData(unpackedData, unpackedLen);
             break;
-        case Format::ATITC:
-            ret = initWithATITCData(unpackedData, unpackedLen);
+        case Format::KTX:
+            ret = initWithKTXData(unpackedData, unpackedLen);
             break;
         default:
             {
@@ -619,16 +666,15 @@ bool Image::isPng(const unsigned char * data, ssize_t dataLen)
 }
 
 
-bool Image::isEtc(const unsigned char * data, ssize_t dataLen)
+bool Image::isPkm(const unsigned char * data, ssize_t dataLen)
 {
     return etc1_pkm_is_valid((etc1_byte*)data) ? true : false;
 }
 
-
-bool Image::isS3TC(const unsigned char * data, ssize_t dataLen)
+bool Image::isDds(const unsigned char * data, ssize_t dataLen)
 {
 
-    S3TCTexHeader *header = (S3TCTexHeader *)data;
+    DDSHeader *header = (DDSHeader *)data;
     
     if (strncmp(header->fileCode, "DDS", 3) != 0)
     {
@@ -638,9 +684,9 @@ bool Image::isS3TC(const unsigned char * data, ssize_t dataLen)
     return true;
 }
 
-bool Image::isATITC(const unsigned char *data, ssize_t dataLen)
+bool Image::isKtx(const unsigned char *data, ssize_t dataLen)
 {
-    ATITCTexHeader *header = (ATITCTexHeader *)data;
+    KTXHeader *header = (KTXHeader *)data;
     
     if (strncmp(&header->identifier[1], "KTX", 3) != 0)
     {
@@ -725,17 +771,17 @@ Image::Format Image::detectFormat(const unsigned char * data, ssize_t dataLen)
     {
         return Format::PVR;
     }
-    else if (isEtc(data, dataLen))
+    else if (isPkm(data, dataLen))
     {
-        return Format::ETC;
+        return Format::PKM;
     }
-    else if (isS3TC(data, dataLen))
+    else if (isDds(data, dataLen))
     {
-        return Format::S3TC;
+        return Format::DDS;
     }
-    else if (isATITC(data, dataLen))
+    else if (isKtx(data, dataLen))
     {
-        return Format::ATITC;
+        return Format::KTX;
     }
     else
     {
@@ -1241,34 +1287,42 @@ namespace
     
     bool testFormatForPvr3TCSupport(PVR3TexturePixelFormat format)
     {
-        if (format == PVR3TexturePixelFormat::PVRTC2_2BPP_RGBA  ||
-            format == PVR3TexturePixelFormat::PVRTC2_4BPP_RGBA  ||
-            format == PVR3TexturePixelFormat::DXT1              ||
-            format == PVR3TexturePixelFormat::DXT2              ||
-            format == PVR3TexturePixelFormat::DXT3              ||
-            format == PVR3TexturePixelFormat::DXT4              ||
-            format == PVR3TexturePixelFormat::DXT5              ||
-            format == PVR3TexturePixelFormat::BC4               ||
-            format == PVR3TexturePixelFormat::BC5               ||
-            format == PVR3TexturePixelFormat::BC6               ||
-            format == PVR3TexturePixelFormat::BC7               ||
-            format == PVR3TexturePixelFormat::UYVY              ||
-            format == PVR3TexturePixelFormat::YUY2              ||
-            format == PVR3TexturePixelFormat::BW1bpp            ||
-            format == PVR3TexturePixelFormat::R9G9B9E5          ||
-            format == PVR3TexturePixelFormat::RGBG8888          ||
-            format == PVR3TexturePixelFormat::ETC2_RGB          ||
-            format == PVR3TexturePixelFormat::ETC2_RGBA         ||
-            format == PVR3TexturePixelFormat::ETC2_RGBA1        ||
-            format == PVR3TexturePixelFormat::EAC_R11_Unsigned  ||
-            format == PVR3TexturePixelFormat::EAC_R11_Signed    ||
-            format == PVR3TexturePixelFormat::EAC_RG11_Unsigned ||
-            format == PVR3TexturePixelFormat::EAC_RG11_Signed)
-        {
-            return false;
+        switch (format) {
+            case PVR3TexturePixelFormat::PVRTC2_2BPP_RGBA:
+            case PVR3TexturePixelFormat::PVRTC2_4BPP_RGBA:
+                return Configuration::getInstance()->supportsPVRTC2();
+                
+            case PVR3TexturePixelFormat::DXT1:
+            case PVR3TexturePixelFormat::DXT3:
+            case PVR3TexturePixelFormat::DXT5:
+                return Configuration::getInstance()->supportsS3TC();
+                
+            case PVR3TexturePixelFormat::ETC2_RGB:
+            case PVR3TexturePixelFormat::ETC2_RGBA:
+            case PVR3TexturePixelFormat::ETC2_RGBA1:
+                return Configuration::getInstance()->supportsGLV3();
+                
+            case PVR3TexturePixelFormat::BGRA8888:
+                return Configuration::getInstance()->supportsBGRA8888();
+                
+            case PVR3TexturePixelFormat::PVRTC2BPP_RGB:
+            case PVR3TexturePixelFormat::PVRTC2BPP_RGBA:
+            case PVR3TexturePixelFormat::PVRTC4BPP_RGB:
+            case PVR3TexturePixelFormat::PVRTC4BPP_RGBA:
+            case PVR3TexturePixelFormat::ETC1:
+            case PVR3TexturePixelFormat::RGBA8888:
+            case PVR3TexturePixelFormat::RGBA4444:
+            case PVR3TexturePixelFormat::RGBA5551:
+            case PVR3TexturePixelFormat::RGB565:
+            case PVR3TexturePixelFormat::RGB888:
+            case PVR3TexturePixelFormat::A8:
+            case PVR3TexturePixelFormat::L8:
+            case PVR3TexturePixelFormat::LA88:
+                return true;
+                
+            default:
+                return false;
         }
-        
-        return true;
     }
 }
 
@@ -1348,47 +1402,47 @@ bool Image::initWithPVRv2Data(const unsigned char * data, ssize_t dataLen)
     while (dataOffset < dataLength)
     {
         switch (formatFlags) {
-        case PVR2TexturePixelFormat::PVRTC2BPP_RGBA:
-            if(!Configuration::getInstance()->supportsPVRTC())
-            {
-                CCLOG("cocos2d: Hardware PVR decoder not present. Using software decoder");
-                _unpack = true;
-                _mipmaps[_numberOfMipmaps].len = width*height*4;
-                _mipmaps[_numberOfMipmaps].address = new unsigned char[width*height*4];
-                PVRTDecompressPVRTC(_data+dataOffset,width,height,_mipmaps[_numberOfMipmaps].address, true);
-                bpp = 2;
-            }
-            blockSize = 8 * 4; // Pixel by pixel block size for 2bpp
-            widthBlocks = width / 8;
-            heightBlocks = height / 4;
-            break;
-        case PVR2TexturePixelFormat::PVRTC4BPP_RGBA:
-            if(!Configuration::getInstance()->supportsPVRTC())
-            {
-                CCLOG("cocos2d: Hardware PVR decoder not present. Using software decoder");
-                _unpack = true;
-                _mipmaps[_numberOfMipmaps].len = width*height*4;
-                _mipmaps[_numberOfMipmaps].address = new unsigned char[width*height*4];
-                PVRTDecompressPVRTC(_data+dataOffset,width,height,_mipmaps[_numberOfMipmaps].address, false);
-                bpp = 4;
-            }
-            blockSize = 4 * 4; // Pixel by pixel block size for 4bpp
-            widthBlocks = width / 4;
-            heightBlocks = height / 4;
-            break;
-        case PVR2TexturePixelFormat::BGRA8888:
-            if (Configuration::getInstance()->supportsBGRA8888() == false)
-            {
-                CCLOG("cocos2d: Image. BGRA8888 not supported on this device");
-                return false;
-            }
-        default:
-            blockSize = 1;
-            widthBlocks = width;
-            heightBlocks = height;
-            break;
+            case PVR2TexturePixelFormat::PVRTC2BPP_RGBA:
+                if(!Configuration::getInstance()->supportsPVRTC())
+                {
+                    CCLOG("cocos2d: Hardware PVR decoder not present. Using software decoder");
+                    _unpack = true;
+                    _mipmaps[_numberOfMipmaps].len = width*height*4;
+                    _mipmaps[_numberOfMipmaps].address = new unsigned char[width*height*4];
+                    PVRTDecompressPVRTC(_data+dataOffset,width,height,_mipmaps[_numberOfMipmaps].address, true);
+                    bpp = 2;
+                }
+                blockSize = 8 * 4; // Pixel by pixel block size for 2bpp
+                widthBlocks = width / 8;
+                heightBlocks = height / 4;
+                break;
+            case PVR2TexturePixelFormat::PVRTC4BPP_RGBA:
+                if(!Configuration::getInstance()->supportsPVRTC())
+                {
+                    CCLOG("cocos2d: Hardware PVR decoder not present. Using software decoder");
+                    _unpack = true;
+                    _mipmaps[_numberOfMipmaps].len = width*height*4;
+                    _mipmaps[_numberOfMipmaps].address = new unsigned char[width*height*4];
+                    PVRTDecompressPVRTC(_data+dataOffset,width,height,_mipmaps[_numberOfMipmaps].address, false);
+                    bpp = 4;
+                }
+                blockSize = 4 * 4; // Pixel by pixel block size for 4bpp
+                widthBlocks = width / 4;
+                heightBlocks = height / 4;
+                break;
+            case PVR2TexturePixelFormat::BGRA8888:
+                if (Configuration::getInstance()->supportsBGRA8888() == false)
+                {
+                    CCLOG("cocos2d: Image. BGRA8888 not supported on this device");
+                    return false;
+                }
+            default:
+                blockSize = 1;
+                widthBlocks = width;
+                heightBlocks = height;
+                break;
         }
-
+        
         // Clamp to minimum number of blocks
         if (widthBlocks < 2)
         {
@@ -1398,11 +1452,11 @@ bool Image::initWithPVRv2Data(const unsigned char * data, ssize_t dataLen)
         {
             heightBlocks = 2;
         }
-
+        
         dataSize = widthBlocks * heightBlocks * ((blockSize  * bpp) / 8);
         int packetLength = (dataLength - dataOffset);
         packetLength = packetLength > dataSize ? dataSize : packetLength;
-
+        
         //Make record to the mipmaps array and increment counter
         if(!_unpack)
         {
@@ -1410,9 +1464,9 @@ bool Image::initWithPVRv2Data(const unsigned char * data, ssize_t dataLen)
             _mipmaps[_numberOfMipmaps].len = packetLength;
         }
         _numberOfMipmaps++;
-
+        
         dataOffset += packetLength;
-
+        
         //Update width and height to the next lower power of two
         width = MAX(width >> 1, 1);
         height = MAX(height >> 1, 1);
@@ -1501,65 +1555,115 @@ bool Image::initWithPVRv3Data(const unsigned char * data, ssize_t dataLen)
     {
 		switch ((PVR3TexturePixelFormat)pixelFormat)
         {
-			case PVR3TexturePixelFormat::PVRTC2BPP_RGB :
-			case PVR3TexturePixelFormat::PVRTC2BPP_RGBA :
- 				if(!Configuration::getInstance()->supportsPVRTC())
-				{
-					CCLOG("cocos2d: Hardware PVR decoder not present. Using software decoder");
-					_unpack = true;
-					_mipmaps[i].len = width*height*4;
-					_mipmaps[i].address = new unsigned char[width*height*4];
-					PVRTDecompressPVRTC(_data+dataOffset,width,height,_mipmaps[i].address, true);
-                    bpp = 2;
-				}
-				blockSize = 8 * 4; // Pixel by pixel block size for 2bpp
-				widthBlocks = width / 8;
-				heightBlocks = height / 4;
-				break;
-			case PVR3TexturePixelFormat::PVRTC4BPP_RGB :
-			case PVR3TexturePixelFormat::PVRTC4BPP_RGBA :
-				if(!Configuration::getInstance()->supportsPVRTC())
-				{
-					CCLOG("cocos2d: Hardware PVR decoder not present. Using software decoder");
-					_unpack = true;
-					_mipmaps[i].len = width*height*4;
-					_mipmaps[i].address = new unsigned char[width*height*4];
-					PVRTDecompressPVRTC(_data+dataOffset,width,height,_mipmaps[i].address, false);
-                    bpp = 4;
-				}
-				blockSize = 4 * 4; // Pixel by pixel block size for 4bpp
-				widthBlocks = width / 4;
-				heightBlocks = height / 4;
-				break;
-			case PVR3TexturePixelFormat::ETC1:
-				if(!Configuration::getInstance()->supportsETC())
-				{
-					CCLOG("cocos2d: Hardware ETC1 decoder not present. Using software decoder");
-					int bytePerPixel = 3;
-					unsigned int stride = width * bytePerPixel;
-                    _unpack = true;
-					_mipmaps[i].len = width*height*bytePerPixel;
-					_mipmaps[i].address = new unsigned char[width*height*bytePerPixel];
-					if (etc1_decode_image(static_cast<const unsigned char*>(_data+dataOffset), static_cast<etc1_byte*>(_mipmaps[i].address), width, height, bytePerPixel, stride) != 0)
-					{
-						return false;
-					}
-				}
-				blockSize = 4 * 4; // Pixel by pixel block size for 4bpp
-				widthBlocks = width / 4;
-				heightBlocks = height / 4;
-				break;
-			case PVR3TexturePixelFormat::BGRA8888:
-				if( ! Configuration::getInstance()->supportsBGRA8888())
+            case PVR3TexturePixelFormat::PVRTC2BPP_RGB :
+            case PVR3TexturePixelFormat::PVRTC2BPP_RGBA :
+                if(!Configuration::getInstance()->supportsPVRTC())
                 {
-					CCLOG("cocos2d: Image. BGRA8888 not supported on this device");
-					return false;
-				}
-			default:
-				blockSize = 1;
-				widthBlocks = width;
-				heightBlocks = height;
-				break;
+                    CCLOG("cocos2d: Hardware PVR decoder not present. Using software decoder");
+                    _unpack = true;
+                    _mipmaps[i].len = width*height*4;
+                    _mipmaps[i].address = new unsigned char[width*height*4];
+                    PVRTDecompressPVRTC(_data+dataOffset,width,height,_mipmaps[i].address, true);
+                    bpp = 2;
+                }
+                blockSize = 8 * 4; // Pixel by pixel block size for 2bpp
+                widthBlocks = width / 8;
+                heightBlocks = height / 4;
+                break;
+            case PVR3TexturePixelFormat::PVRTC4BPP_RGB :
+            case PVR3TexturePixelFormat::PVRTC4BPP_RGBA :
+                if(!Configuration::getInstance()->supportsPVRTC())
+                {
+                    CCLOG("cocos2d: Hardware PVR decoder not present. Using software decoder");
+                    _unpack = true;
+                    _mipmaps[i].len = width*height*4;
+                    _mipmaps[i].address = new unsigned char[width*height*4];
+                    PVRTDecompressPVRTC(_data+dataOffset,width,height,_mipmaps[i].address, false);
+                    bpp = 4;
+                }
+                blockSize = 4 * 4; // Pixel by pixel block size for 4bpp
+                widthBlocks = width / 4;
+                heightBlocks = height / 4;
+                break;
+            case PVR3TexturePixelFormat::PVRTC2_2BPP_RGBA :
+                if(!Configuration::getInstance()->supportsPVRTC2())
+                {
+                    CCLOG("cocos2d: Hardware PVR2 not supported on this device");
+                    return false;
+                }
+                blockSize = 8 * 4; // Pixel by pixel block size for 2bpp
+                widthBlocks = width / 8;
+                heightBlocks = height / 4;
+                break;
+            case PVR3TexturePixelFormat::PVRTC2_4BPP_RGBA :
+                if(!Configuration::getInstance()->supportsPVRTC2())
+                {
+                    CCLOG("cocos2d: Hardware PVR2 not supported on this device");
+                    return false;
+                }
+                blockSize = 4 * 4; // Pixel by pixel block size for 2bpp
+                widthBlocks = width / 4;
+                heightBlocks = height / 4;
+                break;
+            case PVR3TexturePixelFormat::ETC1:
+                if(!Configuration::getInstance()->supportsETC())
+                {
+                    CCLOG("cocos2d: Hardware ETC1 decoder not present. Using software decoder");
+                    int bytePerPixel = 3;
+                    unsigned int stride = width * bytePerPixel;
+                    _unpack = true;
+                    _mipmaps[i].len = width*height*bytePerPixel;
+                    _mipmaps[i].address = new unsigned char[width*height*bytePerPixel];
+                    if (etc1_decode_image(static_cast<const unsigned char*>(_data+dataOffset), static_cast<etc1_byte*>(_mipmaps[i].address), width, height, bytePerPixel, stride) != 0)
+                    {
+                        return false;
+                    }
+                }
+                blockSize = 4 * 4; // Pixel by pixel block size for 4bpp
+                widthBlocks = width / 4;
+                heightBlocks = height / 4;
+                break;
+            case PVR3TexturePixelFormat::ETC2_RGB:
+                if(!Configuration::getInstance()->supportsGLV3())
+                {
+                    CCLOG("cocos2d: Hardware ETC2 not supported on this device");
+                    return false;
+                }
+                blockSize = 4 * 4; // Pixel by pixel block size for 4bpp
+                widthBlocks = width / 4;
+                heightBlocks = height / 4;
+                break;
+            case PVR3TexturePixelFormat::ETC2_RGBA:
+                if(!Configuration::getInstance()->supportsGLV3())
+                {
+                    CCLOG("cocos2d: Hardware ETC2 not supported on this device");
+                    return false;
+                }
+                blockSize = 4 * 4; // Pixel by pixel block size for 4bpp
+                widthBlocks = width / 4;
+                heightBlocks = height / 4;
+                break;
+            case PVR3TexturePixelFormat::ETC2_RGBA1:
+                if(!Configuration::getInstance()->supportsGLV3())
+                {
+                    CCLOG("cocos2d: Hardware ETC2 not supported on this device");
+                    return false;
+                }
+                blockSize = 4 * 4; // Pixel by pixel block size for 4bpp
+                widthBlocks = width / 4;
+                heightBlocks = height / 4;
+                break;
+            case PVR3TexturePixelFormat::BGRA8888:
+                if( ! Configuration::getInstance()->supportsBGRA8888())
+                {
+                    CCLOG("cocos2d: Image. BGRA8888 not supported on this device");
+                    return false;
+                }
+            default:
+                blockSize = 1;
+                widthBlocks = width;
+                heightBlocks = height;
+                break;
 		}
         
 		// Clamp to minimum number of blocks
@@ -1599,40 +1703,64 @@ bool Image::initWithPVRv3Data(const unsigned char * data, ssize_t dataLen)
 	return true;
 }
 
-bool Image::initWithETCData(const unsigned char * data, ssize_t dataLen)
+bool Image::initWithPKMData(const unsigned char * data, ssize_t dataLen)
 {
-    const etc1_byte* header = static_cast<const etc1_byte*>(data);
-    
-    //check the data
-    if(!etc1_pkm_is_valid(header))
-    {
-        return  false;
-    }
-
-    _width = etc1_pkm_get_width(header);
-    _height = etc1_pkm_get_height(header);
-
-    if( 0 == _width || 0 == _height )
-    {
+    PKMHeader *header = (PKMHeader *)data;
+    if (memcmp(header->name, PKM_MAGIC, sizeof(PKM_MAGIC))) {
         return false;
     }
-
-    if(Configuration::getInstance()->supportsETC())
+    PKM2TexturePixelFormat format = (PKM2TexturePixelFormat)CC_SWAP_INT16_BIG_TO_HOST(header->format);
+    //uint16_t encodedWidth = CC_SWAP_INT16_BIG_TO_HOST(header->encodedWidth);
+    //uint16_t encodedHeight = CC_SWAP_INT16_BIG_TO_HOST(header->encodedHeight);
+    uint16_t width = CC_SWAP_INT16_BIG_TO_HOST(header->width);
+    uint16_t height = CC_SWAP_INT16_BIG_TO_HOST(header->height);
+    
+    if(header->version[0] == '1' && header->version[1] == '0')
     {
-        //old opengl version has no define for GL_ETC1_RGB8_OES, add macro to make compiler happy. 
-#ifdef GL_ETC1_RGB8_OES
-        _renderFormat = Texture2D::PixelFormat::ETC;
-        _dataLen = dataLen - ETC_PKM_HEADER_SIZE;
-        _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
-        memcpy(_data, static_cast<const unsigned char*>(data) + ETC_PKM_HEADER_SIZE, _dataLen);
-        return true;
-#endif
+        if (format != PKM2TexturePixelFormat::ETC1_RGB_NO_MIPMAPS) {
+            return false;
+        }
     }
-    else
+    
+    if(header->version[0] == '2' && header->version[1] == '0')
     {
-        CCLOG("cocos2d: Hardware ETC1 decoder not present. Using software decoder");
-
-         //if it is not gles or device do not support ETC, decode texture by software
+        switch (format) {
+            case PKM2TexturePixelFormat::ETC1_RGB_NO_MIPMAPS:
+                break;
+            case PKM2TexturePixelFormat::ETC2PACKAGE_RGB_NO_MIPMAPS:
+            case PKM2TexturePixelFormat::ETC2PACKAGE_RGBA_NO_MIPMAPS:
+            case PKM2TexturePixelFormat::ETC2PACKAGE_RGBA1_NO_MIPMAPS:
+                if(!Configuration::getInstance()->supportsGLV3())
+                    return false;
+                break;
+            default:
+                return false;
+        }
+    }
+    
+    if (pkm_formathash.find(format) == pkm_formathash.end())
+    {
+        CCLOG("cocos2d: WARNING: Unsupported ETC Pixel Format: 0x%016hX. Re-encode it with a OpenGL pixel format variant",
+              static_cast<uint16_t>(format));
+        return false;
+    }
+    
+    auto it = Texture2D::getPixelFormatInfoMap().find(getDevicePixelFormat(pkm_formathash.at(format)));
+    
+    if (it == Texture2D::getPixelFormatInfoMap().end())
+    {
+        CCLOG("cocos2d: WARNING: Unsupported PVR Pixel Format: 0x%016hX. Re-encode it with a OpenGL pixel format variant",
+              static_cast<uint16_t>(format));
+        return false;
+    }
+    
+    _renderFormat = it->first;
+    
+	_width = width;
+	_height = height;
+    
+    if(format == PKM2TexturePixelFormat::ETC1_RGB_NO_MIPMAPS && !Configuration::getInstance()->supportsETC())
+    {
         int bytePerPixel = 3;
         unsigned int stride = _width * bytePerPixel;
         _renderFormat = Texture2D::PixelFormat::RGB888;
@@ -1640,7 +1768,7 @@ bool Image::initWithETCData(const unsigned char * data, ssize_t dataLen)
         _dataLen =  _width * _height * bytePerPixel;
         _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
         
-        if (etc1_decode_image(static_cast<const unsigned char*>(data) + ETC_PKM_HEADER_SIZE, static_cast<etc1_byte*>(_data), _width, _height, bytePerPixel, stride) != 0)
+        if (etc1_decode_image(static_cast<const unsigned char*>(data) + sizeof(PKMHeader), static_cast<etc1_byte*>(_data), _width, _height, bytePerPixel, stride) != 0)
         {
             _dataLen = 0;
             if (_data != nullptr)
@@ -1652,7 +1780,13 @@ bool Image::initWithETCData(const unsigned char * data, ssize_t dataLen)
         
         return true;
     }
-    return false;
+    else
+    {
+        _dataLen = sizeof(PVRv3TexHeader) - ETC_PKM_HEADER_SIZE;
+        _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
+        memcpy(_data, static_cast<const unsigned char*>(data) + sizeof(PKMHeader), _dataLen);
+        return true;
+    }
 }
 
 bool Image::initWithTGAData(tImageTGA* tgaData)
@@ -1746,18 +1880,18 @@ namespace
     }
 }
 
-bool Image::initWithS3TCData(const unsigned char * data, ssize_t dataLen)
+bool Image::initWithDDSData(const unsigned char * data, ssize_t dataLen)
 {
-    
+//TODO: full list of supported formats
     const uint32_t FOURCC_DXT1 = makeFourCC('D', 'X', 'T', '1');
     const uint32_t FOURCC_DXT3 = makeFourCC('D', 'X', 'T', '3');
     const uint32_t FOURCC_DXT5 = makeFourCC('D', 'X', 'T', '5');
     
     /* load the .dds file */
     
-    S3TCTexHeader *header = (S3TCTexHeader *)data;
-    unsigned char *pixelData = static_cast<unsigned char*>(malloc((dataLen - sizeof(S3TCTexHeader)) * sizeof(unsigned char)));
-    memcpy((void *)pixelData, data + sizeof(S3TCTexHeader), dataLen - sizeof(S3TCTexHeader));
+    DDSHeader *header = (DDSHeader *)data;
+    unsigned char *pixelData = static_cast<unsigned char*>(malloc((dataLen - sizeof(DDSHeader)) * sizeof(unsigned char)));
+    memcpy((void *)pixelData, data + sizeof(DDSHeader), dataLen - sizeof(DDSHeader));
     
     _width = header->ddsd.width;
     _height = header->ddsd.height;
@@ -1772,7 +1906,7 @@ bool Image::initWithS3TCData(const unsigned char * data, ssize_t dataLen)
     
     if (Configuration::getInstance()->supportsS3TC())  //compressed data length
     {
-        _dataLen = dataLen - sizeof(S3TCTexHeader);
+        _dataLen = dataLen - sizeof(DDSHeader);
         _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
         memcpy((void *)_data,(void *)pixelData , _dataLen);
     }
@@ -1873,10 +2007,11 @@ bool Image::initWithS3TCData(const unsigned char * data, ssize_t dataLen)
 }
 
 
-bool Image::initWithATITCData(const unsigned char *data, ssize_t dataLen)
+bool Image::initWithKTXData(const unsigned char *data, ssize_t dataLen)
 {
+//TODO: full list of supported formats
     /* load the .ktx file */
-    ATITCTexHeader *header = (ATITCTexHeader *)data;
+    KTXHeader *header = (KTXHeader *)data;
     _width =  header->pixelWidth;
     _height = header->pixelHeight;
     _numberOfMipmaps = header->numberOfMipmapLevels;
@@ -1898,7 +2033,7 @@ bool Image::initWithATITCData(const unsigned char *data, ssize_t dataLen)
     }
     
     /* pixelData point to the compressed data address */
-    unsigned char *pixelData = (unsigned char *)data + sizeof(ATITCTexHeader) + header->bytesOfKeyValueData + 4;
+    unsigned char *pixelData = (unsigned char *)data + sizeof(KTXHeader) + header->bytesOfKeyValueData + 4;
     
     /* caculate the dataLen */
     int width = _width;
@@ -1906,7 +2041,7 @@ bool Image::initWithATITCData(const unsigned char *data, ssize_t dataLen)
     
     if (Configuration::getInstance()->supportsATITC())  //compressed data length
     {
-        _dataLen = dataLen - sizeof(ATITCTexHeader) - header->bytesOfKeyValueData - 4;
+        _dataLen = dataLen - sizeof(KTXHeader) - header->bytesOfKeyValueData - 4;
         _data = static_cast<unsigned char*>(malloc(_dataLen * sizeof(unsigned char)));
         memcpy((void *)_data,(void *)pixelData , _dataLen);
     }

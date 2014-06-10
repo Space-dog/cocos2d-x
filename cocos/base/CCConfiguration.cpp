@@ -40,6 +40,7 @@ Configuration::Configuration()
 : _maxTextureSize(0) 
 , _maxModelviewStackDepth(0)
 , _supportsPVRTC(false)
+, _supportsPVRTC2(false)
 , _supportsETC1(false)
 , _supportsS3TC(false)
 , _supportsATITC(false)
@@ -47,6 +48,7 @@ Configuration::Configuration()
 , _supportsBGRA8888(false)
 , _supportsDiscardFramebuffer(false)
 , _supportsShareableVAO(false)
+, _supportsOGLv3(false)
 , _maxSamplesAllowed(0)
 , _maxTextureUnits(0)
 , _glExtensions(nullptr)
@@ -129,6 +131,9 @@ void Configuration::gatherGPUInfo()
     
     _supportsPVRTC = checkForGLExtension("GL_IMG_texture_compression_pvrtc");
 	_valueDict["gl.supports_PVRTC"] = Value(_supportsPVRTC);
+    
+    _supportsPVRTC2 = checkForGLExtension("GL_IMG_texture_compression_pvrtc2");
+	_valueDict["gl.supports_PVRTC2"] = Value(_supportsPVRTC2);
 
     _supportsNPOT = true;
 	_valueDict["gl.supports_NPOT"] = Value(_supportsNPOT);
@@ -141,6 +146,9 @@ void Configuration::gatherGPUInfo()
 
     _supportsShareableVAO = checkForGLExtension("vertex_array_object");
 	_valueDict["gl.supports_vertex_array_object"] = Value(_supportsShareableVAO);
+    
+    _supportsOGLv3 = checkForGLExtension("GL_ARB_ES3_compatibility");
+	_valueDict["gl.supports_OGLv3"] = Value(_supportsOGLv3);
 
     CHECK_GL_ERROR_DEBUG();
 }
@@ -208,6 +216,11 @@ bool Configuration::supportsPVRTC() const
 	return _supportsPVRTC;
 }
 
+bool Configuration::supportsPVRTC2() const
+{
+	return _supportsPVRTC;
+}
+
 bool Configuration::supportsETC() const
 {
     //GL_ETC1_RGB8_OES is not defined in old opengl version
@@ -245,6 +258,11 @@ bool Configuration::supportsShareableVAO() const
 #else
     return false;
 #endif
+}
+
+bool Configuration::supportsGLV3() const
+{
+    return _supportsOGLv3;
 }
 
 //

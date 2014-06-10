@@ -78,8 +78,22 @@ namespace {
         PixelFormatInfoMapValue(Texture2D::PixelFormat::PVRTC4A, Texture2D::PixelFormatInfo(GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, 0xFFFFFFFF, 0xFFFFFFFF, 4, true, true)),
 #endif
         
+#ifdef GL_COMPRESSED_RGBA_PVRTC_2BPPV2_IMG
+        PixelFormatInfoMapValue(Texture2D::PixelFormat::PVRTC2_V2, Texture2D::PixelFormatInfo(GL_COMPRESSED_RGBA_PVRTC_2BPPV2_IMG, 0xFFFFFFFF, 0xFFFFFFFF, 2, true, true)),
+        PixelFormatInfoMapValue(Texture2D::PixelFormat::PVRTC4_V2, Texture2D::PixelFormatInfo(GL_COMPRESSED_RGBA_PVRTC_4BPPV2_IMG, 0xFFFFFFFF, 0xFFFFFFFF, 4, true, true)),
+#endif
+        
 #ifdef GL_ETC1_RGB8_OES
-        PixelFormatInfoMapValue(Texture2D::PixelFormat::ETC, Texture2D::PixelFormatInfo(GL_ETC1_RGB8_OES, 0xFFFFFFFF, 0xFFFFFFFF, 24, true, false)),
+        PixelFormatInfoMapValue(Texture2D::PixelFormat::ETC, Texture2D::PixelFormatInfo(GL_ETC1_RGB8_OES, 0xFFFFFFFF, 0xFFFFFFFF, 4, true, false)),
+#endif
+        
+#ifdef GL_COMPRESSED_RGB8_ETC2
+        PixelFormatInfoMapValue(Texture2D::PixelFormat::ETC2_RGB8, Texture2D::PixelFormatInfo(GL_COMPRESSED_RGB8_ETC2, 0xFFFFFFFF, 0xFFFFFFFF, 4, true, false)),
+        PixelFormatInfoMapValue(Texture2D::PixelFormat::ETC2_SRGB8, Texture2D::PixelFormatInfo(GL_COMPRESSED_RGB8_ETC2, 0xFFFFFFFF, 0xFFFFFFFF, 4, true, false)),
+        PixelFormatInfoMapValue(Texture2D::PixelFormat::ETC2_RGB8_ALPHA1, Texture2D::PixelFormatInfo(GL_COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2, 0xFFFFFFFF, 0xFFFFFFFF, 4, true, true)),
+        PixelFormatInfoMapValue(Texture2D::PixelFormat::ETC2_SRGB8_ALPHA1, Texture2D::PixelFormatInfo(GL_COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2, 0xFFFFFFFF, 0xFFFFFFFF, 4, true, true)),
+        PixelFormatInfoMapValue(Texture2D::PixelFormat::ETC2_RGBA8, Texture2D::PixelFormatInfo(GL_COMPRESSED_RGBA8_ETC2_EAC, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
+        PixelFormatInfoMapValue(Texture2D::PixelFormat::ETC2_SRGB8_ALPHA8, Texture2D::PixelFormatInfo(GL_COMPRESSED_SRGB8_ALPHA8_ETC2_EAC, 0xFFFFFFFF, 0xFFFFFFFF, 8, true, true)),
 #endif
         
 #ifdef GL_COMPRESSED_RGBA_S3TC_DXT1_EXT

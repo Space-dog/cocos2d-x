@@ -86,6 +86,9 @@ public:
     /** Whether or not PVR Texture Compressed is supported */
 	bool supportsPVRTC() const;
     
+    /** Whether or not PVR2 Texture Compressed is supported */
+	bool supportsPVRTC2() const;
+    
      /** Whether or not ETC Texture Compressed is supported */
     bool supportsETC() const;
     
@@ -109,6 +112,9 @@ public:
      @since v2.0.0
      */
 	bool supportsShareableVAO() const;
+    
+    /** Whether or not OpenGL ES v3 is supported */
+    bool supportsGLV3() const;
 
     /** returns whether or not an OpenGL is supported */
     bool checkForGLExtension(const std::string &searchName) const;
@@ -139,6 +145,7 @@ protected:
     GLint           _maxTextureSize;
     GLint           _maxModelviewStackDepth;
     bool            _supportsPVRTC;
+    bool            _supportsPVRTC2;
     bool            _supportsETC1;
     bool            _supportsS3TC;
     bool            _supportsATITC;
@@ -146,6 +153,7 @@ protected:
     bool            _supportsBGRA8888;
     bool            _supportsDiscardFramebuffer;
     bool            _supportsShareableVAO;
+    bool            _supportsOGLv3;
     GLint           _maxSamplesAllowed;
     GLint           _maxTextureUnits;
     char *          _glExtensions;

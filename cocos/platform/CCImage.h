@@ -81,12 +81,12 @@ public:
         WEBP,
         //! PVR
         PVR,
-        //! ETC
-        ETC,
-        //! S3TC
-        S3TC,
-        //! ATITC
-        ATITC,
+        //! PKM
+        PKM,
+        //! DDS
+        DDS,
+        //! KTX
+        KTX,
         //! TGA
         TGA,
         //! Raw Data
@@ -147,9 +147,9 @@ protected:
     bool initWithPVRData(const unsigned char * data, ssize_t dataLen);
     bool initWithPVRv2Data(const unsigned char * data, ssize_t dataLen);
     bool initWithPVRv3Data(const unsigned char * data, ssize_t dataLen);
-    bool initWithETCData(const unsigned char * data, ssize_t dataLen);
-    bool initWithS3TCData(const unsigned char * data, ssize_t dataLen);
-    bool initWithATITCData(const unsigned char *data, ssize_t dataLen);
+    bool initWithPKMData(const unsigned char * data, ssize_t dataLen);;
+    bool initWithDDSData(const unsigned char * data, ssize_t dataLen);
+    bool initWithKTXData(const unsigned char *data, ssize_t dataLen);
     typedef struct sImageTGA tImageTGA;
     bool initWithTGAData(tImageTGA* tgaData);
 
@@ -199,9 +199,9 @@ protected:
     bool isTiff(const unsigned char * data, ssize_t dataLen);
     bool isWebp(const unsigned char * data, ssize_t dataLen);
     bool isPvr(const unsigned char * data, ssize_t dataLen);
-    bool isEtc(const unsigned char * data, ssize_t dataLen);
-    bool isS3TC(const unsigned char * data,ssize_t dataLen);
-    bool isATITC(const unsigned char *data, ssize_t dataLen);
+    bool isPkm(const unsigned char * data, ssize_t dataLen);
+    bool isKtx(const unsigned char * data, ssize_t dataLen);
+    bool isDds(const unsigned char *data, ssize_t dataLen);
 };
 
 // end of platform group
