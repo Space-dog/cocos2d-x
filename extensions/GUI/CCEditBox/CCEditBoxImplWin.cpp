@@ -272,6 +272,8 @@ void EditBoxImplWin::openKeyboard()
 		_delegate->editBoxReturn(_editBox);
 	}
     
+    _editBox->sendActionsForControlEvents(cocos2d::extension::Control::EventType::VALUE_CHANGED);
+    
 #if CC_ENABLE_SCRIPT_BINDING
     if (nullptr != _editBox && 0 != _editBox->getScriptEditBoxHandler())
     {

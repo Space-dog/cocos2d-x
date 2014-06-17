@@ -182,6 +182,8 @@ static const int CC_EDIT_BOX_PADDING = 5;
     editState_ = NO;
     getEditBoxImplIOS()->refreshInactiveText();
     
+    cocos2d::extension::EditBox*  pEditBox= getEditBoxImplIOS()->getEditBox();
+    
     cocos2d::extension::EditBoxDelegate* pDelegate = getEditBoxImplIOS()->getDelegate();
     if (pDelegate != NULL)
     {
@@ -189,8 +191,9 @@ static const int CC_EDIT_BOX_PADDING = 5;
         pDelegate->editBoxReturn(getEditBoxImplIOS()->getEditBox());
     }
     
+    pEditBox->sendActionsForControlEvents(cocos2d::extension::Control::EventType::VALUE_CHANGED);
+    
 #if CC_ENABLE_SCRIPT_BINDING
-    cocos2d::extension::EditBox*  pEditBox= getEditBoxImplIOS()->getEditBox();
     if (NULL != pEditBox && 0 != pEditBox->getScriptEditBoxHandler())
     {
         cocos2d::CommonScriptData data(pEditBox->getScriptEditBoxHandler(), "ended",pEditBox);
@@ -392,8 +395,6 @@ void EditBoxImplIOS::setFont(const char* pFontName, int fontSize)
 
 	_label->setSystemFontName(pFontName);
 	_label->setSystemFontSize(fontSize);
-	_labelPlaceHolder->setSystemFontName(pFontName);
-	_labelPlaceHolder->setSystemFontSize(fontSize);
 }
 
 void EditBoxImplIOS::setFontColor(const Color3B& color)
@@ -404,7 +405,8 @@ void EditBoxImplIOS::setFontColor(const Color3B& color)
 
 void EditBoxImplIOS::setPlaceholderFont(const char* pFontName, int fontSize)
 {
-	// TODO need to be implemented.
+	_labelPlaceHolder->setSystemFontName(pFontName);
+	_labelPlaceHolder->setSystemFontSize(fontSize);
 }
 
 void EditBoxImplIOS::setPlaceholderFontColor(const Color3B& color)

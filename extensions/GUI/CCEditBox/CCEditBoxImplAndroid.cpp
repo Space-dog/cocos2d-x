@@ -249,6 +249,8 @@ static void editBoxCallbackFunc(const char* pText, void* ctx)
 {
     EditBoxImplAndroid* thiz = (EditBoxImplAndroid*)ctx;
     thiz->setText(pText);
+    
+    EditBox* pEditBox = thiz->getEditBox();
 	
     if (thiz->getDelegate() != NULL)
     {
@@ -257,8 +259,9 @@ static void editBoxCallbackFunc(const char* pText, void* ctx)
         thiz->getDelegate()->editBoxReturn(thiz->getEditBox());
     }
     
+   pEditBox->sendActionsForControlEvents(cocos2d::extension::Control::EventType::VALUE_CHANGED);
+    
 #if CC_ENABLE_SCRIPT_BINDING
-    EditBox* pEditBox = thiz->getEditBox();
     if (NULL != pEditBox && 0 != pEditBox->getScriptEditBoxHandler())
     {        
         CommonScriptData data(pEditBox->getScriptEditBoxHandler(), "changed",pEditBox);

@@ -88,6 +88,8 @@ void CCEditBoxImplWp8::openKeyboard()
 			_delegate->editBoxReturn(_editBox);
 		}
 	});
+	
+    pEditBox->sendActionsForControlEvents(cocos2d::extension::Control::EventType::VALUE_CHANGED);
 
     GLView::sharedOpenGLView()->OpenXamlEditBox(stringToPlatformString(placeHolder), stringToPlatformString(getText()), m_nMaxLength, (int)m_eEditBoxInputMode, (int)m_eEditBoxInputFlag, receiveHandler);
 }

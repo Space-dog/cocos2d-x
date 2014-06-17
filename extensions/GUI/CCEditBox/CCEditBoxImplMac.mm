@@ -193,8 +193,11 @@
         pDelegate->editBoxReturn(getEditBoxImplMac()->getEditBox());
     }
     
-#if CC_ENABLE_SCRIPT_BINDING
     cocos2d::extension::EditBox*  pEditBox= getEditBoxImplMac()->getEditBox();
+    
+    pEditBox->sendActionsForControlEvents(cocos2d::extension::Control::EventType::VALUE_CHANGED);
+    
+#if CC_ENABLE_SCRIPT_BINDING
     if (NULL != pEditBox && 0 != pEditBox->getScriptEditBoxHandler())
     {
         cocos2d::CommonScriptData data(pEditBox->getScriptEditBoxHandler(), "ended",pEditBox);
